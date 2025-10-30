@@ -100,12 +100,12 @@ class SimpleStatsDb
         $target = self::getDbFile();
 
         // Initially create the db, if it doesn't exist yet.
-        if (!F::exists($target)) {
+        if (!\Kirby\Filesystem\F::exists($target)) {
 
             // Ensure the folder exists
             $dir = dirname($target);
             if (is_dir($dir) === false) {
-                Dir::make($dir);
+                \Kirby\Filesystem\Dir::make($dir);
             }
 
             // Create db file
@@ -143,7 +143,7 @@ class SimpleStatsDb
 
 
             // Double check
-            if(!F::exists($target)){
+            if(!\Kirby\Filesystem\F::exists($target)){
                 Logger::LogWarning('Error creating database @ '.$target.' ! SimpleStats will not work.');
                 return false;
             }
@@ -181,7 +181,7 @@ class SimpleStatsDb
         $target = option('daandelange.simplestats.tracking.database', false);
 
         // Override the setting if it aint an .sqlite file
-        if( !$target || F::extension($target)!='sqlite'){
+        if( !$target || \Kirby\Filesystem\F::extension($target)!='sqlite'){
             // Note, the log root is not available in early k3 distributions, so use a fallback
             $target = self::getLogsPath('simplestats.sqlite');
             Logger::LogVerbose('Config --> db file replaced by default = '.$target.'.');
@@ -295,7 +295,7 @@ class SimpleStatsDb
                                 foreach($missingLangs as $l){
                                     // Note : ALTER TABLE cannot add several columns in 1 command.
                                     if( !$dbsql3->exec('ALTER TABLE `pagevisits` ADD COLUMN `hits_'.$l.'` INTEGER') ){
-                                        Logger::LogWarning('UPGRADE db, adding LANGUAGES FAILED creating columns for '.$l.'. Error='.$dbsql3->lastError()->getMessage());
+                                        Logger::LogWarning('UPGRADE db, adding LANGUAGES FAILED creating columns for '.$l.'. Error='.$dbsql3->lastErrorMsg());
                                         //$dbsql3->close();
                                         //return true;
                                         $ret = false;

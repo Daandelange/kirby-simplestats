@@ -80,7 +80,7 @@ class SimpleStats extends SimpleStatsDb {
     // Note : the uri should be $page->id(), the Kirby uri is translateable.
     // Additional params are not recommended to use; mainly for testing purposes.
     // Return value : Needs to be unified. Sometimes it returns trackin status (tracked/not tracked), sometimes it indicates errors vs correct tracking behaviour.
-    public static function track( string $page_uri = '', int $time = null, \Kirby\Cms\User $user = null, string $forceLang = null, array $httpHeaders=null ): bool {
+    public static function track( string $page_uri = '', ?int $time = null, ?\Kirby\Cms\User $user = null, ?string $forceLang = null, ?array $httpHeaders=null ): bool {
 
         // Dont allow tracking in disabled mode
         if( SimpleStatsTrackingMode::Disabled === option('daandelange.simplestats.tracking.method', SimpleStatsTrackingMode::OnLoad) ){
@@ -289,7 +289,7 @@ class SimpleStats extends SimpleStatsDb {
     }
 
 
-    public static function getPageIDWithLang($page_uri, string $forceLang = null): string {
+    public static function getPageIDWithLang($page_uri, ?string $forceLang = null): string {
 
         // With language ?
         if( kirby()->multilang() && option('daandelange.simplestats.tracking.enableVisitLanguages') === true ) {
@@ -336,7 +336,7 @@ class SimpleStats extends SimpleStatsDb {
             }, array_keys($maskMax), $maskMax);
 implode($isIpv6?':':'.', $maskMax);
 
-            return inet_ntop($addressPacked & inet_pton(implode($isIpv6?':':'.', $maskMax)));
+            return inet_ntop($addressPacked & (string)inet_pton(implode($isIpv6?':':'.', $maskMax)));
         }
 
         return null;
@@ -344,7 +344,7 @@ implode($isIpv6?':':'.', $maskMax);
 
 
     // Combines the ip + user_agent to get a unique user string
-    public static function getUserUniqueString(array $customHeader = null): string {
+    public static function getUserUniqueString(?array $customHeader = null): string {
         // Anonymize IP beforehand (if enabled)
         $ip = static::anonymize($_SERVER['REMOTE_ADDR']); // $kirby->visitor()->ip()
 
