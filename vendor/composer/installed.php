@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'daandelange/simplestats',
-        'pretty_version' => '0.6.3-beta',
-        'version' => '0.6.3.0-beta',
-        'reference' => NULL,
+        'pretty_version' => '0.6.5-beta',
+        'version' => '0.6.5.0-beta',
+        'reference' => null,
         'type' => 'kirby-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'daandelange/simplestats' => array(
-            'pretty_version' => '0.6.3-beta',
-            'version' => '0.6.3.0-beta',
-            'reference' => NULL,
+            'pretty_version' => '0.6.5-beta',
+            'version' => '0.6.5.0-beta',
+            'reference' => null,
             'type' => 'kirby-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

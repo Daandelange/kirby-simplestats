@@ -2,7 +2,7 @@
   <k-grid gutter="medium" class="ss-timeframe-input">
 
     <!-- Date FROM input -->
-    <k-column width="3/12">
+    <k-column width="3/12" class="ss-tf-from-col">
       <k-field :input="_uid" v-bind="$props" class="k-date-field">
         <div
           class="k-date-field-body"
@@ -29,7 +29,7 @@
                   class="k-input-icon-button"
                   @click="$refs.calendarFromDrawer.toggle()"
                 />
-                <k-dropdown-content ref="calendarFromDrawer" align="right">
+                <k-dropdown-content ref="calendarFromDrawer">
                   <k-calendar
                     :value="dateFrom+' 00:00:00'"
                     :min="minDate"
@@ -46,7 +46,7 @@
     </k-column>
 
     <!-- Time Range Slider -->
-    <k-column width="6/12">
+    <k-column width="6/12" class="ss-tf-range-col">
       <div class="k-range-input ss-timeframe-range">
         <slider-fixed
           ref="slider"
@@ -68,7 +68,7 @@
     </k-column>
 
     <!-- Date TO input -->
-    <k-column width="3/12">
+    <k-column width="3/12" class="ss-tf-to-col">
       <k-field :input="_uid" v-bind="$props" class="k-date-field">
         <div
           class="k-date-field-body"
@@ -96,7 +96,7 @@
                   class="k-input-icon-button"
                   @click="$refs.calendarToDrawer.toggle()"
                 />
-                <k-dropdown-content ref="calendarToDrawer" align="right">
+                <k-dropdown-content ref="calendarToDrawer">
                   <k-calendar
                     :value="dateTo+' 00:00:00'"
                     :min="minDate"
@@ -540,6 +540,21 @@ export default {
     //   //margin-left: -9px; // Aligns steps with slider positions
     // }
 
+  }
+
+  // When they all fit in the same row
+  //@media screen and (min-width: 30rem) {
+  @container (min-width: 30rem) {
+    .ss-tf-from-col {
+      padding-right: 2rem;
+    }
+    .ss-tf-to-col {
+      padding-left: 2rem;
+    }
+  }
+
+  .ss-tf-range-col {
+    
   }
 }
 </style>

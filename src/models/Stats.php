@@ -89,7 +89,7 @@ class Stats extends SimpleStatsDb {
     }
 
     // Returns the timespan of all mixed tables in the db
-    public static function getDbTimeSpan(string $returnFormat = null, string $pageUid = null) : array | null {
+    public static function getDbTimeSpan(?string $returnFormat = null, ?string $pageUid = null) : array | null {
         $monthyearTables = $pageUid ? ['pagevisits']:['pagevisits','systems', 'engines', 'referers', 'devices'];
         $queryStr = 'SELECT MIN(`monthyear`) as `start`, MAX(`monthyear`) as `end` FROM ( ';
         foreach($monthyearTables as $i => $my) {
@@ -98,8 +98,8 @@ class Stats extends SimpleStatsDb {
         $queryStr .= ' LIMIT 0, '.SIMPLESTATS_DUMMY_DB_LIMIT;
         $result = self::database()->query($queryStr);
         
-        if($result && $result->get(0, false)){
-            $data = $result->get(0)->toArray();
+        if($result && $result->get("0", false)){
+            $data = $result->get("0")->toArray();
             if(array_key_exists('start', $data) && array_key_exists('end', $data)) {
                 // No results ? (empty db) --> Use today
                 if(!$data['start'] || !$data['end']){
@@ -140,7 +140,7 @@ class Stats extends SimpleStatsDb {
     }
 
     // Returns all periods between them
-    public static function fillPeriod(int $startPeriod, int $endPeriod, string $dateFormat=null) : array {
+    public static function fillPeriod(int $startPeriod, int $endPeriod, ?string $dateFormat=null) : array {
         $periods = [];
         for($period=$startPeriod; $period <= $endPeriod; $period=incrementPeriod($period) ){
             if(!$dateFormat){
@@ -179,7 +179,7 @@ class Stats extends SimpleStatsDb {
         ];
     }
 
-    public static function deviceStats(int $fromPeriod = null, int $toPeriod = null) {
+    public static function deviceStats(?int $fromPeriod = null, ?int $toPeriod = null) {
         
         //self::syncDayStats();
 
@@ -317,7 +317,7 @@ class Stats extends SimpleStatsDb {
         return static::translateNamespaced('simplestats.referers.mediums', $key);
     }
 
-    public static function refererStats(int $fromPeriod = null, int $toPeriod = null): ?array {
+    public static function refererStats(?int $fromPeriod = null, ?int $toPeriod = null): ?array {
         
         // Format period
         $timeSpan = static::constrainPeriodsToDbSpan($fromPeriod, $toPeriod);
@@ -477,7 +477,7 @@ class Stats extends SimpleStatsDb {
     }
 
     // Constrains 2 dates to the available dates in the db, if needed for a specific page.
-    public static function constrainPeriodsToDbSpan(int $fromPeriod = null, int $toPeriod = null, string $pageUid=null) : array | null {
+    public static function constrainPeriodsToDbSpan(?int $fromPeriod = null, ?int $toPeriod = null, ?string $pageUid=null) : array | null {
         $maxTimespan = $timeSpan = static::getDbTimeSpan(null, $pageUid);
         if(!$maxTimespan){
             return null;
@@ -498,7 +498,7 @@ class Stats extends SimpleStatsDb {
         return $timeSpan;
     }
 
-    public static function pageStats(int $fromPeriod = null, int $toPeriod = null): ?array {
+    public static function pageStats(?int $fromPeriod = null, ?int $toPeriod = null): ?array {
         
         // Format period
         $timeSpan = static::constrainPeriodsToDbSpan($fromPeriod, $toPeriod);
@@ -737,7 +737,7 @@ class Stats extends SimpleStatsDb {
     }
 
     // Collect garbage, synthetize it and anonymously store it in permanent db
-    public static function syncDayStats(int $time=null): bool {
+    public static function syncDayStats(?int $time=null): bool {
 
         // Prevent syncing in some circonstances ?
         // Localhost protection #23 (not sure if needed here...)
@@ -1144,7 +1144,7 @@ class Stats extends SimpleStatsDb {
     }
 
     // Get stats details for one page object
-    public static function onePageStats($page, int $fromPeriod = null, int $toPeriod = null){
+    public static function onePageStats($page, ?int $fromPeriod = null, ?int $toPeriod = null){
         // Get ID from $page
         if($page && $page instanceof \Kirby\Cms\Page) $page = $page->exists()?$page->uid():''; // todo: provide fallback (virtual pages don't exist?)
 

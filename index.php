@@ -23,6 +23,21 @@ App::plugin('daandelange/simplestats', [
 
             if(!$kirby->user() || !$kirby->user()->hasSimpleStatsPanelAccess()) return [];
 
+            $tabs = [];
+            foreach([
+                'pagevisits'        => ['label'=>'Page visits',     'icon'=>'layers'],
+                'visitordevices'    => ['label'=>'Visitor Devices', 'icon'=>'users' ],
+                'referers'          => ['label'=>'Referers',        'icon'=>'chart' ],
+                'information'       => ['label'=>'Information',     'icon'=>'map'   ],
+            ] as $key=>$tabData){
+                $tabs[$key] = [
+                    'name' => $key,
+                    'label' => t('simplestats.tabs.'.$key, $tabData['label']),
+                    'icon' => $tabData['icon'],
+                    'columns' => [],// Needed for the panel not to crash
+                ];
+            };
+
             return [
                 // label for the menu and the breadcrumb
                 'label' => 'Simple Stats',
@@ -45,8 +60,8 @@ App::plugin('daandelange/simplestats', [
                   [
                     // the Panel patterns must not start with 'panel/',
                     // the `panel` slug is automatically prepended.
-                    'pattern' => 'simplestats',
-                    'action'  => function () use ($kirby)  {
+                    'pattern' => ['simplestats','simplestats/pagevisits'],
+                    'action'  => function () use ($kirby, $tabs)  {
 
                         // view routes return a simple array,
                         // which will be injected into our Vue app;
@@ -54,22 +69,7 @@ App::plugin('daandelange/simplestats', [
                         // props for the component and settings for the current view
                         // (like breadcrumb, title, active search type etc.)
 
-                        $tabs = [];
-                        foreach([
-                            'pagevisits'        => ['label'=>'Page visits',     'icon'=>'layers'],
-                            'visitordevices'    => ['label'=>'Visitor Devices', 'icon'=>'users' ],
-                            'referers'          => ['label'=>'Referers',        'icon'=>'chart' ],
-                            'information'       => ['label'=>'Information',     'icon'=>'map'   ],
-                        ] as $key=>$tabData){
-                            $tabs[$key] = [
-                                'name' => $key,
-                                'label' => t('simplestats.tabs.'.$key, $tabData['label']),
-                                'icon' => $tabData['icon'],
-                                'columns' => [],// Needed for the panel not to crash
-                                // 'link' => 'simplestats?tab='.$key,
-                                //'link' => 'javascript:alert("OK")',
-                            ];
-                        };
+                        
                         $timeSpan = Stats::getDbTimeSpan();
                         $timeFrames = Stats::fillPeriod($timeSpan['start'], $timeSpan['end'], 'Y-m-d');
                         // $timeFrames = [];
@@ -114,8 +114,8 @@ App::plugin('daandelange/simplestats', [
                             //'search' => 'pages'
                         ];
                     }
-                  ]
-                ]
+                  ],
+                ],
             ];
         },
     ],

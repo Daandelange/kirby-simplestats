@@ -90,6 +90,7 @@
 import AreaChart from '../Ui/AreaChart.vue';
 import SearchableTable from '../Ui/SearchableTable.vue';
 import SectionBase from '../Sections/SimpleStatsSectionBase.vue';
+import { useI18n } from 'kirbyuse';
 
 export default {
   extends: SectionBase,
@@ -146,8 +147,13 @@ export default {
       this.chartLanguagesLabels = apiResponse.chartlanguageslabels
       this.languagesOverTimeData = apiResponse.languagesovertimedata
       this.languagesAreEnabled = apiResponse.languagesAreEnabled
-      this.userLocale = window.panel.$language ? window.panel.$language.locale : (this.$store.state.i18n ? this.$store.state.i18n.locale : '');
-
+      
+      if(window.panel?.$language || this.$store?.state?.i18n){ // k3
+        this.userLocale = window.panel.$language ? window.panel.$language.locale : (this.$store.state.i18n ? this.$store.state.i18n.locale : 'en');
+      }
+      else { // k5
+        this.userLocale = window.panel.language.code ?? 'en';
+      }
     }
  
   }

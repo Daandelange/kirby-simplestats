@@ -256,7 +256,10 @@ return [
                         $versionArray = explode('.', kirby()->version());
                         $reqs = [
                             'php' => kirby()->system()->php(),
-                            'kirby' => $versionArray[0] === '3' && (int)$versionArray[1] >= 5,
+                            'kirby' => (
+                                ((int)$versionArray[0] === 3 && (int)$versionArray[1] >= 5) || // K3.5+
+                                ((int)$versionArray[0] === 5 && (int)$versionArray[1] >= 0) // K5.0+
+                            ), 
                             'sqlite3' => (class_exists('SQLite3') && in_array('pdo_sqlite', get_loaded_extensions()) && in_array('sqlite3', get_loaded_extensions())),
                         ];
                         // Check requirements
