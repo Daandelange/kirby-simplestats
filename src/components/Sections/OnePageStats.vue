@@ -1,7 +1,8 @@
 <template>
+  <!-- This template is for stats section on a page -->
   <div :class="{'simplestatsonepagedetailssection': true, 'small': sectionSize=='small', 'medium': sectionSize=='medium', 'large': sectionSize=='large'}">
     <div v-if="label">
-      <k-headline size="medium"><k-icon type="chart" style="display: inline-block; padding-right: 0.5rem;" size="tiny"/> {{ label }}</k-headline>
+      <k-headline class="h3"><k-icon type="chart" style="display: inline-block; padding-right: 0.5rem;" size="tiny"/> {{ label }}</k-headline>
       <br/>
     </div>
     <p v-if="showFullInfo && showTotals">
@@ -19,7 +20,7 @@
 <!--     <k-grid gutter="large"> -->
 
       <div v-if="showTimeline" class="detailcolumn visitsovertime">
-        <k-headline size="medium">{{ $t('simplestats.visits.visitsovertime') }}</k-headline>
+        <!-- <k-headline class="h4">{{ $t('simplestats.visits.visitsovertime') }}</k-headline> -->
         <area-chart
           :chart-data="languagesOverTime"
           :chart-labels="chartPeriodLabels"
@@ -31,13 +32,13 @@
           :chart-options="chartOptions"
           :auto-colorize="true"
           :show-legend="languagesAreEnabled"
+          :label="$t('simplestats.visits.visitsovertime')"
         ></area-chart>
         <br/>
       </div>
 
       <div v-if="languagesAreEnabled && showLanguages" class="detailcolumn globallanguages">
-        <k-headline>{{ $t('simplestats.visits.globallanguages') }}</k-headline>
-
+        <!-- <k-headline>{{ $t('simplestats.visits.globallanguages') }}</k-headline> -->
         <area-chart
           type="Pie"
           download="PageGlobalLanguageVisits.png"
@@ -48,6 +49,7 @@
           :height="(this.sectionSize=='small')?185:(this.sectionSize=='large')?225:(this.sectionSize=='tiny')?80:205"
           :fill="true"
           :show-legend="languagesAreEnabled"
+          :label="$t('simplestats.visits.globallanguages')"
         />
       </div>
 

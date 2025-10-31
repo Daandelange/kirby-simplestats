@@ -3,20 +3,21 @@
 
   <k-view class="k-simplestats-view">
     <!-- DISCLAIMER -->
-    <k-grid v-if="!isLoading && !dismissDisclaimer">
-      <k-column>
-        <k-headline size="medium">{{ $t('simplestats.disclaimer.title') }}</k-headline>
-        <k-text size="small">
-          <span v-html="$t('simplestats.disclaimer.text')"></span>
-          <span class="hover-to-help">
-            <k-icon type="question" />
-            <div class="help"><k-text theme="help" size="small">{{ $t('simplestats.disclaimer.dismiss') }}</k-text></div>
-          </span>
-          <br>
-        </k-text>
-        <br/><br/>
-      </k-column>
-    </k-grid>
+    <k-box v-if="!isLoading && !dismissDisclaimer" theme="warning" icon="flag">
+      <template #default>
+        <div>
+          <k-headline class="h4">{{ $t('simplestats.disclaimer.title') }}</k-headline>
+          <k-text size="small">
+            <span v-html="$t('simplestats.disclaimer.text')"></span>
+            <span class="hover-to-help">
+              <k-icon type="question" />
+              <div class="help"><k-text theme="help" size="small">{{ $t('simplestats.disclaimer.dismiss') }}</k-text></div>
+            </span>
+            <br>
+          </k-text>
+        </div>
+      </template>
+    </k-box>
 
     <k-header :tabs="tabs" :tab="tab" @tabChange="onTab">
       <template slot="default">
@@ -47,7 +48,7 @@
     </div>
 
     <div v-else-if="tab == tabs[3].name">
-      <k-grid gutter="large">
+      <k-grid variant="columns" style="gap: var(--spacing-12);">
         <!-- CONFIGURATION -->
         <k-column width="1/2">
           <configuration section-name="configinfo" />

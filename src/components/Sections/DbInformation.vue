@@ -1,9 +1,9 @@
 <template>
   <div class="dbinformation">
 
-    <k-headline size="large">{{ $t('simplestats.info.title') }}</k-headline>
+    <k-headline class="h3 k-section-header">{{ $t('simplestats.info.title') }}</k-headline>
 
-    <k-headline>{{ $t('simplestats.info.db.title') }}</k-headline>
+    <k-headline class="rightColumnAlign h5">{{ $t('simplestats.info.db.title') }}</k-headline>
     <k-text-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.db.file')" :value="databaseLocation" icon="file-zip" />
     <k-text-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.db.size')" :value="databaseSize | prettyBytes" icon="download" />
     <k-number-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.db.dbversion')" :value="dbVersion" icon="bolt" />
@@ -278,7 +278,7 @@ export default {
       float: left;
 
       &[data-disabled] {
-        background-color: white;
+        //background-color: white; // k3
       }
     }
     &[data-disabled] {

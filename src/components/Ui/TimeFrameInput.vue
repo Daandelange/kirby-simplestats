@@ -1,5 +1,5 @@
 <template>
-  <k-grid gutter="medium" class="ss-timeframe-input">
+  <k-grid class="ss-timeframe-input">
 
     <!-- Date FROM input -->
     <k-column width="2/12" class="ss-tf-from-col">

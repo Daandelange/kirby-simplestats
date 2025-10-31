@@ -1,12 +1,12 @@
 <template>
-  <k-grid gutter="large" class="trackingtester">
+  <k-grid variant="columns" style="gap: var(--spacing-12);" class="trackingtester">
 
     <k-column width="1/1">
-      <k-headline size="large">{{ $t('simplestats.info.tester.title') }}</k-headline>
+      <k-headline class="h3">{{ $t('simplestats.info.tester.title') }}</k-headline>
     </k-column>
 
     <k-column width="1/2">
-      <k-headline class="rightColumnAlign">{{ $t('simplestats.info.tester.device') }}</k-headline>
+      <k-headline class="rightColumnAlign h5">{{ $t('simplestats.info.tester.device') }}</k-headline>
       <k-text-field :counter="false" :disabled="true"  :label="$t('simplestats.info.tester.device.currentua')" :value="currentUserAgent" icon="display"/>
       <k-text-field :counter="false" :disabled="true"  :label="$t('simplestats.info.tester.device.currentdetected')" :value="formattedCurrentUA" icon="display"/>
       <k-form @submit="testUserAgent">
@@ -18,7 +18,7 @@
     </k-column>
 
     <k-column width="1/2">
-      <k-headline class="rightColumnAlign">{{ $t('simplestats.info.tester.generator') }}</k-headline>
+      <k-headline class="rightColumnAlign h5">{{ $t('simplestats.info.tester.generator') }}</k-headline>
       <k-form @submit="generateStats">
         <k-select-field v-model="generatorMode" :label="$t('simplestats.info.tester.generator.generatorMode')" :options="[
           { value: 'all',           text: 'Static : all pages' },
@@ -40,7 +40,7 @@
     </k-column>
 
     <k-column width="1/2">
-      <k-headline class="rightColumnAlign">{{ $t('simplestats.info.tester.referrer') }}</k-headline>
+      <k-headline class="rightColumnAlign h5">{{ $t('simplestats.info.tester.referrer') }}</k-headline>
       <k-form @submit="testReferrer">
         <k-text-field class="field-with-btn" :counter="false" :disabled="false" :label="$t('simplestats.info.tester.referrer.field')" v-model="referrerField" icon="globe" />
         <k-button name="btn" @click="testReferrer" class="floating-btn">Go!</k-button>
@@ -256,7 +256,7 @@ export default {
       float: left;
 
       &[data-disabled] {
-        background-color: white;
+        //background-color: white; // k3
       }
     }
     &[data-disabled] {

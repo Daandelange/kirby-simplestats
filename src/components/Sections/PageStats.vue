@@ -1,8 +1,8 @@
 <template>
-    <k-grid gutter="medium">
+    <k-grid variant="columns" style="gap: var(--spacing-12);">
       <!-- TODO: Add more stats: Text stats (total unique visits total and per lang, most popular pages, etc) - Pie chart of page-by-page popularity - -->
       <k-column>
-        <k-headline size="medium">{{ $t('simplestats.visits.visitsovertime', 'Visits over time') }}</k-headline>
+        <!-- <k-headline class="h5">{{ $t('simplestats.visits.visitsovertime', 'Visits over time') }}</k-headline> -->
         <area-chart
           type="Bar"
           :chart-data="visitsOverTimeData"
@@ -16,11 +16,12 @@
           :y-visits-axis="true"
           :show-legend="false"
           :fill="true"
+          :label="$t('simplestats.visits.visitsovertime', 'Visits over time')"
         />
       </k-column>
 
       <k-column>
-        <k-headline size="medium">{{ $t('simplestats.visits.pagevisitsovertime') }}</k-headline>
+        <!-- <k-headline class="h5">{{ $t('simplestats.visits.pagevisitsovertime') }}</k-headline> -->
         <area-chart
           :chart-data="pageVisitsOverTimeDataSorted"
           :chart-labels="chartPeriodLabels"
@@ -34,6 +35,7 @@
           :x-time-axis="true"
           :y-visits-axis="true"
           :fill="true"
+          :label="$t('simplestats.visits.pagevisitsovertime')"
         ></area-chart>
       </k-column>
 
@@ -57,8 +59,7 @@
 
       <k-column width="1/4" v-if="languagesAreEnabled">
         
-        <k-headline>{{ $t('simplestats.visits.globallanguages') }}</k-headline>
-        
+        <!-- <k-headline>{{ $t('simplestats.visits.globallanguages') }}</k-headline> -->
         <area-chart
           v-if="globalLanguagesData.length > 0"
           type="Pie"
@@ -69,6 +70,7 @@
           :auto-colorize="true"
           :height="200"
           :fill="true"
+          :label="$t('simplestats.visits.globallanguages')"
         />
       </k-column>
 

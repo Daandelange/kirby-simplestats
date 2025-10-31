@@ -1,7 +1,7 @@
 <template>
   <k-grid>
     <k-column>
-      <k-headline size="large">{{ $t('simplestats.info.config.currentusers.title', 'Visitors (current sessions)') }}</k-headline>
+      <k-headline class="h3 k-section-header">{{ $t('simplestats.info.config.currentusers.title', 'Visitors (current sessions)') }}</k-headline>
 
       <searchable-table
         :rows="rows"

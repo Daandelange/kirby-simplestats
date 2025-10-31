@@ -1,6 +1,6 @@
 <template>
   <div>
-  <k-headline v-if="label.length>0" :size="headerSize">{{ label }}</k-headline>
+  <k-headline v-if="label.length>0">{{ label }}</k-headline>
   <div :class="'ss-chart ss-'+type.toLowerCase()+'-chart'">
 
     <!-- A chart download link -->
@@ -99,10 +99,10 @@ export default {
       type: String,
       default: '',
     },
-    headerSize: {
-      type: String,
-      default: 'medium',
-    },
+    // headerSize: {
+    //   type: String,
+    //   default: 'medium',
+    // },
     xTitle: {
       type: String | null,
       default: null,
@@ -429,7 +429,7 @@ export default {
   }
 
   .ss-chart-wrapper {
-    border: 1px solid #ddd;
+    border: 1px solid var(--color-border);
     padding: var(--spacing-3) var(--spacing-3) var(--spacing-1) 0;
     background-color: var(--color-background);
   }

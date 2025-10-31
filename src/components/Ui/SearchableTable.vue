@@ -1,7 +1,7 @@
 <template>
   <div class="ss-table">
     <header class="k-section-header">
-      <k-headline size="">
+      <k-headline class="h3 k-section-header">
         {{ label }}
       </k-headline>
       <k-button-group class="ss-table-buttons">
