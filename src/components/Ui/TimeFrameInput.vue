@@ -2,7 +2,7 @@
   <k-grid gutter="medium" class="ss-timeframe-input">
 
     <!-- Date FROM input -->
-    <k-column width="3/12" class="ss-tf-from-col">
+    <k-column width="2/12" class="ss-tf-from-col">
       <k-field :input="_uid" v-bind="$props" class="k-date-field">
         <div
           class="k-date-field-body"
@@ -46,7 +46,7 @@
     </k-column>
 
     <!-- Time Range Slider -->
-    <k-column width="6/12" class="ss-tf-range-col">
+    <k-column width="8/12" class="ss-tf-range-col">
       <div class="k-range-input ss-timeframe-range">
         <slider-fixed
           ref="slider"
@@ -68,7 +68,7 @@
     </k-column>
 
     <!-- Date TO input -->
-    <k-column width="3/12" class="ss-tf-to-col">
+    <k-column width="2/12" class="ss-tf-to-col">
       <k-field :input="_uid" v-bind="$props" class="k-date-field">
         <div
           class="k-date-field-body"
@@ -242,6 +242,18 @@ export default {
             if(prevMonthFilter !== month){
               prevYearFilter = year;
               prevMonthFilter = month;
+              
+              let timelineEl = thisRef.$el?.getElementsByClassName('ss-tf-range-col').item(0);
+              if(timelineEl){
+                let numItems = thisRef.dateChoices.length;// * .25; // Nope, num dates, not pips (/4 because 4 weeks per month ±= period)
+                // let numItems = thisRef.$el.getElementsByClassName("noUi-marker").length; // Noworks, empty when generating self !
+                let pixelsPerPip = timelineEl.offsetWidth / Math.max(1, numItems);
+                let scale = Math.max(pixelsPerPip, 1) / 30.0; // Reserve 20px per pip
+                if(scale<1){
+                  let interval = Math.max(1, Math.ceil(1/scale));
+                  if(scale < 1 && (month % interval !== Math.floor(interval*scale))) return -1;
+                }
+              }
               return 2;
             }
             return 0; // No text if same year/month, but mark
@@ -289,14 +301,14 @@ export default {
         {
           to: function (value) {
             const other = thisRef.dateChoices.indexOf(thisRef.dateTo);
-            return ''+thisRef.dateChoices[Number(value).toFixed(0)]+((other>0)?('<br/>('+Number(Math.abs(value-other)).toFixed(0)+' timeframes)'):'');
+            return '<div class=".k-range-input-tooltip-text">'+thisRef.dateChoices[Number(value).toFixed(0)]+((other>0)?('<br/>('+Number(Math.abs(value-other)).toFixed(0)+' timeframes)'):'')+'</div>';
           },
           from: function (value) { return 0;},// unused ?
         },
         {
           to: function (value) {
             const other = thisRef.dateChoices.indexOf(thisRef.dateFrom);
-            return ''+thisRef.dateChoices[Number(value).toFixed(0)]+((other>0)?('<br/>('+Number(Math.abs(value-other)).toFixed(0)+' timeframes)'):'');
+            return '<div class=".k-range-input-tooltip-text">'+thisRef.dateChoices[Number(value).toFixed(0)]+((other>0)?('<br/>('+Number(Math.abs(value-other)).toFixed(0)+' timeframes)'):'')+'</div>';
           },
           from: function (value) { return 0;},// unused ?
         },
@@ -412,7 +424,8 @@ export default {
           const dt = this.$library.dayjs(this[target]);
           let calInstance = this.$refs[((i===0)?'calendarFrom':'calendarTo')];
           if(calInstance){
-            calInstance.data.dt = dt;
+            // calInstance.data.dt = dt; // k3
+            calInstance.selected = dt; // k5
           }
           this.$refs[(i===0)?'calendarFromDrawer':'calendarToDrawer']?.close();
         }
@@ -447,10 +460,19 @@ export default {
   // Over-ride nouislider.css to match Kirby styles
   .ss-timeframe-range {
 
+    // K5 (disabled state not yet supported)
+    &[data-disabled="true"] {
+      --range-tooltip-back: light-dark(
+        var(--color-gray-600),
+        var(--color-gray-850)
+      );
+    }
+
     // Need to inherit from this to grab kirby range-input style vars.
     // So unset diplay flex which messes up our layour
     &.k-range-input {
       display: block;
+      padding-inline: var(--input-padding);
     }
 
     // Add space on both sides because the steps can overflow
@@ -470,53 +492,109 @@ export default {
       background-color: var(--range-track-background);
       // padding: calc(0.25*var(--range-thumb-size)) 0;
 
-      .noUi-value {
-        background-color: var(--color-background);
-        margin-top: 2px;
-      }
+      
 
       .noUi-handle {
         width: var(--range-thumb-size);
         height: var(--range-thumb-size);
         border-radius: calc(var(--range-thumb-size) * 0.5);
         // background-color: var(--color-gray-900);
-        background-color: var(--range-thumb-background);
-        border: var(--range-thumb-border);
+        // background-color: var(--range-thumb-background); // k3
+        background-color: var(--range-thumb-color); // k5
+        // border: var(--range-thumb-border); // k3
+        border: var(--range-thumb-focus-outline); // k5
+        border-color: var(--range-tooltip-back); // k5
         cursor: pointer;
         right: calc(-0.5*var(--range-thumb-size));
 
-        // Hide tooltip by default, show when active
-        .noUi-tooltip {
-          display: none;
-          font-size: var(--font-size-tiny);
-          bottom: 180%;
-        }
-
         // Active state
         &.noUi-active {
-          border-color: var(--range-track-focus-color);
-
-          .noUi-tooltip {
-            display: block;
-          }
+          // border-color: var(--range-track-focus-color); // k3
+          border: var(--range-thumb-focus-outline); // k5
         }
       }
     }
+
+    // Tooltips
+    // Hide tooltip by default, show when active
+    .noUi-tooltip {
+      display: none;
+      //font-size: var(--font-size-tiny); // k3
+      font-size: var(--text-xs); // k5
+      bottom: 180%;
+      //background-color: --range-tooltip-back; // k3
+      background: var(--range-tooltip-back);
+
+      // New k5
+      border-radius: var(--rounded-md);
+      //display: flex;
+      color: var(--color-white);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      text-align: center;
+      //margin-inline-start: var(--spacing-3);
+      //padding: 0 var(--spacing-1);
+      white-space: nowrap;
+
+      // New k5 triangle tooltip, but on the bottom
+      &::after {
+        position: absolute;
+        left: 50%;
+        bottom: -5px;
+        //inset-inline-start: -3px;
+        width: 0;
+        height: 0;
+        transform: translateX(-50%);
+        border-left:   5px solid transparent;
+        border-right:  5px solid transparent;
+        border-top: 5px solid var(--range-tooltip-back);
+        content: "";
+      }
+      & > * {
+        padding: var(--spacing-1);
+      }
+    }
+    // Active state
+    .noUi-active {
+      .noUi-tooltip {
+        //display: block; // k3
+        display: flex; // k5
+      }
+    }
+    // When any handle is active
+    .noUi-state-drag {
+      // Hide tooltip by default, show when active
+      .noUi-tooltip {
+        // display: block; // k3
+        display: flex; // k5
+
+      }
+    }
+
     .noUi-target {
       border: none;
 
-      // When any handle is active
-      &.noUi-state-drag {
-        // Hide tooltip by default, show when active
-        // .noUi-tooltip {
-        //   display: block;
-        // }
+      // // When any handle is active
+      // &.noUi-state-drag {
+      //   // Hide tooltip by default, show when active
+      //   // .noUi-tooltip {
+      //   //   display: block;
+      //   // }
 
-        // Active color
-        .noUi-connect {
-          background-color: var(--range-track-focus-color);
-        }
-      }
+      //   // Active color
+      //   .noUi-connect {
+      //     background-color: var(--color-focus);
+      //   }
+      // }
+    }
+
+    .noUi-pips {
+      color: var(--color-text);
+    }
+
+    .noUi-value {
+      background-color: var(--color-background);
+      margin-top: 2px;
     }
     .noUi-value-large, .noUi-value-sub {
       font-size: var(--font-size-tiny);
@@ -524,21 +602,39 @@ export default {
 
     .noUi-value-sub {
       z-index: -1; /// behind years
+      color: var(--input-color-description);
     }
 
     .noUi-handle:before, .noUi-handle:after {
       display: none;
     }
 
-    .noUi-connect {
-      background-color: var(--range-track-color);
-    }
-    .noUi-base, .noUi-connects, .noUi-horizontal {
+    .noUi-base, .noUi-horizontal {
       height: var(--range-track-height);
     }
     // .noUi-base {
     //   //margin-left: -9px; // Aligns steps with slider positions
     // }
+
+    .noUi-connects {
+      background-color: var(--range-track-color);
+      overflow: visible; // to show bigger track connection
+
+      .noUi-connect {
+        background-color: unset;//var(--color-focus);
+        height: 1em;
+        border-top: calc(var(--range-track-height)*3) solid var(--color-focus);
+      }
+    }
+
+    // When any handle is active
+    .noUi-state-drag {
+
+      // Active color
+      .noUi-connect {
+        //background-color: var(--color-focus);
+      }
+    }
 
   }
 
@@ -553,8 +649,11 @@ export default {
     }
   }
 
-  .ss-tf-range-col {
-    
+  @container (max-width: 30rem) {
+    .ss-tf-range-col {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
   }
 }
 </style>
