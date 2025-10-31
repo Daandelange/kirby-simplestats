@@ -27,11 +27,18 @@
                   icon="calendar"
                   :tooltip="$t('date.select')"
                   class="k-input-icon-button"
-                  @click="$refs.calendarFromDrawer.toggle()"
+                  @click="$refs.calendarFromDrawer.toggle();"
                 />
-                <k-dropdown-content ref="calendarFromDrawer">
-                  <k-calendar
+                <k-dropdown-content ref="calendarFromDrawer" @open="$refs.calendarFrom.show($library.dayjs.interpret(dateFrom, 'date'));">
+                  <!-- <k-calendar
                     :value="dateFrom+' 00:00:00'"
+                    :min="minDate"
+                    :max="maxDate"
+                    @input="onUpdateKirbyDateFrom"
+                    ref="calendarFrom"
+                  /> K3 -->
+                  <k-calendar-input
+                    :value="dateFrom"
                     :min="minDate"
                     :max="maxDate"
                     @input="onUpdateKirbyDateFrom"
@@ -94,11 +101,18 @@
                   icon="calendar"
                   :tooltip="$t('date.select')"
                   class="k-input-icon-button"
-                  @click="$refs.calendarToDrawer.toggle()"
+                  @click="$refs.calendarToDrawer.toggle();"
                 />
-                <k-dropdown-content ref="calendarToDrawer">
-                  <k-calendar
+                <k-dropdown-content ref="calendarToDrawer" @open="$refs.calendarTo.show($library.dayjs.interpret(dateTo, 'date'));">
+                  <!-- K3 : <k-calendar
                     :value="dateTo+' 00:00:00'"
+                    :min="minDate"
+                    :max="maxDate"
+                    @input="onUpdateKirbyDateTo"
+                    ref="calendarTo"
+                  /> -->
+                  <k-calendar
+                    :value="dateTo"
                     :min="minDate"
                     :max="maxDate"
                     @input="onUpdateKirbyDateTo"
