@@ -58,6 +58,7 @@
 <script>
 
 import ListViewer from "./ListViewer.vue";
+import { usePanel, useApi } from 'kirbyuse';
 
 export default {
   name: 'TrackingTester',
@@ -160,11 +161,17 @@ export default {
         .catch(error => {
           this.isLoading = false
           this.error = error.message
-          this.$store.dispatch("notification/open", {
-            type: "error",
-            message: error.message,
-            timeout: 5000
-          });
+          if(this.$store.dispatch){
+            this.$store.dispatch("notification/open", {
+              type: "error",
+              message: error.message,
+              timeout: 5000
+            });
+          }
+          else { // k5
+            const panel = usePanel();
+            panel.error(error.message??'Unknown error', true); // Center error msg
+          }
         });
     },
     testReferrer() {
