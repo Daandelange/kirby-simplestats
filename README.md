@@ -131,7 +131,7 @@ Example :
 // The custom variable types (SimpleStatsTimeFrameUtility, SimplestatsTrackingMode) are namespaced, you can shorten their invocations with the line below:
 // use daandelange\SimpleStats\SimpleStatsTrackingMode;
 
-require_once(__DIR__ . '/../plugins/simplestats/src/models/SimpleStatsTimeFrameUtility.php');
+require_once(__DIR__ . '/../plugins/d-simplestats/src/models/SimpleStatsTrackingMode.php');
 return [
   // [...] your options ...
 
