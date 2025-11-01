@@ -70,7 +70,8 @@ class Stats extends SimpleStatsDb {
                 // ignore
             }
             // Use short path for display
-            $dbFile = str_replace( kirby()->root(),'', $dbFile);
+            //$dbFile = str_replace( kirby()->root(),'', $dbFile); // k3
+            $dbFile = str_replace( realpath(kirby()->root('config'). DIRECTORY_SEPARATOR . '..'), '.', $dbFile ); // k5
         }
 
         // Todo: Read some stats from the db such as timespan, etc.

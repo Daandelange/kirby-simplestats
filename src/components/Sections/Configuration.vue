@@ -97,6 +97,7 @@ export default {
 
       &[data-disabled] {
         //background-color: white; // k3
+        background-color: var(--item-color-back); // k5
       }
     }
     &[data-disabled] {

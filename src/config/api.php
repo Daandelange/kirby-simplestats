@@ -121,7 +121,7 @@ return [
                         'ignoredRoles'          => option('daandelange.simplestats.tracking.ignore.roles',[]),
                         'ignoredPages'          => option('daandelange.simplestats.tracking.ignore.pages',[]),
                         'ignoredTemplates'      => option('daandelange.simplestats.tracking.ignore.templates',[]),
-                        'logFile'               => str_replace( kirby()->root(),'', option('daandelange.simplestats.log.file',[]) ),
+                        'logFile'               => str_replace( realpath(kirby()->root('config'). DIRECTORY_SEPARATOR . '..'), '.', option('daandelange.simplestats.log.file',[]) ),
                         'logLevels'             => $logLevels,
                         'trackingSince'         => 'todo', // todo
                     ];
