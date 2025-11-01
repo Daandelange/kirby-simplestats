@@ -77,6 +77,8 @@
       <k-empty>{{ $t('simplestats.taberror') }}</k-empty>
     </div>
 
+    <!-- Invisible color getter util for CSS to JS style data transfer -->
+    <div id="chart-default-color-getter"></div>
   </k-view>
   </k-panel-inside>
 </template>
@@ -270,5 +272,11 @@ export default {
     visibility: visible;
   }
 }
+}
+
+// To grab color from JS
+#chart-default-color-getter {
+  color: light-dark(var(--color-dark), var(--color-light));
+  display: none;
 }
 </style>

@@ -2,7 +2,7 @@
   <!-- This template is for stats section on a page -->
   <div :class="{'simplestatsonepagedetailssection': true, 'small': sectionSize=='small', 'medium': sectionSize=='medium', 'large': sectionSize=='large'}">
     <div v-if="label">
-      <k-headline class="h3"><k-icon type="chart" style="display: inline-block; padding-right: 0.5rem;" size="tiny"/> {{ label }}</k-headline>
+      <k-headline class="h3 k-section-header"><k-icon type="chart" style="display: inline-block; padding-right: 0.5rem;" size="tiny"/> {{ label }}</k-headline>
       <br/>
     </div>
     <p v-if="showFullInfo && showTotals">
