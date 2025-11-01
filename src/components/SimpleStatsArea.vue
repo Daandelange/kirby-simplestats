@@ -31,7 +31,7 @@
       </template> -->
     </k-header>
     
-    <time-frame-input :dateChoices="timeframes" ref="timeFrame" />
+    <time-frame-input :dateChoices="timeframes" ref="timeFrame" :time-period="timePeriod" />
     <k-tabs :tabs="tabsWithLinks" :tab="tab"></k-tabs>
     
 
@@ -133,6 +133,10 @@ export default {
     globaltimespan: {
       type: Array,
       default: [],
+    },
+    timePeriod: {
+      type: String,
+      default: "Monthly",
     },
     timeframes: {
       type: Array,

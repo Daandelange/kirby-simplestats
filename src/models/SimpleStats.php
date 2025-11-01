@@ -369,7 +369,7 @@ implode($isIpv6?':':'.', $maskMax);
     }
 
     // Returns an array with detected user hardware setup
-    public static function detectSystemFromUA( array $customHeaders = null ): array {
+    public static function detectSystemFromUA( ?array $customHeaders = null ): array {
 
         $data = [
             'engine' => 'undefined',
@@ -477,7 +477,7 @@ implode($isIpv6?':':'.', $maskMax);
     }
 
     // Referer retrieval
-    public static function getRefererInfo( array $customHeader = null): ?array {
+    public static function getRefererInfo( ?array $customHeader = null): ?array {
         $customheader ??= getallheaders();
         if( is_array($customHeader) && array_key_exists('Referer', $customHeader) ) $refHeader = $customHeader['Referer'];
         // Fallback on $_SERVER, should never happen theoretically

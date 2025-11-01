@@ -72,6 +72,7 @@ App::plugin('daandelange/simplestats', [
                         
                         $timeSpan = Stats::getDbTimeSpan();
                         $timeFrames = Stats::fillPeriod($timeSpan['start'], $timeSpan['end'], 'Y-m-d');
+                        $timePeriod = getTimeFrameUtility()->getPeriodAdjective();
                         // $timeFrames = [];
                         // $tfu = getTimeFrameUtility();
                         // for($period=min($timeSpan[0]); $period <= getPeriodFromTime(); $period=incrementPeriod($period) ){
@@ -107,6 +108,7 @@ App::plugin('daandelange/simplestats', [
                                     date('Y-m-d', getTimeFromPeriod($timeSpan['end'])),
                                 ],
                                 'timeframes' => $timeFrames,
+                                'time-period' => $timePeriod,
                             ],
 
                             // we can preset the search type with the

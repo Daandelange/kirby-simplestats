@@ -149,7 +149,7 @@ export default {
         tooltips: {
           type: Boolean | Array | Object,
           default: true, // Default to true
-        }
+        },
       },
       // Inject pips options on mount to bypass the native injection.
       mounted(){
@@ -259,13 +259,19 @@ export default {
               
               let timelineEl = thisRef.$el?.getElementsByClassName('ss-tf-range-col').item(0);
               if(timelineEl){
-                let numItems = thisRef.dateChoices.length;// * .25; // Nope, num dates, not pips (/4 because 4 weeks per month ±= period)
-                // let numItems = thisRef.$el.getElementsByClassName("noUi-marker").length; // Noworks, empty when generating self !
-                let pixelsPerPip = timelineEl.offsetWidth / Math.max(1, numItems);
-                let scale = Math.max(pixelsPerPip, 1) / 30.0; // Reserve 20px per pip
+                let numMonthlyItems = thisRef.dateChoices.length;
+                if(thisRef.timePeriod=="Weekly") numMonthlyItems /= 4; // (/4 because 4 weeks per month ±= monlthly period)
+                let pixelsPerPip = timelineEl.offsetWidth / Math.max(1, numMonthlyItems);
+                // Too few space for months ? (below 80 px year space = no months)
+                if((numMonthlyItems/12) > 3 && timelineEl.offsetWidth/Math.max(1,numMonthlyItems/12) < 80 ){ // 
+                  return 0;
+                }
+                // Let scale determine visibility
+                let scale = Math.max(pixelsPerPip, 1) / (30.0); // Reserve 20px per pip
                 if(scale<1){
                   let interval = Math.max(1, Math.ceil(1/scale));
-                  if(scale < 1 && (month % interval !== Math.floor(interval*scale))) return -1;
+                  //window.console.log(year, month, thisRef.timePeriod, thisRef, "Pxpp=", pixelsPerPip, "scale=", scale, "interval=", interval, !(scale < 1 && (month % interval !== Math.floor(interval*0.5))));
+                  if(interval > 1 && scale < 1 && (month % interval !== Math.floor(interval*0.5))) return 0;
                 }
               }
               return 2;
@@ -352,7 +358,11 @@ export default {
       default(){
         return [];// '2022-01-01', '2022-02-01', '2022-03-01', '2022-04-01', '2022-05-01', '2022-06-01', '2022-07-01', '2022-08-01', '2022-09-01', '2022-10-01', '2022-11-01', '2022-12-01', '2023-01-01'];
       },
-    }
+    },
+    timePeriod: {
+      type: String,
+      default: "Monthly",
+    },
   },
   computed: {
 
