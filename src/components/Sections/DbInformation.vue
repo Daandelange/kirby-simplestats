@@ -148,7 +148,7 @@ export default {
         .catch(error => {
           this.isLoading = false
           this.updateMessage = error.message
-          if(this.$store.dispatch){
+          if(this.$store?.dispatch){
             this.$store.dispatch("notification/open", {
               type: "error",
               message: error.message,
@@ -171,7 +171,7 @@ export default {
         .catch(error => {
           this.isLoading      = false
           this.dbRequirements = error.message
-          if(this.$store.dispatch){
+          if(this.$store?.dispatch){
             this.$store.dispatch("notification/open", {
               type: "error",
               message: error.message,
@@ -203,7 +203,7 @@ export default {
           .catch(error => {
             this.isUpdatingDb = false
             this.error = error.message
-            if(this.$store.dispatch){ // k3
+            if(this.$store?.dispatch){ // k3
               this.$store.dispatch("notification/open", {
                 type: "error",
                 message: error.message,
@@ -218,7 +218,7 @@ export default {
           });
       }
       else {
-        if(this.$store.dispatch){// k3
+        if(this.$store?.dispatch){// k3
           this.$store.dispatch("notification/open", {
             type: "error",
             message: "Before hitting that button, please ensure to backup your database file !",

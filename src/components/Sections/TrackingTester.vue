@@ -161,7 +161,7 @@ export default {
         .catch(error => {
           this.isLoading = false
           this.error = error.message
-          if(this.$store.dispatch){
+          if(this.$store?.dispatch){
             this.$store.dispatch("notification/open", {
               type: "error",
               message: error.message,
