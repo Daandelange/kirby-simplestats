@@ -2,7 +2,6 @@
 
 namespace WhichBrowser\Data;
 
-// https://versionhistory.googleapis.com/v1/chrome/platforms/win64/channels/stable/versions/all/releases
 Chrome::$DESKTOP = [
     '0.2.149' => 'beta',
     '0.3.154' => 'beta',
@@ -119,13 +118,9 @@ Chrome::$DESKTOP = [
     '112.0.5615' => 'stable',
     '113.0.5672' => 'stable',
     '114.0.5735' => 'stable',
-    '115.0.5790' => 'stable',
-    '116.0.5845' => 'stable',
-    '117.0.5938' => 'stable',
-    '118.0.5993' => 'stable',
+    '115.0.5790' => 'stable'
 ];
 
-// https://versionhistory.googleapis.com/v1/chrome/platforms/android/channels/stable/versions/all/releases
 Chrome::$MOBILE = [
     '16.0.912' => 'beta',
     '18.0.1025' => 'stable',
@@ -215,8 +210,5 @@ Chrome::$MOBILE = [
     '112.0.5615' => 'stable',
     '113.0.5672' => 'stable',
     '114.0.5735' => 'stable',
-    '115.0.5790' => 'stable',
-    '116.0.5845' => 'stable',
-    '117.0.5938' => 'stable',
-    '118.0.5993' => 'stable',
+    '115.0.5790' => 'stable'
 ];

@@ -10,15 +10,6 @@
         'dev' => true,
     ),
     'versions' => array(
-        'buzz/which-browser-parser' => array(
-            'pretty_version' => 'v2.1.9',
-            'version' => '2.1.9.0',
-            'reference' => '38277b57c8ed2f769b5019d2b44fb24974ea55dd',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../buzz/which-browser-parser',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'daandelange/simplestats' => array(
             'pretty_version' => '0.7.5-beta',
             'version' => '0.7.5.0-beta',
@@ -52,6 +43,15 @@
             'reference' => 'aa5030cfa5405eccfdcb1083ce040c2cb8d253bf',
             'type' => 'library',
             'install_path' => __DIR__ . '/../psr/cache',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'whichbrowser/parser' => array(
+            'pretty_version' => 'v2.1.8',
+            'version' => '2.1.8.0',
+            'reference' => '581d614d686bfbec3529ad60562a5213ac5d8d72',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../whichbrowser/parser',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

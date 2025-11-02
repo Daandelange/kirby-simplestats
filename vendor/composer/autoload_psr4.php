@@ -7,7 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'daandelange\\SimpleStats\\' => array($baseDir . '/src/models'),
-    'WhichBrowser\\' => array($vendorDir . '/buzz/which-browser-parser/src'),
+    'WhichBrowser\\' => array($vendorDir . '/whichbrowser/parser/src'),
     'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
     'Kirby\\' => array($vendorDir . '/getkirby/composer-installer/src'),
 );
