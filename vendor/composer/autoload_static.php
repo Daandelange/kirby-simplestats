@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit8c62b1f5e81f13f848c85488aae00a10
+class ComposerStaticInit439d7d51eeaf0de26e13cbec6a33dbdc
 {
     public static $prefixLengthsPsr4 = array (
         'd' => 
@@ -47,9 +47,9 @@ class ComposerStaticInit8c62b1f5e81f13f848c85488aae00a10
     public static $prefixesPsr0 = array (
         'S' => 
         array (
-            'Snowplow\\RefererParser' => 
+            'Snowplow\\' => 
             array (
-                0 => __DIR__ . '/..' . '/snowplow/referer-parser/php/src',
+                0 => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src',
             ),
         ),
     );
@@ -64,14 +64,14 @@ class ComposerStaticInit8c62b1f5e81f13f848c85488aae00a10
         'Psr\\Cache\\CacheItemInterface' => __DIR__ . '/..' . '/psr/cache/src/CacheItemInterface.php',
         'Psr\\Cache\\CacheItemPoolInterface' => __DIR__ . '/..' . '/psr/cache/src/CacheItemPoolInterface.php',
         'Psr\\Cache\\InvalidArgumentException' => __DIR__ . '/..' . '/psr/cache/src/InvalidArgumentException.php',
-        'Snowplow\\RefererParser\\Config\\ConfigFileReaderTrait' => __DIR__ . '/..' . '/snowplow/referer-parser/php/src/Snowplow/RefererParser/Config/ConfigFileReaderTrait.php',
-        'Snowplow\\RefererParser\\Config\\ConfigReaderInterface' => __DIR__ . '/..' . '/snowplow/referer-parser/php/src/Snowplow/RefererParser/Config/ConfigReaderInterface.php',
-        'Snowplow\\RefererParser\\Config\\JsonConfigReader' => __DIR__ . '/..' . '/snowplow/referer-parser/php/src/Snowplow/RefererParser/Config/JsonConfigReader.php',
-        'Snowplow\\RefererParser\\Config\\YamlConfigReader' => __DIR__ . '/..' . '/snowplow/referer-parser/php/src/Snowplow/RefererParser/Config/YamlConfigReader.php',
-        'Snowplow\\RefererParser\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/snowplow/referer-parser/php/src/Snowplow/RefererParser/Exception/InvalidArgumentException.php',
-        'Snowplow\\RefererParser\\Medium' => __DIR__ . '/..' . '/snowplow/referer-parser/php/src/Snowplow/RefererParser/Medium.php',
-        'Snowplow\\RefererParser\\Parser' => __DIR__ . '/..' . '/snowplow/referer-parser/php/src/Snowplow/RefererParser/Parser.php',
-        'Snowplow\\RefererParser\\Referer' => __DIR__ . '/..' . '/snowplow/referer-parser/php/src/Snowplow/RefererParser/Referer.php',
+        'Snowplow\\RefererParser\\Config\\ConfigFileReaderTrait' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Config/ConfigFileReaderTrait.php',
+        'Snowplow\\RefererParser\\Config\\ConfigReaderInterface' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Config/ConfigReaderInterface.php',
+        'Snowplow\\RefererParser\\Config\\JsonConfigReader' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Config/JsonConfigReader.php',
+        'Snowplow\\RefererParser\\Config\\YamlConfigReader' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Config/YamlConfigReader.php',
+        'Snowplow\\RefererParser\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Exception/InvalidArgumentException.php',
+        'Snowplow\\RefererParser\\Medium' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Medium.php',
+        'Snowplow\\RefererParser\\Parser' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Parser.php',
+        'Snowplow\\RefererParser\\Referer' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Referer.php',
         'WhichBrowser\\Analyser' => __DIR__ . '/..' . '/buzz/which-browser-parser/src/Analyser.php',
         'WhichBrowser\\Analyser\\Camouflage' => __DIR__ . '/..' . '/buzz/which-browser-parser/src/Analyser/Camouflage.php',
         'WhichBrowser\\Analyser\\Corrections' => __DIR__ . '/..' . '/buzz/which-browser-parser/src/Analyser/Corrections.php',
@@ -145,10 +145,10 @@ class ComposerStaticInit8c62b1f5e81f13f848c85488aae00a10
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit8c62b1f5e81f13f848c85488aae00a10::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit8c62b1f5e81f13f848c85488aae00a10::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit8c62b1f5e81f13f848c85488aae00a10::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit8c62b1f5e81f13f848c85488aae00a10::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit439d7d51eeaf0de26e13cbec6a33dbdc::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit439d7d51eeaf0de26e13cbec6a33dbdc::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit439d7d51eeaf0de26e13cbec6a33dbdc::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit439d7d51eeaf0de26e13cbec6a33dbdc::$classMap;
 
         }, null, ClassLoader::class);
     }
