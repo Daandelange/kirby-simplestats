@@ -11,29 +11,29 @@ panel.plugin("daandelange/simplestats", {
     // Slider,
 
     // Replacement of k-tabs that allows switching tabs without reloading the page
-    'k-tabs' : {
-      extends: 'k-tabs',
-      mounted(){
-        this.bindTabClicks();
-      },
-      emits: ['tabChange'],
-      methods: {
-        bindTabClicks(){
-          const thisRef = this;
-          for(const child of this.$children){
-            if(child.$el.classList.contains('k-tab-button')){
-              child.$el.addEventListener('click', function(){ thisRef.onClick(child.$vnode.key); } );
-            }
-          }
-        },
-        onClick(tabKey){
-          if(this.tab !== tabKey){
-            // k-header < k-tabs < k-button : fire $emit on header
-            this.$parent.$emit('tabChange', tabKey);
-          }
-        }
-      },
-    },
+    // 'k-tabsss' : {
+    //   extends: 'k-tabs',
+    //   mounted(){
+    //     this.bindTabClicks();
+    //   },
+    //   emits: ['tabChange'],
+    //   methods: {
+    //     bindTabClicks(){
+    //       const thisRef = this;
+    //       for(const child of this.$children){
+    //         if(child.$el.classList.contains('k-tab-button')){
+    //           child.$el.addEventListener('click', function(){ thisRef.onClick(child.$vnode.key); } );
+    //         }
+    //       }
+    //     },
+    //     onClick(tabKey){
+    //       if(this.tab !== tabKey){
+    //         // k-header < k-tabs < k-button : fire $emit on header
+    //         this.$parent.$emit('tabChange', tabKey);
+    //       }
+    //     }
+    //   },
+    // },
     // Custom field preview for table
     'k-percentage-field-preview': PercentageFieldPreview,
   },
@@ -44,5 +44,5 @@ panel.plugin("daandelange/simplestats", {
   use: [
     // Slider,
   ],
-  devtool: 'source-map', // vue debugging
+  //devtool: 'source-map', // vue debugging
 });

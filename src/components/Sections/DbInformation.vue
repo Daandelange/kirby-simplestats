@@ -1,9 +1,9 @@
 <template>
   <div class="dbinformation">
 
-    <k-headline size="large">{{ $t('simplestats.info.title') }}</k-headline>
+    <k-headline class="h3 k-section-header">{{ $t('simplestats.info.title') }}</k-headline>
 
-    <k-headline>{{ $t('simplestats.info.db.title') }}</k-headline>
+    <k-headline class="rightColumnAlign h5">{{ $t('simplestats.info.db.title') }}</k-headline>
     <k-text-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.db.file')" :value="databaseLocation" icon="file-zip" />
     <k-text-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.db.size')" :value="databaseSize | prettyBytes" icon="download" />
     <k-number-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.db.dbversion')" :value="dbVersion" icon="bolt" />
@@ -66,6 +66,7 @@
 // Todo: separate db and config into separate vue components, like visitor info
 
 import SearchableTable from '../Ui/SearchableTable.vue';
+import { usePanel, useApi } from 'kirbyuse';
 
 export default {
   extends: 'k-pages-section',
@@ -147,11 +148,17 @@ export default {
         .catch(error => {
           this.isLoading = false
           this.updateMessage = error.message
-          this.$store.dispatch("notification/open", {
-            type: "error",
-            message: error.message,
-            timeout: 5000
-          });
+          if(this.$store?.dispatch){
+            this.$store.dispatch("notification/open", {
+              type: "error",
+              message: error.message,
+              timeout: 5000
+            });
+          }
+          else { // k5
+            const panel = usePanel();
+            panel.error(error.message??'Unknown error', true); // Center error msg
+          }
         });
       // Load requirements
       this.$api
@@ -164,11 +171,17 @@ export default {
         .catch(error => {
           this.isLoading      = false
           this.dbRequirements = error.message
-          this.$store.dispatch("notification/open", {
-            type: "error",
-            message: error.message,
-            timeout: 5000
-          });
+          if(this.$store?.dispatch){
+            this.$store.dispatch("notification/open", {
+              type: "error",
+              message: error.message,
+              timeout: 5000
+            });
+          }
+          else { // k5
+            const panel = usePanel();
+            panel.error(error.message??'Unknown error', true); // Center error msg
+          }
         });
     },
     acceptUpgrade(v) {
@@ -190,19 +203,32 @@ export default {
           .catch(error => {
             this.isUpdatingDb = false
             this.error = error.message
-            this.$store.dispatch("notification/open", {
-              type: "error",
-              message: error.message,
-              timeout: 5000
-            });
+            if(this.$store?.dispatch){ // k3
+              this.$store.dispatch("notification/open", {
+                type: "error",
+                message: error.message,
+                timeout: 5000
+              });
+            }
+            else { // k5
+              const panel = usePanel();
+              panel.error(error.message??'Unknown error', true); // Center error msg
+            }
+            
           });
       }
       else {
-        this.$store.dispatch("notification/open", {
-          type: "error",
-          message: "Before hitting that button, please ensure to backup your database file !",
-          timeout: 5000
-        });
+        if(this.$store?.dispatch){// k3
+          this.$store.dispatch("notification/open", {
+            type: "error",
+            message: "Before hitting that button, please ensure to backup your database file !",
+            timeout: 5000
+          });
+        }
+        else { // k5
+          const panel = usePanel();
+          panel.error(error.message??'Unknown error', true); // Center error msg
+        }
       }
     },
   },
@@ -252,7 +278,8 @@ export default {
       float: left;
 
       &[data-disabled] {
-        background-color: white;
+        //background-color: white; // k3
+        background-color: var(--item-color-back); // k5
       }
     }
     &[data-disabled] {

@@ -1,5 +1,5 @@
 <template>
-  <k-grid gutter="medium">
+  <k-grid variant="columns" style="gap: var(--spacing-12);">
     <k-column width="1/2">
       <area-chart v-if="refererMediumData.length > 0"
         type="Pie"

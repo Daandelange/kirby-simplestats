@@ -1,9 +1,9 @@
 {
     "name": "daandelange/simplestats",
-    "description": "Very minimal visitor analytics for your kirby3 website.",
-    "homepage": "https://github.com/Daandelange/kirby3-simplestats",
+    "description": "Very minimal visitor analytics for your kirby website.",
+    "homepage": "https://github.com/Daandelange/kirby-simplestats",
     "type": "kirby-plugin",
-    "version": "0.6.6-beta",
+    "version": "0.7.5-beta",
     "license": "MIT",
     "authors": [
         {
@@ -13,15 +13,40 @@
     ],
     "keywords": [
         "kirby3",
-        "kirby3-plugin",
+        "kirby5",
+        "kirby-plugin",
         "simplestats",
         "analytics"
     ],
     "require": {
         "getkirby/composer-installer": "^1.1",
-        "snowplow/referer-parser": "^0.2.0",
-        "buzz/which-browser-parser": "^2.1"
+        "whichbrowser/parser": "^2.1",
+        "freelancehunt/php-referer-parser": "^1.1.0"
     },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "snowplow/php-referer-parser",
+                "version": "dev-master",
+                "autoload": {
+                    "psr-0": {
+                        "Snowplow\\RefererParser": "src/"
+                    }
+                },
+                "target-dir": "/",
+                "source": {
+                    "url": "https://github.com/snowplow-referer-parser/php-referer-parser.git",
+                    "type": "git",
+                    "reference": "develop"
+                }
+            }
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/freelancehunt/php-referer-parser.git"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "daandelange\\SimpleStats\\": "src/models/"
@@ -29,8 +54,12 @@
     },
     "scripts": {
         "post-update-cmd": [
-            "curl -s https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yaml --output `composer config vendor-dir --absolute`/snowplow/referer-parser/php/data/referers.yml",
-            "curl -s https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.json --output `composer config vendor-dir --absolute`/snowplow/referer-parser/php/data/referers.json"
+            "curl -s https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yaml --output `composer config vendor-dir --absolute`/freelancehunt/php-referer-parser/data/referers.yml",
+            "curl -s https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.json --output `composer config vendor-dir --absolute`/freelancehunt/php-referer-parser/data/referers.json"
+        ],
+        "pre-update-cmd": [
+            "if [ -f vendor/freelancehunt/php-referer-parser/data/referers.yml  ]; then rm vendor/freelancehunt/php-referer-parser/data/referers.yml; fi;",
+            "if [ -f vendor/freelancehunt/php-referer-parser/data/referers.json ]; then rm vendor/freelancehunt/php-referer-parser/data/referers.json; fi;"
         ]
     },
     "config": {

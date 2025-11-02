@@ -65,7 +65,7 @@ class StatsGenerator extends SimpleStatsDb {
     }
 
     // Caution, only use on backed-up or empty databases !
-    public static function GenerateVisits(int $timefrom, int $timeto, $visitmode='randommulti', \Kirby\Cms\Pages $pagesobject = null) : array {
+    public static function GenerateVisits(int $timefrom, int $timeto, $visitmode='randommulti', ?\Kirby\Cms\Pages $pagesobject = null) : array {
         // Protect
         if( kirby()->user()->hasSimpleStatsPanelAccess(true) ){
             // Todo: add option to enable the generator (disabled by default)
@@ -185,7 +185,7 @@ class StatsGenerator extends SimpleStatsDb {
             ];
         }
         else {
-            throw new PermissionException('You are not authorised to administrate statistics !');
+            throw new \Kirby\Exception\PermissionException('You are not authorised to administrate statistics !');
         }
     }
 }

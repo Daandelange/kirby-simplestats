@@ -1,6 +1,6 @@
 <template>
   <div>
-  <k-headline v-if="label.length>0" :size="headerSize">{{ label }}</k-headline>
+  <k-headline v-if="label.length>0">{{ label }}</k-headline>
   <div :class="'ss-chart ss-'+type.toLowerCase()+'-chart'">
 
     <!-- A chart download link -->
@@ -99,10 +99,10 @@ export default {
       type: String,
       default: '',
     },
-    headerSize: {
-      type: String,
-      default: 'medium',
-    },
+    // headerSize: {
+    //   type: String,
+    //   default: 'medium',
+    // },
     xTitle: {
       type: String | null,
       default: null,
@@ -250,7 +250,7 @@ export default {
         // Filled style
         this.fill?{
           fill: true,
-          backgroundColor: (typeof this.fill==='string')?this.fill:'#313740',// same as Kirby's var(--color-dark)
+          backgroundColor: this.chartColor,
         }:{},
 
         // Time axis
@@ -299,7 +299,7 @@ export default {
           },
           scales: {
             xAxis: {
-              display: false, // Hides whole axis
+              display: true, // Hides whole axis
               title: {
                 display: false, // Hide x-axis title
                 //text: '',
@@ -316,6 +316,24 @@ export default {
             }
           },
         }:{});
+    },
+    chartColor(){
+      // Use userprovided color
+      if((typeof this.fill==='string') && this.fill.length > 0){
+        let parsed = this.$library.colors.parseAs(this.fill, "hex");
+        if(parsed && parsed.length) return parsed;
+      }
+      let defaultKirbyColorEl = document.getElementById("chart-default-color-getter");
+      if(defaultKirbyColorEl){
+        let computedStyle = window.getComputedStyle(defaultKirbyColorEl);
+        if(computedStyle && computedStyle.color){
+          let parsed = this.$library.colors.parseAs(computedStyle.color, "hex");
+          if(parsed && parsed.length) return parsed;
+        }
+      }
+
+      // Fallback value (should never happen)
+      return '#313740'; // same as Kirby's var(--color-dark)
     },
     fullChartData() {
       const thisRef = this;
@@ -429,9 +447,10 @@ export default {
   }
 
   .ss-chart-wrapper {
-    border: 1px solid #ddd;
+    border: 1px solid var(--color-border);
     padding: var(--spacing-3) var(--spacing-3) var(--spacing-1) 0;
-    background-color: var(--color-background);
+    // background-color: var(--color-background);
+    background-color: var(--item-color-back);
   }
   &.ss-pie-chart .ss-chart-wrapper {
     padding: var(--spacing-2) 0 var(--spacing-5);
@@ -453,7 +472,7 @@ export default {
       }
 
       &:hover {
-        background-color: #fff;
+        background-color: var(--item-color-back);
 
         .k-button-text {
           display: inline-block;

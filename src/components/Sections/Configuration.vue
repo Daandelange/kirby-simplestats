@@ -1,8 +1,8 @@
 <template>
   <div class="configuration">
-    <k-headline size="large">{{ $t('simplestats.info.config.title') }}</k-headline>
+    <k-headline class="h3 k-section-header">{{ $t('simplestats.info.config.title') }}</k-headline>
 
-    <k-headline class="rightColumnAlign">{{ $t('simplestats.info.config.tracking') }}</k-headline>
+    <k-headline class="rightColumnAlign h5">{{ $t('simplestats.info.config.tracking') }}</k-headline>
     <k-text-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.config.tracking.periodname')" :value="trackingPeriodName" icon="clock"/>
     <k-number-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.config.tracking.periodsecs')" :value="uniqueSeconds" :after="$t('simplestats.charts.seconds')" icon="clock"/>
     <k-toggle-field name="" :disabled="true" :label="$t('simplestats.info.config.tracking.salted')" :value="saltIsSet" icon="key" />
@@ -11,7 +11,7 @@
     <k-tags-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.config.tracking.ignore.ids')" :value="ignoredPages" icon="page" />
     <k-tags-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.config.tracking.ignore.templates')" :value="ignoredTemplates" icon="page" />
     <br/>
-    <k-headline class="rightColumnAlign">{{ $t('simplestats.info.config.log.title') }}</k-headline>
+    <k-headline class="rightColumnAlign h5">{{ $t('simplestats.info.config.log.title') }}</k-headline>
     <k-text-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.config.log.file')" :value="logFile" icon="file-code" />
     <k-tags-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.config.log.level')" :value="logLevels" icon="bug"  />
     <br/>
@@ -96,7 +96,8 @@ export default {
       float: left;
 
       &[data-disabled] {
-        background-color: white;
+        //background-color: white; // k3
+        background-color: var(--item-color-back); // k5
       }
     }
     &[data-disabled] {

@@ -1,6 +1,6 @@
 # SimpleStats
 
-Track page views, referrers and devices on your Kirby 3 website.
+Track page views, referrers and devices on your Kirby 5 website.
 This plugin provides a simple solution for **self-hosted**, **minimal** and **non-intrusive** visitor analytics.
 
 ![Simplestats Screenshot](k3-SimpleStats.gif)
@@ -11,10 +11,12 @@ This plugin provides a simple solution for **self-hosted**, **minimal** and **no
 - The collected data is stored in a **.sqlite database** (raw data) which you could query for custom purposes. The `Stats` class also exposes most collected data.
 - A panel area **visualises** the data in charts.
 
+
 ### How it works
+
 - Tracking happens when the page is served by Kirby.
 - A crypted user-unique fingerprint is stored in order to track unique page views.
-_[The formula](https://github.com/Daandelange/kirby3-simplestats/search?q=getUserUniqueString) is more or less `sha1( base64_encode( mix( anonimize(IP, 0.0.0.x) + trunc(UserAgent) + Salt)) )`._
+_[The formula](https://github.com/Daandelange/kirby-simplestats/search?q=getUserUniqueString) is more or less `sha1( base64_encode( mix( anonimize(IP, 0.0.0.x) + trunc(UserAgent) + Salt)) )`._
 It's stored together with a list of visited pages, the device category (bot/mobile/desktop/tablet/other), the browser's engine (Gecko/Webkit/Blink/Other) and OS Family.
 This data is kept for a very short amount of time to ensure only counting unique hits.
 - After 24H, the collected data is processed and any user identifying data is deleted :
@@ -25,14 +27,16 @@ This data is kept for a very short amount of time to ensure only counting unique
 
 
 ### Current state
-Consider this plugin beta. Any feedback or bug reports are welcome. It's been successfully running on multiple production websites for about a year. The tracking part is almost done, when the panel interface will be more polished, I'll consider a first release.
+
+Consider this plugin beta. Any feedback or bug reports are welcome. It's been successfully running on multiple production websites for a few years. The tracking part is almost done and a panel view is available, when the panel interface & sections will be more polished, I'll consider a first release.
 Please note that the database structure might evolve over time, until a more stable release is available (_for which you'll be able upgrade your old databases; the upgrade meccanism already works_).
 
 
 ### Contributing
+
 I guess a lot of options could be added to suit the plugin for a wider variety of website setups. The panel interface could also be improved and translated.
 Any contributions (discussions, reports, feedback and pull requests) are welcome, as long as the collected stats stay minimal and reasonably non-intrusive.
-You may also have a look at the [open issues](https://github.com/Daandelange/kirby3-simplestats/issues/).
+You may also have a look at the [open issues](https://github.com/Daandelange/kirby-simplestats/issues/).
 
 ****
 
@@ -40,88 +44,81 @@ You may also have a look at the [open issues](https://github.com/Daandelange/kir
 ## Setup
 
 ### Requirements
- - A recent Kirby installation (currently tested with 3.9+) and support for SQLite3.
- - There's an automatic requirements checker in the `Information` tab of the plugin's panel view.
+
+ - A recent Kirby installation (currently tested with 5.0.0+) and support for SQLite3.
+ - There's an automatic requirements checker in the `Information` tab of the plugin's panel view, feel free to use that for double-checking requirements.
+
+> [!NOTE]
+ For Kirby 3, I recommend to use version `0.6.x-beta` as version `0.7.0-beta` introduces Kirby 5 compatibility. It might be Kirby 3 compatible but I'm not supporting it anymore. However, I'm happy to accept retro-compatibility PRs.
 
 ### Installation
 
 - **Option 1** : Download
-Download and copy this repository to `/site/plugins/simplestats`.
+  Download and copy this repository to `/site/plugins/simplestats`.
 
 - **Option 2** : Git submodule
-```
-git submodule add https://github.com/daandelange/kirby3-simplestats.git site/plugins/simplestats
-```
-Eventually add `--depth 1` to discard the repo commit history. (saves disk space)
+  ```
+  git submodule add https://github.com/daandelange/kirby-simplestats.git site/plugins/simplestats
+  ```
+  Eventually add `--depth 1` to discard the repo commit history. (saves disk space)
 
 - **Option 3** : Composer (*update the command to match the latest version*)  
-`composer require daandelange/simplestats:~0.6.2-beta` (update with `composer update`)  
-_Note: While `SimpleStats` is still alpha, there is no stable channel for composer, so you need to specify the unstable version._  
-_Note: I don't make a release for every small change. If you want to use the latest version with composer, you can manually enter a commit :_  
-`composer require daandelange/simplestats:dev-master#dbdb4a2 --with-dependencies`.
+  `composer require daandelange/simplestats:~0.6.2-beta` (update with `composer update`)  
+  _Note: While `SimpleStats` is still alpha, there is no stable channel for composer, so you need to specify the unstable version._  
+  _Note: I don't make a release for every small change. If you want to use the latest version with composer, you can manually enter a commit :_  
+  `composer require daandelange/simplestats:dev-master#dbdb4a2 --with-dependencies`.
+
+> [!IMPORTANT]  
+> After installing the plugin and **before starting your webserver**, you have to configure the plugin. Whenever you change the tracking resolution (or your website's language setup), start with a fresh database file.
+
+### Updating
+
+Before updating, make sure to **backup your database file**. If something goes wrong, you'll be able to retrieve your stats by replacing the database file later.
+
+Depending on the installation method you used, proceed to the logical steps to update.
+
+After updating:
+- Review new options and configure as wished.
+- Sometimes, a database upgrade is needed. If so, head to the panel's `Information` tab and follow instructions in the upgrade section.
+- It's also a good idea to check the log file for any errors.
 
 ****
 
 ### Configuration
 
-#### Stats blueprint section
-If you wish to display page stats in a section, you may add a `pagestats` panel section to your page's blueprint.
-````yml
-sections:
-  pagestats:
-    type: pagestats
-    label: TestHeadline
-    size: small
-    showTotals: true
-    showTimeline: true
-    showLanguages: true
-    showFullInfo: false
-````
-
 #### Language setup
+
 Multi-language websites are supported. For each page, there's a global counter, with an optional counter for each language.
 *Warning:* Do not add or remove languages to your Kirby installation without resetting your database file !
 Also, the panel view has not (yet?) been translated.
 **Note:** During the alpha phase, I'm working with a multi-language context. While I try to test single language setups from time to time, SimpleStats might break occasionally in these setups.
 
 #### Database Configuration
+
 The database file is a simple `.sqlite` file that holds all tracking data. You can view it from the dedicated panel area, or by including smaller widget sections in the panel page editor. The popular Sqlite format allows you to easily grab the data and visualise it your way, or import it in other software.
 It's recommended to occasionally backup your stats database file.
 
-> ##### Tracking Resolution and Kirby Languages (Important !)
-> Please note that *the database is tightly bound to the tracking resolution* option (`daandelange.simplestats.tracking.timeFrameUtility`) and *can not* be changed afterwards. Changing the resolution while keeping the same database file results in unefined behaviour.
-> The same goes for Kirby's Language setup: *if you change your multilanguage settings*, you need to create a new database file (however, manually editing the previous database file, you might be able to preserve your data).
-> This [could be automated with update scripts](https://github.com/Daandelange/kirby3-simplestats/issues/14).
+##### Tracking Resolution and Kirby Languages
 
-> ##### Generating Stats
+> [!IMPORTANT]
+> Please note that *the database is tightly bound to the tracking resolution* option (`daandelange.simplestats.tracking.timeFrameUtility`) and *can not* be changed afterwards. Changing the resolution while keeping the same database file results in unefined behaviour. If changing, prefer starting with a fresh database.
+> The same goes for Kirby's Language setup: *if you change your multilanguage settings*, you need to create a new database file (however, manually editing the previous database file, you might be able to preserve your data).
+> This [could be automated with update scripts](https://github.com/Daandelange/kirby-simplestats/issues/14).
+
+##### Generating Stats
+
+> [!TIP]
 > If you'd like to populate the database with some fake stats (useful for testing or developing SimpleStats), you can use the panel interface to generate some in the "Information" tab.
 
 #### Legal configuration
-Depending on your local laws, you might need to sit down and define how personal visitor data is handled.
-You might want to inspect the source code to know what's going on in details.
-As the license states, there's no guarantee whatsoever.
 
-#### Integrating to your page
-If you want to use the default `onLoad` tracking method, no further action is required, the plugin automatically hooks to Kirby route events. If you choose any other tracking method, you'll need to integrate the method in your code.
+Depending on your local laws, you might need to sit down and define how personal visitor data is handled.  
+You might want to inspect the source code to know what's going on in details.  
+As the license states, there's no guarantee whatsoever.  
 
-> **Possible Tracking Methods:** (Config value: `tracking.method`)
->   - `SimpleStatsTrackingMode::OnLoad` : Uses kirby's route hooks to track content when it's served.
->     *Pros*: Ensures that every request is tracked.
->     *Cons*: Slows down the page serve time.
->     *Setup steps*: None.
->   - `SimpleStatsTrackingMode::OnImage` : Generate a simple image tag within your HTML.
->     *Pros*: Doesn't slow down page serve time.
->     *Cons*: You trust the user to load the image.
->     *Setup steps*: You need to call `$page->simpleStatsImage()` in your template code. You probably want to do this once in `site/snippets/footer.php` for example.
->   - `SimpleStatsTrackingMode::Disabled` : Disables tracking, no further action is needed. (now much tested yet)
->     *Setup steps*: None.
->   - `SimpleStatsTrackingMode::Manual` : Manually call the tracking function.
->     *Pros*: Very flexible, might solve edge-case-usage.
->     *Setup steps*: You have to call `SimpleStats::track()` manually. Additionally, you need to populate the http headers argument accrdingly to track referers and device information.
+#### Config Options
 
-
-#### Options
-Like any Kirby plugin, options can be set in your `site/config/config.php`.
+Like any Kirby plugin, many options can be set in your `site/config/config.php`.  
 All available options are listed and explained in `src/config/options.php`.
 
 Example :
@@ -131,7 +128,7 @@ Example :
 // The custom variable types (SimpleStatsTimeFrameUtility, SimplestatsTrackingMode) are namespaced, you can shorten their invocations with the line below:
 // use daandelange\SimpleStats\SimpleStatsTrackingMode;
 
-require_once(__DIR__ . '/../plugins/simplestats/src/models/SimpleStatsTimeFrameUtility.php');
+require_once(__DIR__ . '/../plugins/d-simplestats/src/models/SimpleStatsTrackingMode.php');
 return [
   // [...] your options ...
 
@@ -144,13 +141,13 @@ return [
 ];
 ````
 
-Here's a list with options that have been tested. (the `daandelange.simplestats` part has been stripped)
+Here's a list with options that have been tested. *(the `daandelange.simplestats` part has been stripped)*  
 You might also find some more detailed information in the comments of `options.php`.
 
 | Option                          | Type                                  | Default         | Description                                                                | Comment                                                                           |
 |---------------------------------|---------------------------------------|-----------------|----------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
 | **TRACKING**                    |                                       |                 |                                                                            |                                                                                   |
-| `tracking.timeFrameUtility`     | String \| SimpleStatsTimeFrameUtility | `'monthly'`     | Set the class that handles time conversions to periods. (read note below!*)| Possible string values: `monthly`, `weekly`.                                      |
+| `tracking.timeFrameUtility`     | String \| SimpleStatsTimeFrameUtility | `'monthly'`     | Set the trackign resolution class that handles time conversions to periods. **(change with caution!)** | Possible string values: `Monthly`, `Weekly`.                                      |
 | `tracking.enableReferers`       | Bool                                  | true            | Enables tracking referrers. Gives an insight of who links to your website. |                                                                                   |
 | `tracking.enableDevices`        | Bool                                  | true            | Enables tracking of minimal hardware configurations (device information)   |                                                                                   |
 | `tracking.enableVisits`         | Bool                                  | true            | Enables tracking page visits (frequentation)                               |                                                                                   |
@@ -171,44 +168,100 @@ You might also find some more detailed information in the comments of `options.p
 | `panel.breadcrumbLabel`         | String                                | `'SimpleStats'` | Breadcrumb shown in the panel.                                             |                                                                                   |
 | `panel.hideBots`                | Bool                                  | false           | To hide bot information from the devices tab.                              |                                                                                   |
 
-* : Note - You have to choose the `timeFrameUtility` setting **before the initialisation**. If you'd like to change it afterwards, you'll not be able to import the previously collected data. Changing `timeFrameUtility`, you need to replace the database file with a new one (or manage to convert it).
 
-### Updating
-Before updating, make sure to **backup your database file**. If something goes wrong, you'll be able to retrieve your stats by replacing the database file later.
+### Integrating to your page
 
-Depending on the installation method you used, proceed to the logical steps to update.
+#### Tracking method
 
-After updating:
-- Review new options and configure as wished.
-- Sometimes, a database upgrade is needed. If so, head to the panel's `Information` tab and follow instructions in the upgrade section.
-- It's also a good idea to check the log file for any errors.
+If you want to use the default `onLoad` tracking method, no further action is required, the plugin automatically hooks to Kirby route events.  
+If you choose any other tracking method, you'll need to integrate the method in your code.
+
+> **Possible Tracking Methods:** (Config value: `tracking.method`)
+>   - `SimpleStatsTrackingMode::OnLoad` : Uses kirby's route hooks to track content when it's served.  
+>     *Pros*: Ensures that every request is tracked.  
+>     *Cons*: Slows down the page serve time.  
+>     *Setup steps*: None.
+>   - `SimpleStatsTrackingMode::OnImage` : Generate a simple image tag within your HTML.  
+>     *Pros*: Doesn't slow down page serve time.  
+>     *Cons*: You trust the user to load the image.  
+>     *Setup steps*: You need to call `$page->simpleStatsImage()` in your template code. You probably want to do this once in `site/snippets/footer.php` for example.
+>   - `SimpleStatsTrackingMode::Disabled` : Disables tracking, no further action is needed. (now much tested yet)  
+>     *Setup steps*: None.
+>   - `SimpleStatsTrackingMode::Manual` : Manually call the tracking function.  
+>     *Pros*: Very flexible, might solve edge-case-usage.  
+>     *Setup steps*: You have to call `SimpleStats::track()` manually. Additionally, you need to populate the http headers argument accordingly to track referers and device information.
+
+#### Panel Area
+
+The panel area is accessible under this url : `/panel/simplestats`.  
+If you're using a custom panel menu, you can add the simplestats area to your menu.
+
+````php
+<?php 
+return [
+  'panel' => [
+    'menu' => [
+        // ... your other menu items
+        'simplestats',
+    ],
+  ],
+];
+````
+
+#### Stats blueprint section (optional)
+
+If you wish to display page stats in a section, you may add a `pagestats` panel section to your page's blueprint.
+
+````yml
+sections:
+  pagestats:
+    type: pagestats
+    label: TestHeadline
+    size: small
+    showTotals: true
+    showTimeline: true
+    showLanguages: true
+    showFullInfo: false
+````
 
 ****
+
 ## API
 
 ### Singletons
-- `SimpleStats::safeTrack($id)`
+
+- `SimpleStats::safeTrack($id)`  
   Throw-safe alternative of `track()`. `$id` is a `$page->id()` to be tracked.
-- `SimpleStats::track($id)`
+- `SimpleStats::track($id)`  
   Function called to track user data. `$id` is a `$page->id()` to be tracked.
 
 ### Page Methods
-- `$page->simpleStatsImage()`
+
+- `$page->simpleStatsImage()`  
   HTML code for the tracking image, when using OnImage tracking method.
-- `$page->getPageStats()`
+- `$page->getPageStats()`  
   Returns an array with useful tracking information about the page.
 
 ### User Methods
-- `$user->hasSimpleStatsPanelAccess($forSpecialAdminAccess=false)`
+
+- `$user->hasSimpleStatsPanelAccess($forSpecialAdminAccess=false)`  
   Returns true if the user is authorized to access the SimpleStats Panel, with or without special admin rights.
 ****
 
 ## Panel Interface
 
+The panel interface shows your website analytics and tracking setup.
+
+### Timeline
+
+The global timeline allows you to select a timespan for displaying analytics.
+
 ### Charts
+
 Charts are interactive, you can hover them to have details, and click labels to toggle filtering. You can even download timelines as PNGs.
 
 ### Tables
+
 Tables are interactive and paginated. You can search data within and sort them by clicking on the column headers.
 
 
@@ -219,11 +272,11 @@ Tables are interactive and paginated. You can search data within and sort them b
 Development was started from [a standard Kirby PluginKit](https://github.com/getkirby/pluginkit/tree/4-panel), see [their plugin guide](https://getkirby.com/docs/guide/plugins/plugin-setup-basic) for more details on using it.
 *These steps are optional, for building development versions.*
 
-- Npm requirements (optional) : `npm install -g parcel-bundler`
-- Setup                       : `cd /path/to/website/site/plugins/simplestats && npm install`
-- While developing            : `npm run dev`
-- Compile a production build  : `npm run build`
-- Update dependencies         : `npm update`
+- Node requirements (optional) : `pnpm install`
+- Setup                        : `pnpm install`
+- While developing             : `pnpm run dev`
+- Compile a production build   : `pnpm run build`
+- Update dependencies          : `pnpm update`
 
 
 ****
@@ -247,6 +300,6 @@ Development was started from [a standard Kirby PluginKit](https://github.com/get
 
 ## License
 
-- [MIT](./LICENSE.md) - Free to use, free to improve.
-
-- Copyright 2020-2021 [Daan de Lange](https://github.com/daandelange)
+- [MIT](./LICENSE.md) : Free to use, free to improve.
+- Note: For commercial usage, please consider contributing or hire someone to do so.
+- Copyright 2020-2025 [Daan de Lange](https://github.com/daandelange)

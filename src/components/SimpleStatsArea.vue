@@ -1,21 +1,23 @@
 <template>
-  <k-inside>
+  <k-panel-inside>
+
   <k-view class="k-simplestats-view">
     <!-- DISCLAIMER -->
-    <k-grid v-if="!isLoading && !dismissDisclaimer">
-      <k-column>
-        <k-headline size="medium" align="center">{{ $t('simplestats.disclaimer.title') }}</k-headline>
-        <k-text size="small" align="center">
-          <span v-html="$t('simplestats.disclaimer.text')"></span>
-          <span class="hover-to-help">
-            <k-icon type="question" />
-            <div class="help"><k-text theme="help" size="small" align="center">{{ $t('simplestats.disclaimer.dismiss') }}</k-text></div>
-          </span>
-          <br>
-        </k-text>
-        <br/><br/>
-      </k-column>
-    </k-grid>
+    <k-box v-if="!isLoading && !dismissDisclaimer" theme="warning" icon="flag">
+      <template #default>
+        <div>
+          <k-headline class="h4">{{ $t('simplestats.disclaimer.title') }}</k-headline>
+          <k-text size="small">
+            <span v-html="$t('simplestats.disclaimer.text')"></span>
+            <span class="hover-to-help">
+              <k-icon type="question" />
+              <div class="help"><k-text theme="help" size="small">{{ $t('simplestats.disclaimer.dismiss') }}</k-text></div>
+            </span>
+            <br>
+          </k-text>
+        </div>
+      </template>
+    </k-box>
 
     <k-header :tabs="tabs" :tab="tab" @tabChange="onTab">
       <template slot="default">
@@ -24,10 +26,14 @@
       <!-- <template slot="left">
         Left
       </template> -->
-      <template slot="right">
+      <!-- <template slot="right">
           <time-frame-input :dateChoices="timeframes" ref="timeFrame" />
-      </template>
+      </template> -->
     </k-header>
+    
+    <time-frame-input :dateChoices="timeframes" ref="timeFrame" :time-period="timePeriod" />
+    <k-tabs :tabs="tabsWithLinks" :tab="tab"></k-tabs>
+    
 
     <div v-if="tab == tabs[0].name">
       <page-stats :dateFrom="$refs.timeFrame.dateFrom" :dateTo="$refs.timeFrame.dateTo" section-name="pagestats" />
@@ -42,7 +48,7 @@
     </div>
 
     <div v-else-if="tab == tabs[3].name">
-      <k-grid gutter="large">
+      <k-grid variant="columns" style="gap: var(--spacing-12);">
         <!-- CONFIGURATION -->
         <k-column width="1/2">
           <configuration section-name="configinfo" />
@@ -71,8 +77,10 @@
       <k-empty>{{ $t('simplestats.taberror') }}</k-empty>
     </div>
 
+    <!-- Invisible color getter util for CSS to JS style data transfer -->
+    <div id="chart-default-color-getter"></div>
   </k-view>
-  </k-inside>
+  </k-panel-inside>
 </template>
 
 
@@ -87,6 +95,8 @@ import DbInformation from "./Sections/DbInformation.vue";
 import Configuration from "./Sections/Configuration.vue";
 import TrackingTester from "./Sections/TrackingTester.vue";
 import TimeFrameInput from "./Ui/TimeFrameInput.vue";
+
+import useI18n, { usePanel } from "kirbyuse";
 
 export default {
   components: {
@@ -124,6 +134,10 @@ export default {
       type: Array,
       default: [],
     },
+    timePeriod: {
+      type: String,
+      default: "Monthly",
+    },
     timeframes: {
       type: Array,
       default: [],
@@ -135,9 +149,12 @@ export default {
       if(newValue) this.tab = newValue;
     }
   },
-  // computed: {
-
-  // },
+  computed: {
+    tabsWithLinks() {
+			let self = this;
+      return this.tabs.map(function(btn){btn.click=function(e){self.onTab(btn.name);}; return btn;});
+		},
+  },
   // created() {
 
   // },
@@ -166,7 +183,7 @@ export default {
     },
 
     // Bind tab changing
-    onTab(tab) {
+    onTab(tab=null) {
       let mTab = tab;
       // Set initial tab position
       if( !tab || tab.length<1 ){
@@ -183,17 +200,35 @@ export default {
       // Grab tab key and set tab acordingly
       // This is hacky and subject to break !
       this.tab = mTab;
-      this.$root.$view.breadcrumb[0].label = (this.tabs.find((t)=>t.name===tab)?.label) ?? mTab;
-      this.$root.$view.breadcrumb[0].link = null;
+      
+      if(this?.$root?.$view?.breadcrumb){ // Kirby 3.6+
+        this.$root.$view.breadcrumb[0].label = (this.tabs.find((t)=>t.name===tab)?.label) ?? mTab;
+        this.$root.$view.breadcrumb[0].link = null;
+      }
+      else { // K5
+        const panel = usePanel();
+        panel.view.breadcrumb[0].label = (this.tabs.find((t)=>t.name===tab)?.label) ?? mTab;
+        panel.view.breadcrumb[0].link = null;
+      }
       this.writeTabToLocalStorage();
     },
+    
   },
 };
 </script>
 
 <style lang="less">
 
+/** Remove the bottom margin from the header if it is followed by time-frame-input */
+.k-header:has(+ .ss-timeframe-input) {
+	margin-bottom: .5rem;
+}
+
 .k-simplestats-view {
+
+  .k-tabs {
+    border-bottom: 1px solid var(--color-border);
+  }
 
 // Todo: Are these styles still used ?
 .row-percent p, .row-percent span.visualiser {
@@ -241,5 +276,11 @@ export default {
     visibility: visible;
   }
 }
+}
+
+// To grab color from JS
+#chart-default-color-getter {
+  color: light-dark(var(--color-dark), var(--color-light));
+  display: none;
 }
 </style>

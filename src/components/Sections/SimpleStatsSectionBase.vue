@@ -2,6 +2,8 @@
 
 <script>
 
+import { usePanel, useApi } from 'kirbyuse';
+
 export default {
   extends: 'k-pages-section', // Re-use loading mechanisms
   data() {
@@ -27,8 +29,12 @@ export default {
     },
   },
   created() {
-    this.load();
-  },
+	},
+	destroyed() {
+	},
+  mounted() {
+		this.load();
+	},
   computed: {
     
   },
@@ -54,11 +60,21 @@ export default {
       this.isProcessing = true;
       // Load configuration
       try {
-        const response = await this.$api.get("simplestats/"+this.sectionName+this.dateQueryString());
+        //const response = await this.$api.get("simplestats/"+this.sectionName+this.dateQueryString()); // K3
+        const api = useApi();
+        const response = await api.get("simplestats/"+this.sectionName+this.dateQueryString()); // K5
+
         this.loadData(response);
       } catch (error) {
         this.error = error.message;
-        this.$store.dispatch("notification/error", error.message??'Unknown error');
+        if(this.$store?.dispatch){ // K3
+          this.$store.dispatch("notification/error", error.message??'Unknown error');
+        }
+        else { // K5+
+          const panel = usePanel();
+          //panel.notification.info(error.message??'Unknown error'); // Bottom notification
+          panel.error(error.message??'Unknown error', true); // Center error msg
+        }
         //console.log("Error=", error.message, { e: error });
       } finally {
         this.isLoading = false;
