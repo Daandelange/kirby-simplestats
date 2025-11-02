@@ -198,6 +198,7 @@ If you're using a custom panel menu, you can add the simplestats area to your me
 
 ````php
 <?php 
+// File: site/config.config.php
 return [
   'panel' => [
     'menu' => [

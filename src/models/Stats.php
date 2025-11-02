@@ -567,7 +567,7 @@ class Stats extends SimpleStatsDb {
 
             // Loop query results
             foreach($visitedPages as $page){
-                $kirbyPage = kirby()->page($page->uid); // This is probably the slowest part to be optimized some day ? use bnomei/kirby-boost ?
+                $kirbyPage = kirby()->page(strval($page->uid)); // This is probably the slowest part to be optimized some day ? use bnomei/kirby-boost ?
 
                 // Default data not based on the $page object
                 $pageStatsData[] = [
@@ -630,7 +630,7 @@ class Stats extends SimpleStatsDb {
             //$pageTimeframes=[];
             foreach($pageVisitsOverTime as $page){
                 $pagevisitPeriod = intval($page->monthyear, 10);
-                $uid = $page->uid;
+                $uid = strval($page->uid);
 
                 // Need to create the first dataset for this page ?
                 if( !array_key_exists($uid, $pageVisitsOverTimeData) ){
@@ -933,7 +933,7 @@ class Stats extends SimpleStatsDb {
                             $key = array_search( $newPageInfo['uid'], array_column($monthPages, 'uid') );
                             // Needs new entry this month ?
                             if( $key === false ){
-                                $uid = $newPageInfo['uid'];
+                                $uid = strval($newPageInfo['uid']);
 
                                 // Ignore non-existent pages
                                 if( !kirby()->page($uid) ){
@@ -1148,6 +1148,7 @@ class Stats extends SimpleStatsDb {
     public static function onePageStats($page, ?int $fromPeriod = null, ?int $toPeriod = null){
         // Get ID from $page
         if($page && $page instanceof \Kirby\Cms\Page) $page = $page->exists()?$page->uid():''; // todo: provide fallback (virtual pages don't exist?)
+        $page = strval($page);
 
         // Ensure we got a string
         if( !is_string($page) || empty($page)){

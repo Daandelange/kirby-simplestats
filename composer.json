@@ -3,7 +3,7 @@
     "description": "Very minimal visitor analytics for your kirby website.",
     "homepage": "https://github.com/Daandelange/kirby-simplestats",
     "type": "kirby-plugin",
-    "version": "0.7.5-beta",
+    "version": "0.7.6-beta",
     "license": "MIT",
     "authors": [
         {
