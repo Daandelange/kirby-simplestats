@@ -193,7 +193,8 @@ If you choose any other tracking method, you'll need to integrate the method in 
 
 #### Panel Area
 
-If you're using a custom panel menu, you need to add the simplestats area to your menu.
+The panel area is accessible under this url : `/panel/simplestats`.  
+If you're using a custom panel menu, you can add the simplestats area to your menu.
 
 ````php
 <?php 
