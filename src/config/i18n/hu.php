@@ -118,6 +118,9 @@ return [
     'simplestats.info.db.size'                          => 'Adatbázis mérete',
     'simplestats.info.db.dbversion'                     => 'Aktuális adatbázis verziója',
     'simplestats.info.db.softwareversion'               => 'Szoftver adatbázisának verziója',
+    'simplestats.info.db.spanfromperiod'                => 'Start Date', // todo
+    'simplestats.info.db.spantoperiod'                  => 'End Date', // todo
+    'simplestats.info.db.spannumperiods'                => 'Tracked Periods', // todo
     'simplestats.info.db.versionhistory'                => 'Verzió előzmények',
     'simplestats.info.db.noversion'                     => 'Nincs!',
     'simplestats.info.db.versionless'                   => 'verziózatlan',

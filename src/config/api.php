@@ -338,7 +338,7 @@ return [
                     ];
                 }
                 else {
-                    throw new PermissionException('You are not authorised to upgrade the db file.');
+                    throw new PermissionException('You are not authorised to view stats.');
                 }
             },
         ],

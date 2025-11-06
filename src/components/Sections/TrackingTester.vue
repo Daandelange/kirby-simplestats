@@ -81,8 +81,8 @@ export default {
       referrerResponse: null,
       unlockGenerator:  false,
       generatorMode:    'randommulti',
-      generatorTo:      now.toString(),
-      generatorFrom:    before.toString(),
+      generatorTo:      before.toString(),
+      generatorFrom:    now.toString(),
       generatorResponse:null,
     }
   },

@@ -8,6 +8,10 @@
     <k-text-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.db.size')" :value="databaseSize | prettyBytes" icon="download" />
     <k-number-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.db.dbversion')" :value="dbVersion" icon="bolt" />
     <k-number-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.db.softwareversion')" :value="softwareDbVersion" icon="bolt" />
+    <k-number-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.db.softwareversion')" :value="softwareDbVersion" icon="bolt" />
+    <k-text-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.db.spanfromperiod')" :value="databaseSpanFrom" icon="calendar" />
+    <k-text-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.db.spantoperiod')" :value="databaseSpanTo" icon="calendar" />
+    <k-number-field name="" :counter="false" :disabled="true" :label="$t('simplestats.info.db.spannumperiods')" :value="databaseTimeframes" icon="calendar" />
     <br />
     <br />
 
@@ -87,6 +91,9 @@ export default {
       updateMessageTheme: "",
       databaseLocation : '',
       databaseSize : '',
+      databaseSpanFrom: '',
+      databaseSpanTo: '',
+      databaseTimeframes: -1,
     }
   },
   components: {
@@ -140,6 +147,11 @@ export default {
           this.dbVersion        = response.dbVersion
           this.databaseLocation = response.databaseLocation
           this.databaseSize     = response.databaseSize
+
+          this.databaseSpanFrom = response.databaseSpanFrom
+          this.databaseSpanTo   = response.databaseSpanTo
+          this.databaseTimeframes = response.databaseTimeframes
+
           //this.dbRequirements   = response.dbRequirements
           //this.unlockUpgrade = true
           this.updateMessage    = null

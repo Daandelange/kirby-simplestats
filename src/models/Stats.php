@@ -73,7 +73,10 @@ class Stats extends SimpleStatsDb {
             //$dbFile = str_replace( kirby()->root(),'', $dbFile); // k3
             $dbFile = str_replace( realpath(kirby()->root('config'). DIRECTORY_SEPARATOR . '..'), '.', $dbFile ); // k5
         }
-
+        //$timeSpan = static::constrainPeriodsToDbSpan(null, null);
+        $timeSpan = Stats::getDbTimeSpan();
+        $timeFrames = Stats::fillPeriod($timeSpan['start'], $timeSpan['end'], 'Y-m-d');
+        
         // Todo: Read some stats from the db such as timespan, etc.
         return [
             'softwareDbVersion' => self::engineDbVersion,
@@ -86,6 +89,9 @@ class Stats extends SimpleStatsDb {
             'upgradeRequired'   => self::engineDbVersion != $dbVersion,
             'databaseLocation'  => $dbFile ?? '[undefined]',
             'databaseSize'      => $dbSize,
+            'databaseSpanFrom'  => date('Y-m-d', getTimeFromPeriod($timeSpan['start'])),
+            'databaseSpanTo'    => date('Y-m-d', getTimeFromPeriod($timeSpan['end'])),
+            'databaseTimeframes'=> count($timeFrames),
         ];
     }
 
@@ -323,7 +329,7 @@ class Stats extends SimpleStatsDb {
         // Format period
         $timeSpan = static::constrainPeriodsToDbSpan($fromPeriod, $toPeriod);
 
-         // Array holding all possible periods
+        // Array holding all possible periods
         $selectedPeriods = array_combine(
             static::fillPeriod( $timeSpan['start'], $timeSpan['end'] ),
             static::fillPeriod( $timeSpan['start'], $timeSpan['end'], 'Y-m-d' ),
