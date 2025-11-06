@@ -327,7 +327,8 @@ return [
                 if( $this->user()->hasSimpleStatsPanelAccess() ){
                     return [
                         'dismissDisclaimer' => option('daandelange.simplestats.panel.dismissDisclaimer', false),
-                        'translations' => [
+
+                        'translations' => [ // Checkme: is this still needed in K5 ?
                             'tabs' => [
                                 'pagevisits'        => t('simplestats.tabs.pagevisits',     'Page Visits'),
                                 'visitordevices'    => t('simplestats.tabs.visitordevices', 'Visitor Devices'),

@@ -31,7 +31,7 @@
       </template> -->
     </k-header>
     
-    <time-frame-input :dateChoices="timeframes" ref="timeFrame" :time-period="timePeriod" />
+    <time-frame-input :dateChoices="timeframes" ref="timeFrame" :time-period="timePeriod" :initial-view-periods="initialViewPeriods" />
     <k-tabs :tabs="tabsWithLinks" :tab="tab"></k-tabs>
     
 
@@ -141,6 +141,10 @@ export default {
     timeframes: {
       type: Array,
       default: [],
+    },
+    initialViewPeriods: {
+      type: Number,
+      default: -1,
     },
   },
   watch: {

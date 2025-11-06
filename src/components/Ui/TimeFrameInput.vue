@@ -170,6 +170,11 @@ export default {
     const minmax = this.sliderRange;
     this.dateFrom = this.dateChoices[minmax.min];
     this.dateTo = this.dateChoices[minmax.max];
+
+    // Apply default view ?
+    if(this.initialViewPeriods > 0){
+      this.dateFrom = this.dateChoices[minmax.max-Math.min(this.initialViewPeriods, minmax.max)];
+    }
     
     // Initial sanitation / sync
     this.updateDateFields(this.timeFrame);
@@ -321,14 +326,14 @@ export default {
         {
           to: function (value) {
             const other = thisRef.dateChoices.indexOf(thisRef.dateTo);
-            return '<div class=".k-range-input-tooltip-text">'+thisRef.dateChoices[Number(value).toFixed(0)]+((other>0)?('<br/>('+Number(Math.abs(value-other)).toFixed(0)+' timeframes)'):'')+'</div>';
+            return '<div class="kk-range-input-tooltip-text">'+thisRef.dateChoices[Number(value).toFixed(0)]+((other>0)?('<br/><span class="tooltip-span">('+Number(Math.abs(other-value)).toFixed(0)+' timeframes)'):'')+'</span></div>';
           },
           from: function (value) { return 0;},// unused ?
         },
         {
           to: function (value) {
             const other = thisRef.dateChoices.indexOf(thisRef.dateFrom);
-            return '<div class=".k-range-input-tooltip-text">'+thisRef.dateChoices[Number(value).toFixed(0)]+((other>0)?('<br/>('+Number(Math.abs(value-other)).toFixed(0)+' timeframes)'):'')+'</div>';
+            return '<div class="kk-range-input-tooltip-text">'+thisRef.dateChoices[Number(value).toFixed(0)]+((other>0)?('<br/><span class="tooltip-span">('+Number(Math.abs(value-other)).toFixed(0)+' timeframes)'):'')+'</span></div>';
           },
           from: function (value) { return 0;},// unused ?
         },
@@ -362,6 +367,10 @@ export default {
     timePeriod: {
       type: String,
       default: "Monthly",
+    },
+    initialViewPeriods: {
+      type: Number,
+      default: -1,
     },
   },
   computed: {
@@ -585,13 +594,27 @@ export default {
         display: flex; // k5
       }
     }
-    // When any handle is active
+    // When any handle is active, show all tooltips
     .noUi-state-drag {
       // Hide tooltip by default, show when active
       .noUi-tooltip {
         // display: block; // k3
         display: flex; // k5
 
+        // Hide span on other (wrong value, only recomputed when released)
+        .tooltip-span {
+          display: none;
+        }
+      }
+
+      .noUi-active {
+        .noUi-tooltip {
+
+          // But display the active one
+          .tooltip-span {
+            display: inline;
+          }
+        }
       }
     }
 

@@ -57,6 +57,7 @@ return [
         'authorizedRoles'   => ['admin'], // Role (ids) that are allowed to view page statistics.
         'breadcrumbLabel'   => 'SimpleStats',
         'hideBots'          => false,           // To hide bots in the devices tab.
+        'defaultTimeSpan'   => -1, // number of periods (weeks/months) for the initial view. -1 for using the full database span.
     ]
 
 

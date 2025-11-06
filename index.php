@@ -103,12 +103,13 @@ App::plugin('daandelange/simplestats', [
                             'props' => [
                                 'initialtab' => $kirby->request()->get('tab') ?? $tabs['pagevisits']['name'],
                                 'tabs' => array_values($tabs),
-                                'globaltimespan' => [
+                                'globaltimespan' => [ // todo: still used ?
                                     date('Y-m-d', getTimeFromPeriod($timeSpan['start'])),
                                     date('Y-m-d', getTimeFromPeriod($timeSpan['end'])),
                                 ],
                                 'timeframes' => $timeFrames,
                                 'time-period' => $timePeriod,
+                                'initial-view-periods' => option('daandelange.simplestats.panel.defaultTimeSpan', -1),
                             ],
 
                             // we can preset the search type with the
