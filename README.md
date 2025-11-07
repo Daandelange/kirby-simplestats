@@ -167,6 +167,7 @@ You might also find some more detailed information in the comments of `options.p
 | `panel.authorizedRoles`         | Array                                 | `['admin']`     | User roles that are allowed to view statistics from the panel.             |                                                                                   |
 | `panel.breadcrumbLabel`         | String                                | `'SimpleStats'` | Breadcrumb shown in the panel.                                             |                                                                                   |
 | `panel.hideBots`                | Bool                                  | false           | To hide bot information from the devices tab.                              |                                                                                   |
+| `panel.defaultTimeSpan`         | Integer                               | -1              | To set the range (in periods) for the default panel view.                  | Use `-1` for viewing the whole available range. Use `4` for 4 weeks or months.    |
 
 
 ### Integrating to your page

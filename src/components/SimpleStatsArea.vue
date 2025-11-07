@@ -130,10 +130,10 @@ export default {
       type: Array,
       default: [],
     },
-    globaltimespan: {
-      type: Array,
-      default: [],
-    },
+    // globaltimespan: {
+    //   type: Array,
+    //   default: [],
+    // },
     timePeriod: {
       type: String,
       default: "Monthly",
