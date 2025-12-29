@@ -1,11 +1,7 @@
 {
-  "name": "SimpleStats",
-  "version": "0.7.7-beta",
-  "description": "Very minimal visitor analytics for your kirby website.",
-  "main": "index.js",
-  "author": "Daan de Lange",
+  "name": "kirby-simplestats",
   "license": "MIT",
-  "repository": "https://github.com/Daandelange/kirby-simplestats",
+  "type": "module",
   "scripts": {
     "dev": "kirbyup src/index.js --watch",
     "serve": "kirbyup src/index.js --serve",
