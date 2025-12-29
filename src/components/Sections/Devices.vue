@@ -1,107 +1,120 @@
 <template>
-  <k-grid variant="columns" style="gap: var(--spacing-12);">
+  <k-grid variant="columns" style="column-gap: var(--spacing-8)">
     <k-column width="1/3">
-      <area-chart
+      <AreaChart
         type="Pie"
-        :chart-data="devicesData"
-        :chart-labels="devicesLabels"
+        height="200"
         download="Site_Devices.png"
         :label="$t('simplestats.devices.graph.devices')"
-        :fill="true"
+        :chart-data="charts.devices.data"
+        :chart-labels="charts.devices.labels"
         :auto-colorize="true"
-        :height="200"
       />
     </k-column>
 
     <k-column width="1/3">
-      <area-chart
+      <AreaChart
         type="Pie"
-        :chart-data="browsersData"
-        :chart-labels="browsersLabels"
+        height="200"
         download="Site_BrowserEngines.png"
         :label="$t('simplestats.devices.graph.engines')"
-        :fill="true"
+        :chart-data="charts.browsers.data"
+        :chart-labels="charts.browsers.labels"
         :auto-colorize="true"
-        :height="200"
       />
     </k-column>
 
     <k-column width="1/3">
-      <area-chart
+      <AreaChart
         type="Pie"
-        :chart-data="systemsData"
-        :chart-labels="systemsLabels"
+        height="200"
         download="Site_OperatingSystems.png"
         :label="$t('simplestats.devices.graph.oses')"
-        :fill="true"
+        :chart-data="charts.systems.data"
+        :chart-labels="charts.systems.labels"
         :auto-colorize="true"
-        :height="200"
       />
     </k-column>
 
     <k-column width="1/1">
-      <area-chart
+      <AreaChart
         type="Line"
-        :chart-data="devicesOverTimeData"
-        :chart-labels="chartPeriodLabels"
+        height="300"
         download="Site_DevicesEvolution.png"
         :label="$t('simplestats.devices.graph.devicehistory')"
-        header-size="large"
+        :chart-data="charts.devicesOverTime.data"
+        :chart-labels="charts.devicesOverTime.labels"
         :x-title="$t('simplestats.charts.time')"
         :y-title="$t('simplestats.devices.graph.devicehistory.y')"
         :stacked="true"
-        :fill="true"
         :auto-colorize="true"
         :x-time-axis="true"
         :y-visits-axis="true"
-        :height="300"
-      ></area-chart>
+      />
     </k-column>
   </k-grid>
 </template>
 
 <script>
-
 import AreaChart from '../Ui/AreaChart.vue';
 import SectionBase from '../Sections/SimpleStatsSectionBase.vue';
 
 export default {
   extends: SectionBase,
+
   components: {
     AreaChart,
   },
 
   data() {
     return {
-      devicesData: [],
-      devicesLabels: [],
-      devicesOverTimeData: [],
-      chartPeriodLabels: [],
-      browsersData: [],
-      browsersLabels: [],
-      systemsData: [],
-      systemsLabels: [],
-    }
+      charts: {
+        devices: {
+          data: [],
+          labels: [],
+        },
+        browsers: {
+          data: [],
+          labels: [],
+        },
+        systems: {
+          data: [],
+          labels: [],
+        },
+        devicesOverTime: {
+          data: [],
+          labels: [],
+        },
+      },
+    };
   },
 
   methods: {
     loadData(response) {
-      this.devicesData    = response.devicesdata;
-      this.devicesLabels  = response.deviceslabels;
+      const map = {
+        devices: {
+          data: 'devicesdata',
+          labels: 'deviceslabels',
+        },
+        browsers: {
+          data: 'enginesdata',
+          labels: 'engineslabels',
+        },
+        systems: {
+          data: 'systemsdata',
+          labels: 'systemslabels',
+        },
+        devicesOverTime: {
+          data: 'devicesovertime',
+          labels: 'chartperiodlabels',
+        },
+      };
 
-      this.browsersData   = response.enginesdata;
-      this.browsersLabels = response.engineslabels;
-
-      this.devicesOverTimeData = response.devicesovertime;
-      this.chartPeriodLabels   = response.chartperiodlabels;
-
-      this.systemsData   = response.systemsdata;
-      this.systemsLabels = response.systemslabels;
+      Object.entries(map).forEach(([key, fields]) => {
+        this.charts[key].data = response[fields.data] || [];
+        this.charts[key].labels = response[fields.labels] || [];
+      });
     },
-  }
+  },
 };
 </script>
-
-<style lang="scss">
-
-</style>
