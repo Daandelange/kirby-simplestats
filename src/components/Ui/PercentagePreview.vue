@@ -29,13 +29,10 @@ export default {
     },
 
     color() {
-      return this.percentage < 25
-        ? 'light-dark(var(--color-red-600), var(--color-red-550))'
-        : this.percentage < 50
-        ? 'light-dark(var(--color-orange-600), var(--color-orange-550))'
-        : this.percentage < 75
-        ? 'light-dark(var(--color-yellow-600), var(--color-yellow-550))'
-        : 'light-dark(var(--color-green-600), var(--color-green-550))';
+      if (this.percentage < 25) return 'var(--color-red-600)';
+      if (this.percentage < 50) return 'var(--color-orange-600)';
+      if (this.percentage < 75) return 'var(--color-yellow-600)';
+      return 'var(--color-green-600)';
     },
   },
 };

@@ -9,7 +9,7 @@
       </k-text>
     </k-box>
 
-    <header class="k-header">
+    <header class="k-header k-simplestats-view-header">
       <k-grid class="k-simplestats-header" style="--columns: 7">
         <h1 class="k-header-title">
           <span class="k-header-title-text">{{ label }}</span>
@@ -191,20 +191,11 @@ export default {
       this.storeTab(this.tab);
     },
 
-    // Kirby breadcrumb sync (K3 + K5)
     updateBreadcrumb() {
+      const panel = usePanel();
       const label = this.tabs.find(t => t.name === this.tab)?.label || this.tab;
-
-      if (this?.$root?.$view?.breadcrumb) {
-        // Kirby <= 3.9
-        this.$root.$view.breadcrumb[0].label = label;
-        this.$root.$view.breadcrumb[0].link = null;
-      } else {
-        // Kirby 5
-        const panel = usePanel();
-        panel.view.breadcrumb[0].label = label;
-        panel.view.breadcrumb[0].link = null;
-      }
+      panel.view.breadcrumb[0].label = label;
+      panel.view.breadcrumb[0].link = null;
     },
   },
 };
@@ -216,12 +207,16 @@ export default {
 	  margin-bottom: .5rem;
   }
 
+  .k-simplestats-view-header {
+    margin-bottom: 0;
+  }
+
   .k-simplestats-header {
     align-items: center;
     margin-bottom: var(--header-padding-block);
 
     .k-header-title {
-      margin: 0;
+      margin-bottom: 0;
     }
   }
 

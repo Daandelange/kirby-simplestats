@@ -31,8 +31,7 @@
 </template>
 
 <script>
-
-import { Line as LineChart, Bar as BarChart, Pie as PieChart } from 'vue-chartjs/legacy'
+import { Line as LineChart, Bar as BarChart, Pie as PieChart } from 'vue-chartjs/legacy';
 import {
   Chart as ChartJS,
   Title,
@@ -46,7 +45,7 @@ import {
   Filler,
   BarElement,
   ArcElement,
-} from 'chart.js'
+} from 'chart.js';
 import 'chartjs-adapter-moment';
 import _Merge from 'lodash.merge';
 
@@ -70,7 +69,7 @@ export default {
   components: {
     LineChart,
     BarChart,
-    PieChart
+    PieChart,
   },
 
   inheritAttrs: false,
@@ -373,7 +372,7 @@ export default {
 <style lang="less">
 .ss-chart {
   .ss-chart-wrapper {
-    background-color: var(--item-color-back);
+    background-color: var(--table-color-back);
     padding: var(--spacing-4) var(--spacing-3);
     box-shadow: var(--shadow);
     border-radius: var(--rounded);
