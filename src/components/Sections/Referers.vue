@@ -1,65 +1,50 @@
 <template>
-  <k-grid variant="columns" style="gap: var(--spacing-12);">
+  <k-grid variant="columns" style="column-gap: var(--spacing-8)">
     <k-column width="1/2">
-      <area-chart v-if="refererMediumData.length > 0"
+      <AreaChart
         type="Pie"
-        :chart-data="refererMediumData"
-        :chart-labels="refererMediumLabels"
+        height="200"
         download="Site_ReferrersByMedium.png"
-        :label="$t('simplestats.referers.referersbymedium', 'Referers by medium')"
-        :fill="true"
+        :label="$t('simplestats.referers.referersbymedium')"
+        :chart-data="charts.byMedium.data"
+        :chart-labels="charts.byMedium.labels"
         :auto-colorize="true"
-        :height="200"
       />
     </k-column>
 
     <k-column width="1/2">
-      <area-chart
+      <AreaChart
         type="Pie"
-        :chart-data="refererDomainsData"
-        :chart-labels="refererDomainsLabels"
+        height="200"
         download="Site_ReferrersByDomain.png"
-        :label="$t('simplestats.referers.referersbydomain', 'Referers by domain')"
-        :fill="true"
+        :label="$t('simplestats.referers.referersbydomain')"
+        :chart-data="charts.byDomain.data"
+        :chart-labels="charts.byDomain.labels"
         :auto-colorize="true"
-        :height="200"
       />
     </k-column>
-
-    <!-- <k-column width="1/3">
-      <k-headline>Referrers by domain (this month)</k-headline>
-      <area-chart
-        type="Pie"
-        :chart-data="refererRecentDomainsData"
-      />
-    </k-column> -->
 
     <k-column width="1/1">
-      <area-chart
+      <AreaChart
         type="Line"
-        :chart-data="referersByMediumOverTimeData"
-        :chart-labels="chartPeriodLabels"
+        height="300"
         download="Site_ReferersEvolution.png"
         :label="$t('simplestats.referers.referersovertime')"
-        :y-title="$t('simplestats.charts.hitspermedium', 'Hits per medium')"
+        :chart-data="charts.byMediumOverTime.data"
+        :chart-labels="charts.byMediumOverTime.labels"
+        :y-title="$t('simplestats.charts.hitspermedium')"
         :stacked="true"
-        :fill="true"
         :auto-colorize="true"
         :x-time-axis="true"
         :y-visits-axis="true"
-        :height="300"
-      ></area-chart>
+      />
     </k-column>
 
     <k-column width="1/1">
-      <k-line-field />
-    </k-column>
-
-    <k-column width="1/1">
-      <searchable-table
-        :rows="refererTableData"
-        :columns="refererTableLabels"
+      <SearchableTable
         :label="$t('simplestats.referers.allreferers')"
+        :rows="table.rows"
+        :columns="table.columns"
       />
     </k-column>
   </k-grid>
@@ -67,100 +52,67 @@
 
 
 <script>
-
 import AreaChart from '../Ui/AreaChart.vue';
 import SearchableTable from '../Ui/SearchableTable.vue';
 import SectionBase from '../Sections/SimpleStatsSectionBase.vue';
 
 export default {
   extends: SectionBase,
+
   components: {
     AreaChart,
     SearchableTable,
   },
-  props: {
-    dateFrom : {
-      type: String,
-      required: true,
-    },
-    dateTo : {
-      type: String,
-      required: true,
-    },
-  },
+
   data() {
     return {
-      //...SectionBase.data(),
-
-      chartPeriodLabels: [],
-
-      refererDomainsData: [],
-      refererDomainsLabels: [],
-
-      // refererRecentDomainsData: [],
-      //refererRecentDomainsLabels: [],
-
-      refererMediumData: [],
-      refererMediumLabels: [],
-
-      refererTableData: [],
-      refererTableLabels: {},
-
-      referersByMediumOverTimeData: [],
-
-      userLocale: 'en',
-
-      timeOptions : {
-        layout: {
-          padding: {left: 5, right: 15, top: 5, bottom: 10}
+      charts: {
+        byDomain: {
+          data: [],
+          labels: [],
         },
-        scales: {
-          xAxes: [{
-            //display: false,
-            type: 'time',
-            time: {
-              unit: 'month',
-              displayFormats: {
-                  month: 'MMM YYYY',
-              }
-            }
-          }],
-          yAxes: [{
-            stacked: true
-          }]
-        }
-      }
-    }
+        byMedium: {
+          data: [],
+          labels: [],
+        },
+        byMediumOverTime: {
+          data: [],
+          labels: [],
+        },
+      },
+
+      table: {
+        rows: [],
+        columns: {},
+      },
+    };
   },
 
   methods: {
     loadData(response) {
+      const map = {
+        byDomain: {
+          data: 'referersbydomaindata',
+          labels: 'referersbydomainlabels',
+        },
+        byMedium: {
+          data: 'referersbymediumdata',
+          labels: 'referersbymediumlabels',
+        },
+        byMediumOverTime: {
+          data: 'referersbymediumovertimedata',
+          labels: 'chartperiodlabels',
+        },
+      };
 
-      this.chartPeriodLabels = response.chartperiodlabels;
+      Object.entries(map).forEach(([key, fields]) => {
+        this.charts[key].data = response[fields.data] || [];
+        this.charts[key].labels = response[fields.labels] || [];
+      });
 
-      this.refererDomainsData   = response.referersbydomaindata
-      this.refererDomainsLabels = response.referersbydomainlabels
-
-      this.refererMediumData   = response.referersbymediumdata
-      this.refererMediumLabels = response.referersbymediumlabels
-
-      // this.refererRecentDomainsData   = response.referersbydomainrecentdata
-      //this.refererRecentDomainsLabels = response.referersbydomainrecentlabels
-
-      this.refererTableData   = response.refererstabledata
-      this.refererTableLabels = response.refererstablelabels
-
-      this.referersByMediumOverTimeData = response.referersbymediumovertimedata;
-      //console.log( this.referersByMediumOverTimeData);
-
-      this.userLocale = window.panel.$language ? window.panel.$language.code : "";//this.$store.state.i18n.locale;
+      this.table.rows = response.refererstabledata || [];
+      this.table.columns = response.refererstablelabels || {};
     },
   },
 };
-
 </script>
-
-
-<style lang="less">
-
-</style>
