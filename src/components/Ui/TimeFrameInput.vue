@@ -1,5 +1,5 @@
 <template>
-  <k-grid class="ss-timeframe-input">
+  <k-grid class="ss-timeframe-input" style="column-gap: var(--spacing-6)">
 
     <!-- Date FROM input -->
     <k-column width="2/12" class="ss-tf-from-col">
@@ -81,7 +81,7 @@
           class="k-date-field-body"
           data-theme="field"
         >
-          
+
           <k-input
             ref="toDateField"
             :autofocus="false"
@@ -175,7 +175,7 @@ export default {
     if(this.initialViewPeriods > 0){
       this.dateFrom = this.dateChoices[minmax.max-Math.min(this.initialViewPeriods, minmax.max)];
     }
-    
+
     // Initial sanitation / sync
     this.updateDateFields(this.timeFrame);
   },
@@ -238,7 +238,7 @@ export default {
             return num;
         }
       },
-      
+
       sliderStepSettings: {
         mode: 'steps',
         // mode: 'filter',
@@ -261,14 +261,14 @@ export default {
             if(prevMonthFilter !== month){
               prevYearFilter = year;
               prevMonthFilter = month;
-              
+
               let timelineEl = thisRef.$el?.getElementsByClassName('ss-tf-range-col').item(0);
               if(timelineEl){
                 let numMonthlyItems = thisRef.dateChoices.length;
                 if(thisRef.timePeriod=="Weekly") numMonthlyItems /= 4; // (/4 because 4 weeks per month ±= monlthly period)
                 let pixelsPerPip = timelineEl.offsetWidth / Math.max(1, numMonthlyItems);
                 // Too few space for months ? (below 80 px year space = no months)
-                if((numMonthlyItems/12) > 3 && timelineEl.offsetWidth/Math.max(1,numMonthlyItems/12) < 80 ){ // 
+                if((numMonthlyItems/12) > 3 && timelineEl.offsetWidth/Math.max(1,numMonthlyItems/12) < 80 ){ //
                   return 0;
                 }
                 // Let scale determine visibility
@@ -316,7 +316,7 @@ export default {
           from: function (value) {
               let num = Number( thisRef.dateChoices.indexOf(value) );
               return num;
-              
+
           },
         },
       },
@@ -382,7 +382,7 @@ export default {
         'max': this.dateChoices.length-1,
       };
     },
-    // Cur selected time frame indexes/values 
+    // Cur selected time frame indexes/values
     timeFrame() {
       return [this.dateFrom, this.dateTo];
       // return [0,this.dateChoices.length-1];
@@ -436,7 +436,7 @@ export default {
           this.dateChoices.forEach( function(date, di){
 
             let curDateNum = Number(date.replaceAll('-','')).toFixed(0);
-            
+
             // New date after/before this candidate ? Ignore entries after.
             if((i===0 && curDateNum > newDateNum) || (i===1 && curDateNum < newDateNum)){
               return;
@@ -525,7 +525,7 @@ export default {
       background-color: var(--range-track-background);
       // padding: calc(0.25*var(--range-thumb-size)) 0;
 
-      
+
 
       .noUi-handle {
         width: var(--range-thumb-size);
@@ -683,17 +683,6 @@ export default {
       }
     }
 
-  }
-
-  // When they all fit in the same row
-  //@media screen and (min-width: 30rem) {
-  @container (min-width: 30rem) {
-    .ss-tf-from-col {
-      padding-right: 2rem;
-    }
-    .ss-tf-to-col {
-      padding-left: 2rem;
-    }
   }
 
   @container (max-width: 30rem) {
