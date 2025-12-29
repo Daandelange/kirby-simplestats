@@ -46,8 +46,7 @@ import {
   BarElement,
   ArcElement,
 } from 'chart.js';
-import 'chartjs-adapter-moment';
-import _Merge from 'lodash.merge';
+import 'chartjs-adapter-date-fns';
 
 ChartJS.register(
   Title,
@@ -163,7 +162,7 @@ export default {
     fullChartOptions() {
       const when = (c, o) => (c ? o : {});
 
-      return _Merge(
+      return this.deepMerge(
         {},
         this.chartOptions,
 
@@ -230,7 +229,7 @@ export default {
               time: {
                 unit: 'month',
                 displayFormats: {
-                  month: 'MMM YYYY',
+                  month: 'MMM yyyy',
                 },
               },
             },
@@ -243,7 +242,7 @@ export default {
             yAxis: {
               beginAtZero: true,
               title: {
-              display: true,
+                display: true,
                 text: this.yTitle ?? this.$t('simplestats.charts.visits'),
               },
             },
@@ -323,6 +322,25 @@ export default {
   },
 
   methods: {
+    deepMerge(target, ...sources) {
+      for (const source of sources) {
+        if (!source || typeof source !== 'object') continue;
+
+        for (const key in source) {
+          const value = source[key];
+
+          if (value && typeof value === 'object' && !Array.isArray(value)
+          ) {
+            target[key] = this.deepMerge(target[key] || {}, value);
+          } else {
+            target[key] = value;
+          }
+        }
+      }
+
+      return target;
+    },
+
     generateDownloadLink() {
       if (this.download === false) return;
 
