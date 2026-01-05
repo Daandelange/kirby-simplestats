@@ -1,10 +1,10 @@
 {
     "name": "daandelange/simplestats",
     "description": "Very minimal visitor analytics for your kirby website.",
-    "homepage": "https://github.com/Daandelange/kirby-simplestats",
     "type": "kirby-plugin",
-    "version": "0.7.7-beta",
+    "version": "1.0.0-alpha.3",
     "license": "MIT",
+    "homepage": "https://github.com/Daandelange/kirby-simplestats#readme",
     "authors": [
         {
             "name": "Daan de Lange",

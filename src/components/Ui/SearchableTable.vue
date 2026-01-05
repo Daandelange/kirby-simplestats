@@ -1,178 +1,107 @@
 <template>
-  <div class="ss-table">
-    <header class="k-section-header">
-      <k-headline class="h3 k-section-header">
-        {{ label }}
-      </k-headline>
-      <k-button-group class="ss-table-buttons">
-        <k-input
-          v-if="isSearchable"
-          v-model="searchterm"
-          :autofocus="false"
-          :placeholder="$t('simplestats.table.filter', 'Filter items …')"
-          type="text"
-          class="k-models-section-search k-button"
-          @keydown.esc="cancelSearch"
-          icon="search"
-        />
-        <!-- <k-button icon="search" :text="$t('search')" @click="onSearchToggle" :responsive="true" /> -->
-      </k-button-group>
-    </header>
+  <k-section :label="label" class="ss-table">
+    <k-button
+      v-if="isSearchable"
+      icon="filter"
+      size="xs"
+      slot="options"
+      text="Filter"
+      variant="filled"
+      @click="showSearch = !showSearch"
+    />
+
+    <k-input
+      v-if="isSearchable && showSearch"
+      v-model="searchTerm"
+      ref="searchInput"
+      icon="search"
+      type="text"
+      class="k-models-section-search"
+      :placeholder="$t('simplestats.table.filter')"
+    />
 
     <k-table
+      :index="false"
       :columns="columns"
       :rows="sortedFilteredRows"
-      layout="table"
-      :sortable="false"
-      size="tiny"
-      :empty="((searchterm && searchterm.length)?'No Search results...':$t('simplestats.nodatayet'))"
+      :empty="searchTerm ? 'No search results...' : $t('simplestats.nodatayet')"
       @header="onHeaderClick"
     />
-  </div>
+  </k-section>
 </template>
 
-
-
 <script>
-
 export default {
-  // k-table with search inspired by k-pages-section
-  // Maybe later sortable too ?
-
-  components: {
-    
+  props: {
+    label: { type: String },
+    columns: { type: Object },
+    rows: { type: Array },
   },
-  mounted(){
 
-  },
   data() {
-    // const thisRef = this;
-
     return {
-      searchterm: null,
-			// searching: false,
+      searchTerm: '',
+      showSearch: false,
       sortBy: null,
       sortAsc: true,
-    }
+    };
   },
-  props: {
-    label: {
-      type: String,
-      default: '',
-    },
-    columns: {
-      type: Object,
-      default(){
-        return {};
-      },
-    },
-    rows: {
-      type: Array,
-      default(){
-        return [];
-      },
-    },
-  },
+
   computed: {
     isSearchable(){
-      // Not searchable when empty
-      if( false === (this.rows && this.rows.length>=0) ) return false;
-      // Not searchable when columns are empty
-      if( false === (this.columns && Object.keys(this.columns).length>=0) ) return false;
-      // Is there at least one searchable column ?
-      return Object.values(this.columns).some((l) => l.search === true);
+      return Object.values(this.columns).some(col => col.search);
     },
-    sortedFilteredRows(){
-      return this.rows.filter( (value, index) => {
-        if(!(this.searchterm?.length)) return true;
-        for(const[colID, colAttrs] of Object.entries(this.columns)){
-          if(colAttrs.search===true){
-            if(typeof value[colID] === 'object') continue;
-            const colValue = String(value[colID]);
-            if(colValue && colValue.includes(this.searchterm)){
-              return true;
-            }
-          }
-        }
-        return value.slug?.includes(this.searchterm);
-      }).sort((a, b) => {
-        // No sorting = keep same
-        if(this.sortBy===null) return 0;
-        
-        const column = this.columns[this.sortBy];
-        const valueA = (column.type==='number' || column.type==='percentage')?Number(a[this.sortBy]):String(a[this.sortBy]);
-        const valueB = (column.type==='number' || column.type==='percentage')?Number(b[this.sortBy]):String(b[this.sortBy]);
-        
-        if(valueA > valueB) return this.sortAsc?-1:1;
-        else if(valueA < valueB) return this.sortAsc?1:-1;
-        return 0;
+
+    sortedFilteredRows() {
+      // Filter
+      const filtered = this.rows.filter(row => {
+        if (!this.searchTerm) return true;
+        return Object.entries(this.columns).some(([key, col]) => {
+          if (!col.search || typeof row[key] === 'object') return false;
+          return String(row[key])?.includes(this.searchTerm);
+        }) || row.slug?.includes(this.searchTerm);
+      })
+
+      // Sort
+      if (!this.sortBy) return filtered;
+
+      const { type } = this.columns[this.sortBy];
+      return filtered.sort((a, b) => {
+        const valueA = type === 'number' || type === 'percentage' ? Number(a[this.sortBy]) : String(a[this.sortBy]);
+        const valueB = type === 'number' || type === 'percentage' ? Number(b[this.sortBy]) : String(b[this.sortBy]);
+        if (valueA === valueB) return 0;
+        return (valueA > valueB ? 1 : -1) * (this.sortAsc ? 1 : -1);
       });
     },
   },
 
-  methods: {
-    cancelSearch() {
-			this.searchterm = null;
-		},
-    onHeaderClick(params){
-      if(params.column.sortable){
-        if(this.sortBy !== params.columnIndex){
-          this.sortBy = params.columnIndex;
-          this.sortAsc = true;
-        }
-        else if( this.sortAsc ){
-          this.sortAsc = false;
-        }
-        else {
-          this.sortBy = null;
-        }
-      }
-    }
+  watch: {
+    showSearch(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.$refs.searchInput?.focus();
+        });
+      };
+    },
   },
-};
+
+  methods: {
+    onHeaderClick({ column, columnIndex }) {
+      if (!column.sortable) return;
+
+      if (this.sortBy !== columnIndex) {
+        this.sortBy = columnIndex;
+        this.sortAsc = true;
+      } else {
+        this.sortAsc = !this.sortAsc;
+      };
+    },
+  },
+}
 </script>
 
-<style lang="less">
-.ss-table {
-
-  .k-table {
-    // Make native css smaller
-    --table-row-height: 26px;
-
-    .k-table-empty {
-      padding: var(--spacing-4);
-    }
-
-    thead tr th {
-      cursor: pointer;
-    }
-  }
-
-  .k-item-figure.k-image-field-preview, .k-flag-field-preview {
-    height: var(--table-row-height);
-    width: var(--table-row-height);
-    margin: 0 auto;
-  }
-
-  .k-table-index-column {
-    display: none;
-  }
-  // .k-flag-field-preview {
-    
-  // }
-
-  .ss-table-buttons {
-    // right: 0;
-    --padding-y: 0;
-    --padding-x: 0;
-  }
-  // .ss-no-hover {
-  //   &, &:hover {
-  //     cursor: default;
-  //   }
-  // }
-  .k-models-section-search.k-input {
-    margin-bottom: 0;
-  }
+<style>
+.ss-table .k-table thead tr th {
+  cursor: pointer;
 }
 </style>

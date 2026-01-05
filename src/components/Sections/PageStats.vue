@@ -1,167 +1,152 @@
 <template>
-    <k-grid variant="columns" style="gap: var(--spacing-12);">
-      <!-- TODO: Add more stats: Text stats (total unique visits total and per lang, most popular pages, etc) - Pie chart of page-by-page popularity - -->
-      <k-column>
-        <!-- <k-headline class="h5">{{ $t('simplestats.visits.visitsovertime', 'Visits over time') }}</k-headline> -->
-        <area-chart
-          type="Bar"
-          :chart-data="visitsOverTimeData"
-          :chart-options="chartOptions"
-          :chart-labels="chartPeriodLabels"
-          download="Site_Visits.png"
-          :x-title="$t('simplestats.charts.time', 'Time')"
-          :y-title="$t('simplestats.charts.visits', 'Visits')"
-          :height="100"
-          :x-time-axis="true"
-          :y-visits-axis="true"
-          :show-legend="false"
-          :fill="true"
-          :label="$t('simplestats.visits.visitsovertime', 'Visits over time')"
-        />
-      </k-column>
+  <k-grid variant="columns" style="column-gap: var(--spacing-8)">
+    <!-- TODO: Add more stats: Text stats (total unique visits total and per lang, most popular pages, etc) - Pie chart of page-by-page popularity - -->
+    <k-column width="1/1">
+      <k-simplestats-chart
+        type="Bar"
+        height="150"
+        download="Site_Visits.png"
+        :label="$t('simplestats.visits.visitsovertime')"
+        :chart-data="charts.visitsOverTime.data"
+        :chart-labels="charts.visitsOverTime.labels"
+        :x-title="$t('simplestats.charts.time')"
+        :y-title="$t('simplestats.charts.visits')"
+        :x-time-axis="true"
+        :y-visits-axis="true"
+      />
+    </k-column>
 
-      <k-column>
-        <!-- <k-headline class="h5">{{ $t('simplestats.visits.pagevisitsovertime') }}</k-headline> -->
-        <area-chart
-          :chart-data="pageVisitsOverTimeDataSorted"
-          :chart-labels="chartPeriodLabels"
-          :chart-options="chartOptions"
-          download="Site_PageVisits.png"
-          :x-title="$t('simplestats.charts.time')"
-          :y-title="$t('simplestats.charts.visits')"
-          :height="450"
-          :stacked="true"
-          :auto-colorize="true"
-          :x-time-axis="true"
-          :y-visits-axis="true"
-          :fill="true"
-          :label="$t('simplestats.visits.pagevisitsovertime')"
-        ></area-chart>
-      </k-column>
+    <k-column width="1/1">
+      <k-simplestats-chart
+        type="Line"
+        height="450"
+        download="Site_PageVisits.png"
+        :label="$t('simplestats.visits.pagevisitsovertime')"
+        :chart-data="pageVisitsOverTimeDataSorted"
+        :chart-labels="charts.pageVisitsOverTime.labels"
+        :x-title="$t('simplestats.charts.time')"
+        :y-title="$t('simplestats.charts.visits')"
+        :stacked="true"
+        :auto-colorize="true"
+        :x-time-axis="true"
+        :y-visits-axis="true"
+      />
+    </k-column>
 
-      <k-column width="3/4" v-if="languagesAreEnabled">
-        <area-chart
-          :chart-data="languagesOverTimeData"
-          :chart-labels="chartPeriodLabels"
-          :chart-options="chartOptions"
-          download="Site_LanguagesOverTime.png"
-          :x-title="$t('simplestats.charts.time')"
-          :y-title="$t('simplestats.charts.visits')"
-          :height="250"
-          :stacked="true"
-          :auto-colorize="true"
-          :fill="true"
-          :x-time-axis="true"
-          :y-visits-axis="true"
-          :label="$t('simplestats.visits.languagesovertime')"
-        ></area-chart>
-      </k-column>
+    <k-column width="2/3" v-if="languagesAreEnabled">
+      <k-simplestats-chart
+        type="Line"
+        height="250"
+        download="Site_LanguagesOverTime.png"
+        :label="$t('simplestats.visits.languagesovertime')"
+        :chart-data="charts.languagesOverTime.data"
+        :chart-labels="charts.languagesOverTime.labels"
+        :x-title="$t('simplestats.charts.time')"
+        :y-title="$t('simplestats.charts.visits')"
+        :stacked="true"
+        :auto-colorize="true"
+        :x-time-axis="true"
+        :y-visits-axis="true"
+      />
+    </k-column>
 
-      <k-column width="1/4" v-if="languagesAreEnabled">
-        
-        <!-- <k-headline>{{ $t('simplestats.visits.globallanguages') }}</k-headline> -->
-        <area-chart
-          v-if="globalLanguagesData.length > 0"
-          type="Pie"
-          download="Site_LanguagePopularity.png"
-          :chart-data="globalLanguagesData"
-          :chart-labels="chartLanguagesLabels"
-          :chart-options="chartOptions"
-          :auto-colorize="true"
-          :height="200"
-          :fill="true"
-          :label="$t('simplestats.visits.globallanguages')"
-        />
-      </k-column>
+    <k-column width="1/3" v-if="languagesAreEnabled">
+      <k-simplestats-chart
+        type="Pie"
+        height="242"
+        download="Site_LanguagePopularity.png"
+        :label="$t('simplestats.visits.globallanguages')"
+        :chart-data="charts.globalLanguages.data"
+        :chart-labels="charts.globalLanguages.labels"
+        :auto-colorize="true"
+      />
+    </k-column>
 
-      <k-column>
-
-        <searchable-table
-          :columns="columns"
-          :rows="rows"
-          layout="table"
-          :label="$t('simplestats.visits.visitedpages')"
-        />
-      </k-column>
-
-    </k-grid>
+    <k-column>
+      <k-simplestats-searchabletable
+        :label="$t('simplestats.visits.visitedpages')"
+        :rows="table.rows"
+        :columns="table.columns"
+      />
+    </k-column>
+  </k-grid>
 </template>
 
 <script>
-
-import AreaChart from '../Ui/AreaChart.vue';
-import SearchableTable from '../Ui/SearchableTable.vue';
 import SectionBase from '../Sections/SimpleStatsSectionBase.vue';
-import { useI18n } from 'kirbyuse';
 
 export default {
-  extends: SectionBase,
-  components: {
-    SearchableTable,
-    AreaChart,
-  },
+  mixins: [SectionBase],
+
   data() {
     return {
-      //...SectionBase.data(),
-
-      // Page Visits table
-      rows: [],
-      columns: {},
-
-      chartPeriodLabels: [],
-
-      visitsOverTimeData:   [],
-      pageVisitsOverTimeData:   [],
-
-      languagesOverTimeData: [],
-      globalLanguagesData: [],
-      languagesAreEnabled: false,
-      userLocale: 'en',
-
-      chartOptions: {
-        animation: {
-          onComplete: this.generateDownloadLink,
-        },        
+      charts: {
+        visitsOverTime: {
+          data: [],
+          labels: [],
+        },
+        pageVisitsOverTime: {
+          data: [],
+          labels: [],
+        },
+        languagesOverTime: {
+          data: [],
+          labels: [],
+        },
+        globalLanguages: {
+          data: [],
+          labels: [],
+        },
       },
-    }
-  },
-  props: {
 
+      table: {
+        rows: [],
+        columns: {},
+      },
+
+      languagesAreEnabled: false,
+    };
   },
+
   computed: {
-    pageVisitsOverTimeDataSorted(){
-      return this.pageVisitsOverTimeData?.sort((a, b) => (a.ss_uid<b.ss_uid?-1:(a.ss_uid>b.ss_uid)?1:0));
+    pageVisitsOverTimeDataSorted() {
+      return [...this.charts.pageVisitsOverTime.data].sort((a, b) =>
+        a.ss_uid < b.ss_uid ? -1 : a.ss_uid > b.ss_uid ? 1 : 0
+      );
     },
   },
+
   methods: {
-    
-    loadData(apiResponse){
+    loadData(response) {
+      const map = {
+        visitsOverTime: {
+          data: 'visitsovertimedata',
+          labels: 'chartperiodlabels',
+        },
+        pageVisitsOverTime: {
+          data: 'pagevisitsovertimedata',
+          labels: 'chartperiodlabels',
+        },
+        languagesOverTime: {
+          data: 'languagesovertimedata',
+          labels: 'chartperiodlabels',
+        },
+        globalLanguages: {
+          data: 'globallanguagesdata',
+          labels: 'chartlanguageslabels',
+        },
+      };
 
-      this.columns = apiResponse.pagestatslabels
-      this.rows    = apiResponse.pagestatsdata
+      Object.entries(map).forEach(([key, fields]) => {
+        this.charts[key].data = response[fields.data] || [];
+        this.charts[key].labels = response[fields.labels] || [];
+      });
 
-      this.chartPeriodLabels = apiResponse.chartperiodlabels
-      this.visitsOverTimeData   = apiResponse.visitsovertimedata
+      this.table.rows = response.pagestatsdata || [];
+      this.table.columns = response.pagestatslabels || {};
 
-      this.pageVisitsOverTimeData = apiResponse.pagevisitsovertimedata
-
-      this.globalLanguagesData = apiResponse.globallanguagesdata
-      this.chartLanguagesLabels = apiResponse.chartlanguageslabels
-      this.languagesOverTimeData = apiResponse.languagesovertimedata
-      this.languagesAreEnabled = apiResponse.languagesAreEnabled
-      
-      if(window.panel?.$language || this.$store?.state?.i18n){ // k3
-        this.userLocale = window.panel.$language ? window.panel.$language.locale : (this.$store.state.i18n ? this.$store.state.i18n.locale : 'en');
-      }
-      else { // k5
-        this.userLocale = window.panel.language.code ?? 'en';
-      }
-    }
- 
-  }
+      this.languagesAreEnabled = Boolean(response.languagesAreEnabled);
+    },
+  },
 };
 </script>
-
-<style lang="scss">
-
-</style>
