@@ -1,7 +1,7 @@
 <template>
   <k-grid variant="columns" style="column-gap: var(--spacing-8)">
     <k-column width="1/3">
-      <AreaChart
+      <k-simplestats-chart
         type="Pie"
         height="200"
         download="Site_Devices.png"
@@ -13,7 +13,7 @@
     </k-column>
 
     <k-column width="1/3">
-      <AreaChart
+      <k-simplestats-chart
         type="Pie"
         height="200"
         download="Site_BrowserEngines.png"
@@ -25,7 +25,7 @@
     </k-column>
 
     <k-column width="1/3">
-      <AreaChart
+      <k-simplestats-chart
         type="Pie"
         height="200"
         download="Site_OperatingSystems.png"
@@ -37,7 +37,7 @@
     </k-column>
 
     <k-column width="1/1">
-      <AreaChart
+      <k-simplestats-chart
         type="Line"
         height="300"
         download="Site_DevicesEvolution.png"
@@ -56,15 +56,10 @@
 </template>
 
 <script>
-import AreaChart from '../Ui/AreaChart.vue';
 import SectionBase from '../Sections/SimpleStatsSectionBase.vue';
 
 export default {
-  extends: SectionBase,
-
-  components: {
-    AreaChart,
-  },
+  mixins: [SectionBase],
 
   data() {
     return {

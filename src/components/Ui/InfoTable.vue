@@ -17,8 +17,6 @@
 
 <script>
 export default {
-  name: 'InfoTable',
-
   props: {
     label: { type: String },
     rows: { type: Array },

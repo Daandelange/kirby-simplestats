@@ -2,7 +2,7 @@
   <k-grid variant="columns" style="column-gap: var(--spacing-8)">
     <!-- TODO: Add more stats: Text stats (total unique visits total and per lang, most popular pages, etc) - Pie chart of page-by-page popularity - -->
     <k-column width="1/1">
-      <AreaChart
+      <k-simplestats-chart
         type="Bar"
         height="150"
         download="Site_Visits.png"
@@ -17,7 +17,8 @@
     </k-column>
 
     <k-column width="1/1">
-      <AreaChart
+      <k-simplestats-chart
+        type="Line"
         height="450"
         download="Site_PageVisits.png"
         :label="$t('simplestats.visits.pagevisitsovertime')"
@@ -33,7 +34,8 @@
     </k-column>
 
     <k-column width="2/3" v-if="languagesAreEnabled">
-      <AreaChart
+      <k-simplestats-chart
+        type="Line"
         height="250"
         download="Site_LanguagesOverTime.png"
         :label="$t('simplestats.visits.languagesovertime')"
@@ -49,7 +51,7 @@
     </k-column>
 
     <k-column width="1/3" v-if="languagesAreEnabled">
-      <AreaChart
+      <k-simplestats-chart
         type="Pie"
         height="242"
         download="Site_LanguagePopularity.png"
@@ -61,7 +63,7 @@
     </k-column>
 
     <k-column>
-      <SearchableTable
+      <k-simplestats-searchabletable
         :label="$t('simplestats.visits.visitedpages')"
         :rows="table.rows"
         :columns="table.columns"
@@ -71,17 +73,10 @@
 </template>
 
 <script>
-import AreaChart from '../Ui/AreaChart.vue';
-import SearchableTable from '../Ui/SearchableTable.vue';
 import SectionBase from '../Sections/SimpleStatsSectionBase.vue';
 
 export default {
-  extends: SectionBase,
-
-  components: {
-    SearchableTable,
-    AreaChart,
-  },
+  mixins: [SectionBase],
 
   data() {
     return {

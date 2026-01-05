@@ -1,7 +1,7 @@
 <template>
   <k-grid variant="columns" style="column-gap: var(--spacing-8)">
     <k-column width="1/2">
-      <AreaChart
+      <k-simplestats-chart
         type="Pie"
         height="200"
         download="Site_ReferrersByMedium.png"
@@ -13,7 +13,7 @@
     </k-column>
 
     <k-column width="1/2">
-      <AreaChart
+      <k-simplestats-chart
         type="Pie"
         height="200"
         download="Site_ReferrersByDomain.png"
@@ -25,7 +25,7 @@
     </k-column>
 
     <k-column width="1/1">
-      <AreaChart
+      <k-simplestats-chart
         type="Line"
         height="300"
         download="Site_ReferersEvolution.png"
@@ -41,7 +41,7 @@
     </k-column>
 
     <k-column width="1/1">
-      <SearchableTable
+      <k-simplestats-searchabletable
         :label="$t('simplestats.referers.allreferers')"
         :rows="table.rows"
         :columns="table.columns"
@@ -52,17 +52,10 @@
 
 
 <script>
-import AreaChart from '../Ui/AreaChart.vue';
-import SearchableTable from '../Ui/SearchableTable.vue';
 import SectionBase from '../Sections/SimpleStatsSectionBase.vue';
 
 export default {
-  extends: SectionBase,
-
-  components: {
-    AreaChart,
-    SearchableTable,
-  },
+  mixins: [SectionBase],
 
   data() {
     return {

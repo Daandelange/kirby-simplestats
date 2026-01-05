@@ -6,11 +6,11 @@
       </k-column>
 
       <k-column width="1/1">
-        <InfoTable :label="$t('simplestats.info.db.title')" :rows="dbInfo" />
+        <k-simplestats-infotable :label="$t('simplestats.info.db.title')" :rows="dbInfo" />
       </k-column>
 
       <k-column width="1/1">
-        <SearchableTable
+        <k-simplestats-searchabletable
           :label="$t('simplestats.info.db.versionhistory')"
           :rows="dbHistory"
           :columns="dbHistoryLabels"
@@ -61,18 +61,9 @@
 </template>
 
 <script>
-import SearchableTable from '../Ui/SearchableTable.vue';
-import InfoTable from '../Ui/InfoTable.vue';
 import { usePanel } from 'kirbyuse';
 
 export default {
-  extends: 'k-pages-section',
-
-  components: {
-    SearchableTable,
-    InfoTable,
-  },
-
   data() {
     return {
       db: {

@@ -63,15 +63,11 @@ ChartJS.register(
 );
 
 export default {
-  name: 'AreaChart',
-
   components: {
     LineChart,
     BarChart,
     PieChart,
   },
-
-  inheritAttrs: false,
 
   props: {
     type: {

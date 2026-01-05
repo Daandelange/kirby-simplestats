@@ -2,8 +2,6 @@
 import { usePanel, useApi } from "kirbyuse";
 
 export default {
-  extends: "k-pages-section",
-
   props: {
     sectionName: {
       type: String,

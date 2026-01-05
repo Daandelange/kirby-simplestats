@@ -32,8 +32,6 @@
 
 <script>
 export default {
-  name: 'SearchableTable',
-
   props: {
     label: { type: String },
     columns: { type: Object },

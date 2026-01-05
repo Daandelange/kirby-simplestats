@@ -121,8 +121,6 @@
 import { usePanel } from 'kirbyuse';
 
 export default {
-  name: 'TrackingTester',
-
   data() {
     const now = new Date();
     const from = new Date();

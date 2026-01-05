@@ -6,7 +6,7 @@
       </k-column>
 
       <k-column width="1/1">
-        <SearchableTable
+        <k-simplestats-searchabletable
           :label="$t('simplestats.info.config.currentusers.title')"
           :rows="rows"
           :columns="columns"
@@ -21,20 +21,15 @@
 
 <script>
 import SectionBase from '../Sections/SimpleStatsSectionBase.vue';
-import SearchableTable from '../Ui/SearchableTable.vue';
 
 export default {
-  extends: SectionBase,
+  mixins: [SectionBase],
 
   data() {
     return {
       rows: [],
       columns: {},
     }
-  },
-
-  components: {
-    SearchableTable,
   },
 
   methods: {

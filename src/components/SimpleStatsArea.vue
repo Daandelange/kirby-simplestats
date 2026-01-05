@@ -13,7 +13,7 @@
       {{ label }}
 
       <template #buttons>
-        <TimeFrameInput
+        <k-simplestats-timespan
           ref="timeFrame"
           :dateChoices="timeframes"
           :time-period="timePeriod"
@@ -24,21 +24,21 @@
 
     <k-tabs :tab="tab" :tabs="tabsWithLinks" />
 
-    <PageStats
+    <k-simplestats-pagestats-view
       v-if="tab == tabs[0].name"
       :dateFrom="dateFrom"
       :dateTo="dateTo"
       section-name="pagestats"
     />
 
-    <Devices
+    <k-simplestats-devices-view
       v-else-if="tab == tabs[1].name"
       :dateFrom="dateFrom"
       :dateTo="dateTo"
       section-name="devicestats"
     />
 
-    <Referers
+    <k-simplestats-referers-view
       v-else-if="tab == tabs[2].name"
       :dateFrom="dateFrom"
       :dateTo="dateTo"
@@ -48,24 +48,24 @@
     <k-grid v-else-if="tab == tabs[3].name" variant="columns">
       <!-- CONFIGURATION -->
       <k-column width="1/2">
-        <Configuration section-name="configinfo" />
+        <k-simplestats-configuration section-name="configinfo" />
       </k-column>
 
       <!-- DB INFORMATION -->
       <k-column width="1/2">
-        <DbInformation section-name="listdbinfo" />
+        <k-simplestats-dbinformation />
       </k-column>
 
       <!-- TRACKING TESTER -->
       <k-column width="1/1">
         <k-line-field />
-        <TrackingTester />
+        <k-simplestats-trackingtester />
       </k-column>
 
       <!-- VISITORS TABLE -->
       <k-column width="1/1">
         <k-line-field />
-        <Visitors section-name="listvisitors" />
+        <k-simplestats-visitors section-name="listvisitors" />
       </k-column>
     </k-grid>
 
@@ -77,29 +77,9 @@
 </template>
 
 <script>
-import Visitors from "./Sections/Visitors.vue";
-import PageStats from "./Sections/PageStats.vue";
-import Devices from "./Sections/Devices.vue";
-import Referers from "./Sections/Referers.vue";
-import DbInformation from "./Sections/DbInformation.vue";
-import Configuration from "./Sections/Configuration.vue";
-import TrackingTester from "./Sections/TrackingTester.vue";
-import TimeFrameInput from "./Ui/TimeFrameInput.vue";
-
 import { usePanel } from "kirbyuse";
 
 export default {
-  components: {
-    Visitors,
-    PageStats,
-    Devices,
-    Referers,
-    DbInformation,
-    Configuration,
-    TrackingTester,
-    TimeFrameInput,
-  },
-
   props: {
     label: {
       type: String,
