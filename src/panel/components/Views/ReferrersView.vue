@@ -41,7 +41,7 @@
     </k-column>
 
     <k-column width="1/1">
-      <k-simplestats-searchabletable
+      <k-simplestats-filter-table
         :label="$t('simplestats.referers.allreferers')"
         :rows="table.rows"
         :columns="table.columns"
@@ -52,10 +52,10 @@
 
 
 <script>
-import SectionBase from '../Sections/SimpleStatsSectionBase.vue';
+import ModelView from './ModelView.vue';
 
 export default {
-  mixins: [SectionBase],
+  mixins: [ModelView],
 
   data() {
     return {

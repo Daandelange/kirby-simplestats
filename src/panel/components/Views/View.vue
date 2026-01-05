@@ -1,6 +1,6 @@
 <template>
   <k-panel-inside class="k-simplestats-view">
-    <!-- DISCLAIMER -->
+    <!-- Disclaimer -->
     <k-box v-if="!isLoading && !dismissDisclaimer" theme="text">
       <k-text size="small">
         <h3>{{ $t('simplestats.disclaimer.title') }}</h3>
@@ -24,7 +24,7 @@
 
     <k-tabs :tab="tab" :tabs="tabsWithLinks" />
 
-    <k-simplestats-pagestats-view
+    <k-simplestats-visits-view
       v-if="tab == tabs[0].name"
       :dateFrom="dateFrom"
       :dateTo="dateTo"
@@ -38,38 +38,22 @@
       section-name="devicestats"
     />
 
-    <k-simplestats-referers-view
+    <k-simplestats-referrers-view
       v-else-if="tab == tabs[2].name"
       :dateFrom="dateFrom"
       :dateTo="dateTo"
       section-name="refererstats"
     />
 
-    <k-grid v-else-if="tab == tabs[3].name" variant="columns">
-      <!-- CONFIGURATION -->
-      <k-column width="1/2">
-        <k-simplestats-configuration section-name="configinfo" />
-      </k-column>
+    <k-simplestats-info-view
+      v-else-if="tab == tabs[3].name"
+    />
 
-      <!-- DB INFORMATION -->
-      <k-column width="1/2">
-        <k-simplestats-dbinformation />
-      </k-column>
-
-      <!-- TRACKING TESTER -->
-      <k-column width="1/1">
-        <k-line-field />
-        <k-simplestats-trackingtester />
-      </k-column>
-
-      <!-- VISITORS TABLE -->
-      <k-column width="1/1">
-        <k-line-field />
-        <k-simplestats-visitors section-name="listvisitors" />
-      </k-column>
-    </k-grid>
-
-    <k-empty v-else layout="cards" :text="$t('simplestats.taberror')" />
+    <k-empty
+      v-else
+      layout="cards"
+      :text="$t('simplestats.taberror')"
+    />
 
     <!-- Invisible color getter util for CSS to JS style data transfer -->
     <div id="chart-default-color-getter"></div>

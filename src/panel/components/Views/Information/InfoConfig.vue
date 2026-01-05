@@ -6,11 +6,17 @@
       </k-column>
 
       <k-column width="1/1">
-        <k-simplestats-infotable :label="$t('simplestats.info.config.tracking')" :rows="trackingData" />
+        <k-simplestats-info-table
+          :label="$t('simplestats.info.config.tracking')"
+          :rows="trackingData"
+        />
       </k-column>
 
       <k-column width="1/1">
-        <k-simplestats-infotable :label="$t('simplestats.info.config.log.title')" :rows="loggingData" />
+        <k-simplestats-info-table
+          :label="$t('simplestats.info.config.log.title')"
+          :rows="loggingData"
+        />
       </k-column>
 
       <k-column v-if="!isLoading && !saltIsSet" width="1/1">
@@ -23,10 +29,10 @@
 </template>
 
 <script>
-import SectionBase from '../Sections/SimpleStatsSectionBase.vue'
+import ModelView from '../ModelView.vue'
 
 export default {
-  mixins: [SectionBase],
+  mixins: [ModelView],
 
   data() {
     return {

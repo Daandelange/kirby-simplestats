@@ -63,7 +63,7 @@
     </k-column>
 
     <k-column>
-      <k-simplestats-searchabletable
+      <k-simplestats-filter-table
         :label="$t('simplestats.visits.visitedpages')"
         :rows="table.rows"
         :columns="table.columns"
@@ -73,10 +73,10 @@
 </template>
 
 <script>
-import SectionBase from '../Sections/SimpleStatsSectionBase.vue';
+import ModelView from './ModelView.vue';
 
 export default {
-  mixins: [SectionBase],
+  mixins: [ModelView],
 
   data() {
     return {

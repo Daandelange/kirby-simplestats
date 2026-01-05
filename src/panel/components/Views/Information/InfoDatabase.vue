@@ -6,11 +6,14 @@
       </k-column>
 
       <k-column width="1/1">
-        <k-simplestats-infotable :label="$t('simplestats.info.db.title')" :rows="dbInfo" />
+        <k-simplestats-info-table
+          :label="$t('simplestats.info.db.title')"
+          :rows="dbInfo"
+        />
       </k-column>
 
       <k-column width="1/1">
-        <k-simplestats-searchabletable
+        <k-simplestats-filter-table
           :label="$t('simplestats.info.db.versionhistory')"
           :rows="dbHistory"
           :columns="dbHistoryLabels"

@@ -56,10 +56,10 @@
 </template>
 
 <script>
-import SectionBase from '../Sections/SimpleStatsSectionBase.vue';
+import ModelView from './ModelView.vue';
 
 export default {
-  mixins: [SectionBase],
+  mixins: [ModelView],
 
   data() {
     return {
