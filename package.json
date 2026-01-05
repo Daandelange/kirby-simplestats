@@ -3,32 +3,16 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "kirbyup src/index.js --watch",
-    "serve": "kirbyup src/index.js --serve",
+    "dev": "kirbyup serve src/index.js",
     "build": "kirbyup src/index.js"
   },
-  "posthtml": {
-    "recognizeSelfClosing": true
-  },
   "devDependencies": {
-    "esbuild-wasm": "^0.17.19",
-    "kirbyup": "^2.2.1",
-    "kirbyuse": "^1.0.0",
-    "less": "^4.4.2"
+    "kirbyup": "^3.4.1",
+    "kirbyuse": "^1.1.0"
   },
   "dependencies": {
     "chart.js": "^3.9.1",
     "chartjs-adapter-date-fns": "^3.0.0",
-    "noui-vue-fr": "^0.0.8",
-    "nouislider": "^15.8.1",
     "vue-chartjs": "^4.1.2"
-  },
-  "overrides": {
-    "esbuild": "npm:esbuild-wasm@latest"
-  },
-  "pnpm": {
-    "overrides": {
-      "esbuild": "npm:esbuild-wasm@latest"
-    }
   }
 }
