@@ -313,14 +313,12 @@ export default {
 };
 </script>
 
-<style lang="less">
-.trackingtester {
-  .k-table-action {
-    width: 0 !important;
-  }
+<style>
+.trackingtester .k-table-action {
+  width: 0 !important;
+}
 
-  .k-text-field-preview {
-    white-space: normal;
-  }
+.trackingtester .k-text-field-preview {
+  white-space: normal;
 }
 </style>

@@ -102,10 +102,8 @@ export default {
 }
 </script>
 
-<style lang="less">
-.ss-table {
-  .k-table thead tr th {
-    cursor: pointer;
-  }
+<style>
+.ss-table .k-table thead tr th {
+  cursor: pointer;
 }
 </style>

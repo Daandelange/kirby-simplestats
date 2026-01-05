@@ -387,16 +387,15 @@ export default {
 }
 </script>
 
-<style lang="less">
-.ss-chart {
-  .ss-chart-wrapper {
-    background-color: var(--table-color-back);
-    padding: var(--spacing-4) var(--spacing-3);
-    box-shadow: var(--shadow);
-    border-radius: var(--rounded);
-  }
-  &.ss-pie-chart .ss-chart-wrapper {
-    padding: var(--spacing-4) 0 var(--spacing-6);
-  }
+<style>
+.ss-chart .ss-chart-wrapper {
+  background-color: var(--table-color-back);
+  padding: var(--spacing-4) var(--spacing-3);
+  box-shadow: var(--shadow);
+  border-radius: var(--rounded);
+}
+
+.ss-chart.ss-pie-chart .ss-chart-wrapper {
+  padding: var(--spacing-4) 0 var(--spacing-6);
 }
 </style>

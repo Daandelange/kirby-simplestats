@@ -38,31 +38,29 @@ export default {
 };
 </script>
 
-<style lang="less">
-.ss-percentage-field-preview {
-  .ss-track {
-    position: relative;
-    display: flex;
-    align-items: center;
-    font-size: .9em;
-    height: 1.25rem;
-    background-color: light-dark(
-      var(--color-gray-200),
-      var(--color-gray-800)
-    );
-    border-radius: .25rem;
-    overflow: hidden;
-    user-select: none;
-  }
+<style>
+.ss-percentage-field-preview .ss-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: 0.9em;
+  height: 1.25rem;
+  background-color: light-dark(
+    var(--color-gray-200),
+    var(--color-gray-800)
+  );
+  border-radius: 0.25rem;
+  overflow: hidden;
+  user-select: none;
+}
 
-  .ss-fill {
-    height: 100%;
-  }
+.ss-percentage-field-preview .ss-fill {
+  height: 100%;
+}
 
-  .ss-percentage {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+.ss-percentage-field-preview .ss-percentage {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>
