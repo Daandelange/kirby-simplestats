@@ -9,21 +9,18 @@
       </k-text>
     </k-box>
 
-    <header class="k-header k-simplestats-view-header">
-      <k-grid class="k-simplestats-header" style="--columns: 7">
-        <h1 class="k-header-title">
-          <span class="k-header-title-text">{{ label }}</span>
-        </h1>
+    <k-header class="k-simplestats-view-header">
+      {{ label }}
 
+      <template #buttons>
         <TimeFrameInput
           ref="timeFrame"
           :dateChoices="timeframes"
           :time-period="timePeriod"
           :initial-view-periods="initialViewPeriods"
-          style="--width: 2/4"
         />
-      </k-grid>
-    </header>
+      </template>
+    </k-header>
 
     <k-tabs :tab="tab" :tabs="tabsWithLinks" />
 
@@ -201,29 +198,20 @@ export default {
 };
 </script>
 
-<style lang="less">
-.k-simplestats-view {
-  .k-header:has(+ .ss-timeframe-input) {
-	  margin-bottom: .5rem;
-  }
+<style>
+/* K4 header fix */
+.k-simplestats-view .k-header:has(+ .k-simplestats-view-header) {
+  margin-bottom: 0;
+}
 
-  .k-simplestats-view-header {
-    margin-bottom: 0;
-  }
+.k-simplestats-view #chart-default-color-getter {
+  display: none;
+  color: light-dark(var(--color-dark), var(--color-light));
+}
 
-  .k-simplestats-header {
-    align-items: center;
-    margin-bottom: var(--header-padding-block);
-
-    .k-header-title {
-      margin-bottom: 0;
-    }
-  }
-
-  // To grab color from JS
-  #chart-default-color-getter {
-    display: none;
-    color: light-dark(var(--color-dark), var(--color-light));
+@container (max-width: 30rem) {
+  .k-simplestats-view .k-header {
+    flex-direction: column;
   }
 }
 </style>
