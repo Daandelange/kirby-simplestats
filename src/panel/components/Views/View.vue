@@ -28,21 +28,21 @@
       v-if="tab == tabs[0].name"
       :dateFrom="dateFrom"
       :dateTo="dateTo"
-      section-name="pagestats"
+      path="pagestats"
     />
 
     <k-simplestats-devices-view
       v-else-if="tab == tabs[1].name"
       :dateFrom="dateFrom"
       :dateTo="dateTo"
-      section-name="devicestats"
+      path="devicestats"
     />
 
     <k-simplestats-referrers-view
       v-else-if="tab == tabs[2].name"
       :dateFrom="dateFrom"
       :dateTo="dateTo"
-      section-name="refererstats"
+      path="refererstats"
     />
 
     <k-simplestats-info-view

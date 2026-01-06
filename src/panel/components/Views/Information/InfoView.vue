@@ -1,7 +1,7 @@
 <template>
   <k-grid variant="columns">
     <k-column width="1/2">
-      <k-simplestats-info-config section-name="configinfo" />
+      <k-simplestats-info-config path="configinfo" />
     </k-column>
 
     <k-column width="1/2">
@@ -15,7 +15,7 @@
 
     <k-column width="1/1">
       <k-line-field />
-      <k-simplestats-info-visitors section-name="listvisitors" />
+      <k-simplestats-info-visitors path="listvisitors" />
     </k-column>
   </k-grid>
 </template>

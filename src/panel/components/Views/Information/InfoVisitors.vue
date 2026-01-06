@@ -20,10 +20,10 @@
 </template>
 
 <script>
-import ModelView from '../ModelView.vue';
+import apiFetch from '../../../mixins/apiFetch.js';
 
 export default {
-  mixins: [ModelView],
+  mixins: [apiFetch],
 
   data() {
     return {
