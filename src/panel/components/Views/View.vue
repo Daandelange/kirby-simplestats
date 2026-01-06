@@ -14,7 +14,7 @@
 
       <template #buttons>
         <k-simplestats-timespan
-          ref="timeFrame"
+          ref="timespan"
           :dateChoices="timeframes"
           :time-period="timePeriod"
           :initial-view-periods="initialViewPeriods"
@@ -108,11 +108,11 @@ export default {
     },
 
     dateFrom() {
-      return this.$refs.timeFrame?.dateFrom;
+      return this.$refs.timespan?.dateFrom;
     },
 
     dateTo() {
-      return this.$refs.timeFrame?.dateTo;
+      return this.$refs.timespan?.dateTo;
     },
   },
 
