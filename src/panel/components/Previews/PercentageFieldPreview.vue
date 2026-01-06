@@ -1,14 +1,10 @@
 <template>
-  <p class="ss-percentage-field-preview k-text-field-preview">
-    <span class="ss-track">
-      <span
-        class="ss-fill"
-        :style="{
-          width: percentage + '%',
-          backgroundColor: color
-        }"
-      />
-      <span class="ss-percentage">{{ percentage }}%</span>
+  <p class="k-percentage-field-preview k-text-field-preview" :style="cssVars">
+    <span class="track" :title="`${column.label}: ${percentage}%`">
+      <span class="fill" />
+      <span class="percentage">
+        {{ percentage }}%
+      </span>
     </span>
   </p>
 </template>
@@ -16,35 +12,40 @@
 <script>
 export default {
   props: {
-    value: {
-      type: [Number, String],
-      default: 0,
-    },
+    value: Number,
+    row: Object,
+    column: Object
   },
 
-  computed:{
+  computed: {
     percentage() {
-      const number = Number(this.value) || 0;
-      return Math.min(100, Math.max(0, Math.round(number * 100)));
+      return Math.min(100, Math.max(0, Math.round(this.value * 100)));
     },
 
-    color() {
+    cssVars() {
+      return {
+        '--percentage': `${this.percentage}%`,
+        '--percentage-color': this.percentageColor
+      };
+    },
+
+    percentageColor() {
       if (this.percentage < 25) return 'var(--color-red-600)';
       if (this.percentage < 50) return 'var(--color-orange-600)';
       if (this.percentage < 75) return 'var(--color-yellow-600)';
       return 'var(--color-green-600)';
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style>
-.ss-percentage-field-preview .ss-track {
+.k-percentage-field-preview .track {
   position: relative;
   display: flex;
   align-items: center;
-  font-size: 0.9em;
   height: 1.25rem;
+  font-size: 0.9em;
   background-color: light-dark(
     var(--color-gray-200),
     var(--color-gray-800)
@@ -54,11 +55,14 @@ export default {
   user-select: none;
 }
 
-.ss-percentage-field-preview .ss-fill {
+.k-percentage-field-preview .fill {
   height: 100%;
+  width: var(--percentage);
+  background-color: var(--percentage-color);
+  transition: width 0.3s ease;
 }
 
-.ss-percentage-field-preview .ss-percentage {
+.k-percentage-field-preview .percentage {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
