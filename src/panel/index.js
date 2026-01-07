@@ -20,7 +20,7 @@ import Timespan from "./components/View/Timespan.vue";
 import PercentageFieldPreview from "./components/Previews/PercentageFieldPreview.vue";
 
 // Sections
-// import PageSection from "./components/Sections/PageSection.vue";
+import PagestatsSection from "./components/Sections/PagestatsSection.vue";
 
 panel.plugin("daandelange/simplestats", {
   components: {
@@ -44,6 +44,6 @@ panel.plugin("daandelange/simplestats", {
   },
 
   sections: {
-    // "pagestats": PageSection,
+    "pagestats": PagestatsSection,
   },
 });
