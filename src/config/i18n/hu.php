@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'simplestats.view'                  => 'Simple Stats',
+
     // Misc
     'simplestats.nodatayet'             => 'Nincs még adat',
     'simplestats.nodatafortimerange'    => 'Nincs adat a kiválasztott időtartományban.',

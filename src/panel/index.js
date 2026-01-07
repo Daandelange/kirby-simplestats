@@ -11,6 +11,7 @@ import InfoVisitors from "./components/Views/Information/InfoVisitors.vue";
 
 // Components
 import Chart from "./components/View/Chart.vue";
+import Disclaimer from "./components/View/Disclaimer.vue";
 import FilterTable from "./components/View/FilterTable.vue";
 import InfoTable from "./components/View/InfoTable.vue";
 import Timespan from "./components/View/Timespan.vue";
@@ -26,6 +27,7 @@ panel.plugin("daandelange/simplestats", {
     "k-percentage-field-preview": PercentageFieldPreview,
 
     "k-simplestats-chart": Chart,
+    "k-simplestats-disclaimer": Disclaimer,
     "k-simplestats-filter-table": FilterTable,
     "k-simplestats-info-table": InfoTable,
     "k-simplestats-timespan": Timespan,

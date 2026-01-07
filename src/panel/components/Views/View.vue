@@ -1,16 +1,11 @@
 <template>
   <k-panel-inside class="k-simplestats-view">
-    <!-- Disclaimer -->
-    <k-box v-if="!isLoading && !dismissDisclaimer" theme="text">
-      <k-text size="small">
-        <h3>{{ $t('simplestats.disclaimer.title') }}</h3>
-        <p v-html="$t('simplestats.disclaimer.text')"></p>
-        <kbd>{{ $t('simplestats.disclaimer.dismiss') }}</kbd>
-      </k-text>
-    </k-box>
+    <k-simplestats-disclaimer
+      :visible="!isLoading && !dismissDisclaimer"
+    />
 
     <k-header class="k-simplestats-view-header">
-      {{ label }}
+      {{ $t('simplestats.view') }}
 
       <template #buttons>
         <k-simplestats-timespan
@@ -25,28 +20,28 @@
     <k-tabs :tab="tab" :tabs="tabsWithLinks" />
 
     <k-simplestats-visits-view
-      v-if="tab == tabs[0].name"
+      v-if="tab === 'pagevisits'"
       :dateFrom="dateFrom"
       :dateTo="dateTo"
       path="pagestats"
     />
 
     <k-simplestats-devices-view
-      v-else-if="tab == tabs[1].name"
+      v-else-if="tab === 'visitordevices'"
       :dateFrom="dateFrom"
       :dateTo="dateTo"
       path="devicestats"
     />
 
     <k-simplestats-referrers-view
-      v-else-if="tab == tabs[2].name"
+      v-else-if="tab === 'referers'"
       :dateFrom="dateFrom"
       :dateTo="dateTo"
       path="refererstats"
     />
 
     <k-simplestats-info-view
-      v-else-if="tab == tabs[3].name"
+      v-else-if="tab === 'information'"
     />
 
     <k-empty
@@ -61,104 +56,42 @@
 </template>
 
 <script>
-import { usePanel } from "kirbyuse";
+import tabsNav from "../../mixins/tabsNav.js";
 
 export default {
+  mixins: [tabsNav],
+
   props: {
-    label: {
-      type: String,
-      default: "Simple Stats",
-    },
-    initialtab: {
-      type: String,
-      default: "pagevisits",
-    },
-    tabs: {
-      type: Array,
-      default: [],
-    },
     timePeriod: {
       type: String,
-      default: "Monthly",
+      default: "Monthly"
     },
     timeframes: {
       type: Array,
-      default: [],
+      default: []
     },
     initialViewPeriods: {
       type: Number,
-      default: -1,
-    },
+      default: -1
+    }
   },
 
   data() {
     return {
-      tab: '',
       dismissDisclaimer : false,
-      isLoading : true,
+      isLoading : true
     };
   },
 
   computed: {
-    tabsWithLinks() {
-      return this.tabs.map(tab => ({
-        ...tab,
-        click: () => this.onTab(tab.name),
-      }));
-    },
-
     dateFrom() {
       return this.$refs.timespan?.dateFrom;
     },
 
     dateTo() {
       return this.$refs.timespan?.dateTo;
-    },
-  },
-
-  watch: {
-    initialtab(val) {
-      if (val) this.onTab(val);
-    },
-  },
-
-  mounted(){
-    this.onTab();
-  },
-
-  methods: {
-    getStoredTab() {
-      try {
-        return localStorage.getItem("ss-tabs-menu");
-      } catch {
-        return null;
-      }
-    },
-
-    storeTab(tab) {
-      try {
-        localStorage.setItem("ss-tabs-menu", tab);
-      } catch {
-        // ignore
-      }
-    },
-
-    onTab(tab) {
-      const validTabs = this.tabs.map(t => t.name);
-      let resolved = tab || this.getStoredTab() || this.initialtab || validTabs[0];
-      this.tab = validTabs.includes(resolved) ? resolved : validTabs[0];
-
-      this.updateBreadcrumb();
-      this.storeTab(this.tab);
-    },
-
-    updateBreadcrumb() {
-      const panel = usePanel();
-      const label = this.tabs.find(t => t.name === this.tab)?.label || this.tab;
-      panel.view.breadcrumb[0].label = label;
-      panel.view.breadcrumb[0].link = null;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -170,7 +103,6 @@ export default {
 
 .k-simplestats-view #chart-default-color-getter {
   display: none;
-  color: light-dark(var(--color-dark), var(--color-light));
 }
 
 @container (max-width: 30rem) {
