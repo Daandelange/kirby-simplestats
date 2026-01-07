@@ -1,6 +1,6 @@
 <template>
   <k-button-group layout="collapsed">
-    <!-- FROM PICKER -->
+    <!-- From Picker -->
     <k-button
       :dropdown="true"
       :text="formatDateLabel(dateFrom)"
@@ -9,17 +9,16 @@
       variant="filled"
       @click="$refs.fromDropdown.toggle()"
     />
-
     <k-picklist-dropdown
       ref="fromDropdown"
       :multiple="false"
       :options="fromOptions"
       :search="{ display: 12 }"
       :value="dateFrom"
-      @input="onFromSelect"
+      @input="onSelect('from', $event)"
     />
 
-    <!-- TO PICKER -->
+    <!-- To Picker -->
     <k-button
       :dropdown="true"
       :text="formatDateLabel(dateTo)"
@@ -28,14 +27,13 @@
       variant="filled"
       @click="$refs.toDropdown.toggle()"
     />
-
     <k-picklist-dropdown
       ref="toDropdown"
       :multiple="false"
       :options="toOptions"
       :search="{ display: 12 }"
       :value="dateTo"
-      @input="onToSelect"
+      @input="onSelect('to', $event)"
     />
   </k-button-group>
 </template>
@@ -45,22 +43,22 @@ export default {
   props: {
     dateChoices: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     timePeriod: {
       type: String,
-      default: 'Monthly',
+      default: 'Monthly'
     },
     initialViewPeriods: {
       type: Number,
-      default: -1,
-    },
+      default: -1
+    }
   },
 
   data() {
     return {
       dateFrom: '',
-      dateTo: '',
+      dateTo: ''
     };
   },
 
@@ -77,63 +75,56 @@ export default {
 
   computed: {
     fromOptions() {
-      const toIndex = this.dateChoices.indexOf(this.dateTo);
-
-      return this.dateChoices.map((date, i) => ({
-        value: date,
-        text: this.formatDateLabel(date),
-        disabled: toIndex >= 0 && i > toIndex,
-      }));
+      return this.mapOptions(this.dateFrom, this.dateTo, 'from');
     },
 
     toOptions() {
-      const fromIndex = this.dateChoices.indexOf(this.dateFrom);
-
-      return this.dateChoices.map((date, i) => ({
-        value: date,
-        text: this.formatDateLabel(date),
-        disabled: fromIndex >= 0 && i < fromIndex,
-      }));
-    },
+      return this.mapOptions(this.dateFrom, this.dateTo, 'to');
+    }
   },
 
   methods: {
     formatDateLabel(date) {
       if (!date) return 'Select date';
-
-      return this.$library.dayjs(date).format(
-        this.timePeriod === 'Monthly' ? 'MMM YYYY' : 'MMM YYYY' // use timeFrameUtility?
-      );
+      const format = this.timePeriod === 'Monthly' ? 'MMM YYYY' : 'MMM YYYY'; // use timeFrameUtility?
+      return this.$library.dayjs(date).format(format);
     },
 
-    onFromSelect(value) {
-      if (!value || value === this.dateFrom) {
-        this.$refs.fromDropdown?.close();
+    mapOptions(from, to, type) {
+      const fromIndex = this.dateChoices.indexOf(from);
+      const toIndex = this.dateChoices.indexOf(to);
+
+      return this.dateChoices.map((date, i) => ({
+        value: date,
+        text: this.formatDateLabel(date),
+        disabled:
+          type === 'from'
+            ? toIndex >= 0 && i > toIndex
+            : fromIndex >= 0 && i < fromIndex,
+      }));
+    },
+
+    onSelect(which, value) {
+      if (!value || this[`date${this.capitalize(which)}`] === value) {
+        this.$refs[`${which}Dropdown`]?.close();
         return;
       }
 
-      this.dateFrom = value;
-      this.$refs.fromDropdown?.close();
-      this.emitChange();
+      this[`date${this.capitalize(which)}`] = value;
+      this.$refs[`${which}Dropdown`]?.close();
+      this.update();
     },
 
-    onToSelect(value) {
-      if (!value || value === this.dateTo) {
-        this.$refs.toDropdown?.close();
-        return;
-      }
-
-      this.dateTo = value;
-      this.$refs.toDropdown?.close();
-      this.emitChange();
+    capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
     },
 
-    emitChange() {
+    update() {
       this.$emit('change', {
         from: this.dateFrom,
-        to: this.dateTo,
+        to: this.dateTo
       });
-    },
-  },
+    }
+  }
 };
 </script>

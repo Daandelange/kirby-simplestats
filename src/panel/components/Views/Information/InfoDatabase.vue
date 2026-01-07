@@ -5,21 +5,31 @@
         <k-headline-field :label="$t('simplestats.info.title')" />
       </k-column>
 
+      <!-- Database Info Table -->
       <k-column width="1/1">
-        <k-simplestats-infotable :label="$t('simplestats.info.db.title')" :rows="dbInfo" />
+        <k-simplestats-info-table
+          :label="$t('simplestats.info.db.title')"
+          :rows="dbInfoRows"
+        />
       </k-column>
 
+      <!-- Database Version History -->
       <k-column width="1/1">
-        <k-simplestats-searchabletable
+        <k-simplestats-filter-table
           :label="$t('simplestats.info.db.versionhistory')"
           :rows="dbHistory"
           :columns="dbHistoryLabels"
         />
       </k-column>
 
+      <!-- Database Requirements -->
       <k-column width="1/1">
         <k-section :label="$t('simplestats.info.dbreqs.title')">
-          <k-box v-if="dbRequirementsPassed" theme="positive" :text="$t('simplestats.info.dbreqs.positive')" />
+          <k-box
+            v-if="dbRequirementsPassed"
+            theme="positive"
+            :text="$t('simplestats.info.dbreqs.positive')"
+          />
           <k-box v-else theme="negative">
             <k-text>
               <p>{{ $t('simplestats.info.dbreqs.negative') }}</p>
@@ -29,28 +39,43 @@
         </k-section>
       </k-column>
 
+      <!-- Upgrade Section -->
       <k-column v-if="upgradeRequired" width="1/1">
         <k-section v-if="!updateMessage" :label="$t('simplestats.info.dbupdate.required')">
           <k-box :html="true" theme="negative" :text="$t('simplestats.info.dbupdate.requiredmsg')" />
           <br/>
-          <k-checkbox-input :label="$t('simplestats.info.dbupdate.isbackedup')" :value="unlockUpgrade" @input="acceptUpgrade" />
+          <k-checkbox-input
+            :label="$t('simplestats.info.dbupdate.isbackedup')"
+            :value="unlockUpgrade"
+            @input="acceptUpgrade"
+          />
           <br/>
-          <k-button variant="filled" :icon="isUpdatingDb ? 'loader' : 'bolt'" @click="requestUpgrade">{{ $t('simplestats.info.dbupdate.go') }}</k-button>
+          <k-button
+            variant="filled"
+            :icon="isUpdatingDb ? 'loader' : 'bolt'"
+            @click="requestUpgrade"
+          >
+            {{ $t('simplestats.info.dbupdate.go') }}
+          </k-button>
         </k-section>
 
         <k-section v-else :label="$t('simplestats.info.dbupdate.result')">
           <k-box :html="true" :theme="updateMessageTheme" :text="updateMessage" />
           <br />
-          <k-button variant="filled" icon="refresh" @click="load">{{ $t('simplestats.info.dbupdate.refresh') }}</k-button>
+          <k-button variant="filled" icon="refresh" @click="load">
+            {{ $t('simplestats.info.dbupdate.refresh') }}
+          </k-button>
         </k-section>
       </k-column>
 
+      <!-- Up-to-date Message -->
       <k-column v-else-if="updateMessage==null" width="1/1">
         <k-section :label="$t('simplestats.info.dbupdate.title')">
           <k-info-field theme="positive" :text="$t('simplestats.info.dbupdate.isuptodate')" />
         </k-section>
       </k-column>
 
+      <!-- Load/Update Error Message -->
       <k-column v-else-if="updateMessage!==null" width="1/1">
         <k-section :label="$t('simplestats.loaderror')">
           <k-info-field html="true" theme="negative" :text="updateMessage" />
@@ -75,12 +100,12 @@ export default {
         size: '',
         spanFrom: '',
         spanTo: '',
-        timeframes: -1,
+        timeframes: -1
       },
 
       requirements: {
         passed: true,
-        message: 'unknown',
+        message: 'unknown'
       },
 
       upgrade: {
@@ -88,8 +113,8 @@ export default {
         unlocked: false,
         isUpdating: false,
         resultMessage: null,
-        resultTheme: '',
-      },
+        resultTheme: ''
+      }
     };
   },
 
@@ -98,56 +123,50 @@ export default {
   },
 
   computed: {
-    dbInfo() {
+    dbInfoRows() {
       return [
         {
           label: 'simplestats.info.db.file',
           preview: 'k-files-field-preview',
-          value: this.db.location,
+          value: this.db.location
         },
         {
           label: 'simplestats.info.db.size',
           value: this.db.size,
-          format: this.niceSize,
+          format: this.niceSize
         },
         {
           label: 'simplestats.info.db.dbversion',
-          value: this.db.version,
+          value: this.db.version
         },
         {
           label: 'simplestats.info.db.softwareversion',
-          value: this.db.softwareVersion,
+          value: this.db.softwareVersion
         },
         {
           label: 'simplestats.info.db.spanfromperiod',
           preview: 'k-date-field-preview',
-          value: this.db.spanFrom,
+          value: this.db.spanFrom
         },
         {
           label: 'simplestats.info.db.spantoperiod',
           preview: 'k-date-field-preview',
-          value: this.db.spanTo,
+          value: this.db.spanTo
         },
         {
           label: 'simplestats.info.db.spannumperiods',
-          value: this.db.timeframes,
+          value: this.db.timeframes
         },
       ];
     },
 
     dbHistory() {
-      return this.db.history
+      return this.db.history;
     },
 
     dbHistoryLabels() {
       return Object.fromEntries(
-        Object.entries(this.db.historyLabels).map(([key, column]) => [
-          key,
-          {
-            ...column,
-            mobile: true,
-          },
-        ]),
+        Object.entries(this.db.historyLabels).map(([key, column]) => [key, { ...column, mobile: true }])
       );
     },
 
@@ -183,46 +202,39 @@ export default {
   methods: {
     async load() {
       this.upgrade.resultMessage = null;
-
-      await Promise.all([
-        this.loadDbInfo(),
-        this.loadRequirements(),
-      ]);
+      await Promise.all([this.loadDbInfo(), this.loadRequirements()]);
     },
 
     async loadDbInfo() {
       try {
         const response = await this.$api.get('simplestats/listdbinfo');
-
-        this.db.history         = response.dbHistory;
-        this.db.historyLabels   = response.dbHistoryLabels;
-        this.db.version         = response.dbVersion;
-        this.db.softwareVersion = response.softwareDbVersion;
-        this.db.location        = response.databaseLocation;
-        this.db.size            = response.databaseSize;
-        this.db.spanFrom        = response.databaseSpanFrom;
-        this.db.spanTo          = response.databaseSpanTo;
-        this.db.timeframes      = response.databaseTimeframes;
-
-        this.upgrade.required   = response.upgradeRequired;
-      }
-      catch (error) {
+        Object.assign(this.db, {
+          history: response.dbHistory,
+          historyLabels: response.dbHistoryLabels,
+          version: response.dbVersion,
+          softwareVersion: response.softwareDbVersion,
+          location: response.databaseLocation,
+          size: response.databaseSize,
+          spanFrom: response.databaseSpanFrom,
+          spanTo: response.databaseSpanTo,
+          timeframes: response.databaseTimeframes
+        });
+        this.upgrade.required = response.upgradeRequired;
+      } catch (error) {
         this.handleError(error);
         this.upgrade.resultMessage = error.message;
-      };
+      }
     },
 
     async loadRequirements() {
       try {
         const response = await this.$api.get('simplestats/checkrequirements');
-
         this.requirements.message = response.dbRequirements;
-        this.requirements.passed  = response.dbRequirementsPassed;
-      }
-      catch (error) {
+        this.requirements.passed = response.dbRequirementsPassed;
+      } catch (error) {
         this.requirements.message = error.message;
         this.handleError(error);
-      };
+      }
     },
 
     acceptUpgrade(value) {
@@ -231,42 +243,33 @@ export default {
 
     async requestUpgrade(event) {
       event.stopPropagation();
-
       if (!this.upgrade.unlocked) {
         this.notifyError('Before hitting that button, please ensure to backup your database file!');
         return;
-      };
+      }
 
       this.upgrade.isUpdating = true;
       this.upgrade.resultMessage = null;
 
       try {
         const response = await this.$api.get('simplestats/dbupgrade');
-
         this.upgrade.resultMessage = response.message;
-        this.upgrade.resultTheme   = response.status ? 'positive' : 'passive';
-      }
-      catch (error) {
+        this.upgrade.resultTheme = response.status ? 'positive' : 'passive';
+      } catch (error) {
         this.handleError(error);
-      }
-      finally {
+      } finally {
         this.upgrade.isUpdating = false;
-      };
+      }
     },
 
     handleError(error) {
       const message = error?.message || 'Unknown error';
-
       if (this.$store?.dispatch) {
-        this.$store.dispatch('notification/open', {
-          type: 'error',
-          message,
-          timeout: 5000,
-        });
+        this.$store.dispatch('notification/open', { type: 'error', message, timeout: 5000 });
       } else {
         const panel = usePanel();
         panel.error(message, true);
-      };
+      }
     },
 
     notifyError(message) {
@@ -276,21 +279,14 @@ export default {
     niceSize(num) {
       num = Number(num);
       if (!Number.isFinite(num)) return '?? B';
-
       const units = ['B', 'kB', 'MB', 'GB', 'TB', 'PB'];
-      const neg = num < 0;
+      const neg = num < 0 ? '-' : '';
       if (neg) num = Math.abs(num);
-
-      if (num < 1000) return `${neg ? '-' : ''}${num} B`;
-
-      const exp = Math.min(
-        Math.floor(Math.log(num) / Math.log(1000)),
-        units.length - 1,
-      );
-
+      if (num < 1000) return `${neg}${num} B`;
+      const exp = Math.min(Math.floor(Math.log(num) / Math.log(1000)), units.length - 1);
       const value = (num / Math.pow(1000, exp)).toFixed(2);
-      return `${neg ? '-' : ''}${value} ${units[exp]}`;
-    },
-  },
+      return `${neg}${value} ${units[exp]}`;
+    }
+  }
 };
 </script>

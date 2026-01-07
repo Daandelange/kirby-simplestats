@@ -1,5 +1,6 @@
 <template>
   <k-grid variant="columns" style="column-gap: var(--spacing-8)">
+    <!-- Referrers by Medium -->
     <k-column width="1/2">
       <k-simplestats-chart
         type="Pie"
@@ -12,6 +13,7 @@
       />
     </k-column>
 
+    <!-- Referrers by Domain -->
     <k-column width="1/2">
       <k-simplestats-chart
         type="Pie"
@@ -24,6 +26,7 @@
       />
     </k-column>
 
+    <!-- Referrers Over Time -->
     <k-column width="1/1">
       <k-simplestats-chart
         type="Line"
@@ -40,8 +43,9 @@
       />
     </k-column>
 
+    <!-- Referrers Table -->
     <k-column width="1/1">
-      <k-simplestats-searchabletable
+      <k-simplestats-filter-table
         :label="$t('simplestats.referers.allreferers')"
         :rows="table.rows"
         :columns="table.columns"
@@ -50,62 +54,52 @@
   </k-grid>
 </template>
 
-
 <script>
-import SectionBase from '../Sections/SimpleStatsSectionBase.vue';
+import apiFetch from '../../mixins/apiFetch.js';
 
 export default {
-  mixins: [SectionBase],
+  mixins: [apiFetch],
 
   data() {
     return {
       charts: {
         byDomain: {
           data: [],
-          labels: [],
+          labels: []
         },
         byMedium: {
           data: [],
-          labels: [],
+          labels: []
         },
         byMediumOverTime: {
           data: [],
-          labels: [],
-        },
+          labels: []
+        }
       },
 
       table: {
         rows: [],
-        columns: {},
-      },
+        columns: {}
+      }
     };
   },
 
   methods: {
     loadData(response) {
       const map = {
-        byDomain: {
-          data: 'referersbydomaindata',
-          labels: 'referersbydomainlabels',
-        },
-        byMedium: {
-          data: 'referersbymediumdata',
-          labels: 'referersbymediumlabels',
-        },
-        byMediumOverTime: {
-          data: 'referersbymediumovertimedata',
-          labels: 'chartperiodlabels',
-        },
+        byDomain: ['referersbydomaindata', 'referersbydomainlabels'],
+        byMedium: ['referersbymediumdata', 'referersbymediumlabels'],
+        byMediumOverTime: ['referersbymediumovertimedata', 'chartperiodlabels']
       };
 
-      Object.entries(map).forEach(([key, fields]) => {
-        this.charts[key].data = response[fields.data] || [];
-        this.charts[key].labels = response[fields.labels] || [];
+      Object.entries(map).forEach(([key, [dataKey, labelKey]]) => {
+        this.charts[key].data = response[dataKey] || [];
+        this.charts[key].labels = response[labelKey] || [];
       });
 
       this.table.rows = response.refererstabledata || [];
       this.table.columns = response.refererstablelabels || {};
-    },
-  },
+    }
+  }
 };
 </script>

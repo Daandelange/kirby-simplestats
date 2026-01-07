@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'simplestats.view'                  => 'Simple Stats',
+
     // Misc
     'simplestats.nodatayet'             => 'No data yet',
     'simplestats.nodatafortimerange'    => 'There is no data for the selected time range.',

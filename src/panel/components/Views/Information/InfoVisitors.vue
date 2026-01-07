@@ -5,8 +5,9 @@
         <k-headline-field :label="$t('simplestats.info.config.currentusers.title')" />
       </k-column>
 
+      <!-- Visitors Table -->
       <k-column width="1/1">
-        <k-simplestats-searchabletable
+        <k-simplestats-filter-table
           :label="$t('simplestats.info.config.currentusers.title')"
           :rows="rows"
           :columns="columns"
@@ -20,23 +21,23 @@
 </template>
 
 <script>
-import SectionBase from '../Sections/SimpleStatsSectionBase.vue';
+import apiFetch from '../../../mixins/apiFetch.js';
 
 export default {
-  mixins: [SectionBase],
+  mixins: [apiFetch],
 
   data() {
     return {
       rows: [],
-      columns: {},
-    }
+      columns: {}
+    };
   },
 
   methods: {
     loadData(response) {
-      this.columns = response.columns;
-      this.rows    = response.rows;
+      this.columns = response.columns || {};
+      this.rows = response.rows || [];
     }
-  },
+  }
 };
 </script>

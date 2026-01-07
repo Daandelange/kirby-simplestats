@@ -1,27 +1,27 @@
-<script>
+/**
+ * @internal
+ * API Fetch Mixin
+ *
+ * Intended to be used in any component that
+ * fetches data from `simplestats/<path>`.
+ */
 import { usePanel, useApi } from "kirbyuse";
 
 export default {
   props: {
-    sectionName: {
+    path: {
       type: String,
-      required: true,
+      required: true
     },
-    dateFrom: {
-      type: String,
-      default: null,
-    },
-    dateTo: {
-      type: String,
-      default: null,
-    },
+    dateFrom: String,
+    dateTo: String
   },
 
   data() {
     return {
       isLoading: true,
       isProcessing: false,
-      error: "",
+      error: ""
     };
   },
 
@@ -31,7 +31,7 @@ export default {
 
   watch: {
     dateFrom: "reload",
-    dateTo: "reload",
+    dateTo: "reload"
   },
 
   methods: {
@@ -51,10 +51,7 @@ export default {
 
       try {
         const api = useApi();
-        const response = await api.get(
-          `simplestats/${this.sectionName}${this.dateQueryString()}`
-        );
-
+        const response = await api.get(`simplestats/${this.path}${this.dateQueryString()}`);
         this.loadData(response);
       } catch (error) {
         this.handleError(error);
@@ -75,10 +72,6 @@ export default {
 
       const panel = usePanel();
       panel.error(message, true);
-    },
-
-    // Intended to be overridden by extending sections
-    loadData(apiResponse) {},
-  },
+    }
+  }
 };
-</script>

@@ -5,12 +5,20 @@
         <k-headline-field :label="$t('simplestats.info.config.title')" />
       </k-column>
 
+      <!-- Tracking Info Table -->
       <k-column width="1/1">
-        <k-simplestats-infotable :label="$t('simplestats.info.config.tracking')" :rows="trackingData" />
+        <k-simplestats-info-table
+          :label="$t('simplestats.info.config.tracking')"
+          :rows="trackingRows"
+        />
       </k-column>
 
+      <!-- Logging Info Table -->
       <k-column width="1/1">
-        <k-simplestats-infotable :label="$t('simplestats.info.config.log.title')" :rows="loggingData" />
+        <k-simplestats-info-table
+          :label="$t('simplestats.info.config.log.title')"
+          :rows="loggingRows"
+        />
       </k-column>
 
       <k-column v-if="!isLoading && !saltIsSet" width="1/1">
@@ -23,10 +31,10 @@
 </template>
 
 <script>
-import SectionBase from '../Sections/SimpleStatsSectionBase.vue'
+import apiFetch from '../../../mixins/apiFetch.js';
 
 export default {
-  mixins: [SectionBase],
+  mixins: [apiFetch],
 
   data() {
     return {
@@ -40,68 +48,68 @@ export default {
         enableVisitLanguages: false,
         ignoredRoles: [],
         ignoredPages: [],
-        ignoredTemplates: [],
+        ignoredTemplates: []
       },
       logging: {
         file: '',
-        levels: [],
+        levels: []
       },
-      saltIsSet: false,
+      saltIsSet: false
     };
   },
 
   computed: {
-    trackingData() {
+    trackingRows() {
       return [
         {
           label: 'simplestats.info.config.tracking.periodname',
-          value: this.tracking.periodName,
+          value: this.tracking.periodName
         },
         {
           label: 'simplestats.info.config.tracking.periodsecs',
           value: this.tracking.uniqueSeconds,
-          column: { after: this.$t('simplestats.charts.seconds') },
+          column: { after: this.$t('simplestats.charts.seconds') }
         },
         {
           label: 'simplestats.info.config.tracking.salted',
           preview: 'k-toggle-field-preview',
-          value: this.saltIsSet,
+          value: this.saltIsSet
         },
         {
           label: 'simplestats.info.config.tracking.features',
           preview: 'k-tags-field-preview',
-          value: this.trackingFeatures,
+          value: this.trackingFeatures
         },
         {
           label: 'simplestats.info.config.tracking.ignore.roles',
           preview: 'k-tags-field-preview',
-          value: this.tracking.ignoredRoles,
+          value: this.tracking.ignoredRoles
         },
         {
           label: 'simplestats.info.config.tracking.ignore.ids',
           preview: 'k-tags-field-preview',
-          value: this.tracking.ignoredPages,
+          value: this.tracking.ignoredPages
         },
         {
           label: 'simplestats.info.config.tracking.ignore.templates',
           preview: 'k-tags-field-preview',
-          value: this.tracking.ignoredTemplates,
-        },
+          value: this.tracking.ignoredTemplates
+        }
       ];
     },
 
-    loggingData() {
+    loggingRows() {
       return [
         {
           label: 'simplestats.info.config.log.file',
           preview: 'k-files-field-preview',
-          value: this.logging.file,
+          value: this.logging.file
         },
         {
           label: 'simplestats.info.config.log.level',
           preview: 'k-tags-field-preview',
           value: this.logging.levels
-        },
+        }
       ];
     },
 
@@ -110,13 +118,13 @@ export default {
         ['enableReferers', 'simplestats.info.config.tracking.referrers'],
         ['enableDevices', 'simplestats.info.config.tracking.devices'],
         ['enableVisits', 'simplestats.info.config.tracking.visits'],
-        ['enableVisitLanguages', 'simplestats.info.config.tracking.languages'],
+        ['enableVisitLanguages', 'simplestats.info.config.tracking.languages']
       ];
 
       return featuresMap
         .filter(([key]) => this.tracking[key])
-        .map(([key, label]) => this.$t(label));
-    },
+        .map(([_, label]) => this.$t(label));
+    }
   },
 
   methods: {
@@ -133,14 +141,14 @@ export default {
         enableVisitLanguages: response.enableVisitLanguages,
         ignoredRoles: response.ignoredRoles,
         ignoredPages: response.ignoredPages,
-        ignoredTemplates: response.ignoredTemplates,
+        ignoredTemplates: response.ignoredTemplates
       });
 
       Object.assign(this.logging, {
         file: response.logFile,
-        levels: response.logLevels,
+        levels: response.logLevels
       });
-    },
-  },
+    }
+  }
 };
 </script>
