@@ -1,5 +1,6 @@
 <template>
   <k-grid variant="columns" style="column-gap: var(--spacing-8)">
+    <!-- Devices -->
     <k-column width="1/3">
       <k-simplestats-chart
         type="Pie"
@@ -12,6 +13,7 @@
       />
     </k-column>
 
+    <!-- Browsers -->
     <k-column width="1/3">
       <k-simplestats-chart
         type="Pie"
@@ -24,6 +26,7 @@
       />
     </k-column>
 
+    <!-- Systems -->
     <k-column width="1/3">
       <k-simplestats-chart
         type="Pie"
@@ -36,6 +39,7 @@
       />
     </k-column>
 
+    <!-- Devices Over Time -->
     <k-column width="1/1">
       <k-simplestats-chart
         type="Line"
@@ -66,50 +70,38 @@ export default {
       charts: {
         devices: {
           data: [],
-          labels: [],
+          labels: []
         },
         browsers: {
           data: [],
-          labels: [],
+          labels: []
         },
         systems: {
           data: [],
-          labels: [],
+          labels: []
         },
         devicesOverTime: {
           data: [],
-          labels: [],
-        },
-      },
+          labels: []
+        }
+      }
     };
   },
 
   methods: {
     loadData(response) {
       const map = {
-        devices: {
-          data: 'devicesdata',
-          labels: 'deviceslabels',
-        },
-        browsers: {
-          data: 'enginesdata',
-          labels: 'engineslabels',
-        },
-        systems: {
-          data: 'systemsdata',
-          labels: 'systemslabels',
-        },
-        devicesOverTime: {
-          data: 'devicesovertime',
-          labels: 'chartperiodlabels',
-        },
+        devices: ['devicesdata', 'deviceslabels'],
+        browsers: ['enginesdata', 'engineslabels'],
+        systems: ['systemsdata', 'systemslabels'],
+        devicesOverTime: ['devicesovertime', 'chartperiodlabels']
       };
 
-      Object.entries(map).forEach(([key, fields]) => {
-        this.charts[key].data = response[fields.data] || [];
-        this.charts[key].labels = response[fields.labels] || [];
+      Object.entries(map).forEach(([key, [dataKey, labelKey]]) => {
+        this.charts[key].data = response[dataKey] || [];
+        this.charts[key].labels = response[labelKey] || [];
       });
-    },
-  },
+    }
+  }
 };
 </script>
