@@ -1,5 +1,5 @@
 <template>
-  <div class="k-fieldset trackingtester">
+  <div class="k-fieldset k-simplestats-tracking">
     <k-grid variant="columns">
       <k-column width="1/1">
         <k-headline-field :label="$t('simplestats.info.tester.title')" />

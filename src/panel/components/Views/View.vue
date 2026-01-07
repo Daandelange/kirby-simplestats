@@ -1,9 +1,11 @@
 <template>
   <k-panel-inside class="k-simplestats-view">
+    <!-- Disclaimer -->
     <k-simplestats-disclaimer
       :visible="!isLoading && !dismissDisclaimer"
     />
 
+    <!-- Header -->
     <k-header class="k-simplestats-view-header">
       {{ $t('simplestats.view') }}
 
@@ -17,8 +19,10 @@
       </template>
     </k-header>
 
+    <!-- Tabs -->
     <k-tabs :tab="tab" :tabs="tabsWithLinks" />
 
+    <!-- Visits View -->
     <k-simplestats-visits-view
       v-if="tab === 'pagevisits'"
       :dateFrom="dateFrom"
@@ -26,6 +30,7 @@
       path="pagestats"
     />
 
+    <!-- Devices View -->
     <k-simplestats-devices-view
       v-else-if="tab === 'visitordevices'"
       :dateFrom="dateFrom"
@@ -33,6 +38,7 @@
       path="devicestats"
     />
 
+    <!-- Referrers View -->
     <k-simplestats-referrers-view
       v-else-if="tab === 'referers'"
       :dateFrom="dateFrom"
@@ -40,10 +46,12 @@
       path="refererstats"
     />
 
+    <!-- Information View -->
     <k-simplestats-info-view
       v-else-if="tab === 'information'"
     />
 
+    <!-- Empty state -->
     <k-empty
       v-else
       layout="cards"
