@@ -19,9 +19,3 @@
     </k-column>
   </k-grid>
 </template>
-
-<script>
-export default {
-
-};
-</script>
