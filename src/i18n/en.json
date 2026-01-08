@@ -1,8 +1,8 @@
 {
   "simplestats.view": "Simple Stats",
-  "simplestats.view.visits": "Page Visits",
-  "simplestats.view.devices": "Visitor Devices",
-  "simplestats.view.referrers": "Referrers",
+  "simplestats.view.pagevisits": "Page Visits",
+  "simplestats.view.visitordevices": "Visitor Devices",
+  "simplestats.view.referers": "Referrers",
   "simplestats.view.information": "Information",
   "simplestats.view.error": "Something is wrong with tab handling...",
 
@@ -62,7 +62,7 @@
   "simplestats.info.config.tracking.unsalted": "UNSALTED!",
   "simplestats.info.config.tracking.unsalted.warn": "You are using SimpleStats unsalted, which is less secure. You can set it in your config.php.",
   "simplestats.info.config.tracking.features": "Enabled Tracking Features",
-  "simplestats.info.config.tracking.referrers": "Site Referers",
+  "simplestats.info.config.tracking.referers": "Site Referrers",
   "simplestats.info.config.tracking.devices": "Visitor Devices",
   "simplestats.info.config.tracking.visits": "Page Visits",
   "simplestats.info.config.tracking.languages": "Language Visits",

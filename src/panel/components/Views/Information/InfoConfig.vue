@@ -115,7 +115,7 @@ export default {
 
     trackingFeatures() {
       const featuresMap = [
-        ['enableReferers', 'simplestats.info.config.tracking.referrers'],
+        ['enableReferers', 'simplestats.info.config.tracking.referers'],
         ['enableDevices', 'simplestats.info.config.tracking.devices'],
         ['enableVisits', 'simplestats.info.config.tracking.visits'],
         ['enableVisitLanguages', 'simplestats.info.config.tracking.languages']

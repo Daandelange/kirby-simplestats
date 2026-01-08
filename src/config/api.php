@@ -330,9 +330,9 @@ return [
 
                         'translations' => [ // Checkme: is this still needed in K5 ?
                             'tabs' => [
-                                'pagevisits'     => t('simplestats.view.visits'),
-                                'visitordevices' => t('simplestats.view.devices'),
-                                'referers'       => t('simplestats.view.referrers'),
+                                'pagevisits'     => t('simplestats.view.pagevisits'),
+                                'visitordevices' => t('simplestats.view.visitordevices'),
+                                'referers'       => t('simplestats.view.referers'),
                                 'information'    => t('simplestats.view.information'),
                             ],
                         ],
