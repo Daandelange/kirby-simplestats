@@ -145,7 +145,7 @@ return [
                 if( $this->user()->hasSimpleStatsPanelAccess() ){
                     $device = SimpleStats::detectSystemFromUA();
                     // Translate device
-                    if(isset($device['device'])) $device['device'] = Stats::translateDeviceType($device['device']);
+                    if(isset($device['device'])) $device['device'] = Stats::humanizeKey($device['device']);
                     return [
                         //'referrer' => SimpleStats::getRefererInfo(),
                         'currentUserAgent'  => substr($_SERVER['HTTP_USER_AGENT'], 0, 256),
@@ -186,7 +186,7 @@ return [
 
                     $uainfo = SimpleStats::detectSystemFromUA($headers);
 
-                    if($uainfo && isset($uainfo['device'])) $uainfo['device'] = Stats::translateDeviceType($uainfo['device']);
+                    if($uainfo && isset($uainfo['device'])) $uainfo['device'] = Stats::humanizeKey($uainfo['device']);
                     return $uainfo??'Invalid referrer url!';
                 }
                 else {
@@ -234,7 +234,7 @@ return [
                         return StatsGenerator::GenerateVisits($from, $to, $mode);
 
                         //$uainfo = SimpleStats::detectSystemFromUA($str);
-                        //    if($uainfo && isset($uainfo['device'])) $uainfo['device'] = Stats::translateDeviceType($uainfo['device']);
+                        //    if($uainfo && isset($uainfo['device'])) $uainfo['device'] = Stats::humanizeKey($uainfo['device']);
                         //    return $uainfo??'Invalid referrer url!';
 
                         //return ['status'=>false,'message'=>'ok ?'];
