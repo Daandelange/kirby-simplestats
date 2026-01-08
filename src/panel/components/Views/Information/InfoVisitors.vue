@@ -2,19 +2,19 @@
   <div class="k-fieldset">
     <k-grid variant="columns">
       <k-column width="1/1">
-        <k-headline-field :label="$t('simplestats.info.config.currentusers.title')" />
+        <k-headline-field :label="$t('simplestats.info.current.title')" />
       </k-column>
 
       <!-- Visitors Table -->
       <k-column width="1/1">
         <k-simplestats-filter-table
-          :label="$t('simplestats.info.config.currentusers.title')"
+          :label="$t('simplestats.info.current.label')"
           :rows="rows"
           :columns="columns"
         />
 
         <br />
-        <k-box theme="info" :text="$t('simplestats.info.config.currentusers.info')" />
+        <k-box theme="info" :text="$t('simplestats.info.current.info')" />
       </k-column>
     </k-grid>
   </div>

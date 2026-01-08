@@ -44,17 +44,17 @@ class Stats extends SimpleStatsDb {
             }
             // No version but table exists = weird !
             else {
-                $dbVersion = t('simplestats.info.db.noversion', 'None!');
+                $dbVersion = t('simplestats.info.db.version.none');
             }
         }
         else {
             $error = self::database()->lastError()->getMessage();
             // v1 didn't have the simplestats table (only way to detect)
             if( stripos($error, 'no such table: simplestats') !== false ){
-                $dbVersion = '1 ('.t('simplestats.info.db.versionless','versionless').')';
+                $dbVersion = '1 ('.t('simplestats.info.db.version.less').')';
             }
             else {
-                $dbVersion = t('simplestats.info.db.versionerror', 'Unable to query...');//.$error;
+                $dbVersion = t('simplestats.info.db.version.error');//.$error;
             }
         }
 
@@ -76,14 +76,14 @@ class Stats extends SimpleStatsDb {
         //$timeSpan = static::constrainPeriodsToDbSpan(null, null);
         $timeSpan = Stats::getDbTimeSpan();
         $timeFrames = Stats::fillPeriod($timeSpan['start'], $timeSpan['end'], 'Y-m-d');
-        
+
         // Todo: Read some stats from the db such as timespan, etc.
         return [
             'softwareDbVersion' => self::engineDbVersion,
             'dbVersion'         => $dbVersion,
             'dbHistoryLabels'   => [
-                'version'  => ['label'=>t('simplestats.info.db.table.dbversion'), 'type'=>'number',   'sortable'=>true, 'search'=>false,  'width'=>'34%'],
-                'date'     => ['label'=>t('simplestats.info.db.table.usedsince'), 'type'=>'date',     'sortable'=>true, 'search'=>false,  'width'=>'66%'],
+                'version'  => ['label'=>t('simplestats.info.db.version.column.dbversion'), 'type'=>'number',   'sortable'=>true, 'search'=>false,  'width'=>'34%'],
+                'date'     => ['label'=>t('simplestats.info.db.version.column.usedsince'), 'type'=>'date',     'sortable'=>true, 'search'=>false,  'width'=>'66%'],
             ],
             'dbHistory'         => $dbArray,
             'upgradeRequired'   => self::engineDbVersion != $dbVersion,
@@ -104,7 +104,7 @@ class Stats extends SimpleStatsDb {
         }
         $queryStr .= ' LIMIT 0, '.SIMPLESTATS_DUMMY_DB_LIMIT;
         $result = self::database()->query($queryStr);
-        
+
         if($result && $result->get("0", false)){
             $data = $result->get("0")->toArray();
             if(array_key_exists('start', $data) && array_key_exists('end', $data)) {
@@ -162,11 +162,11 @@ class Stats extends SimpleStatsDb {
 
     public static function listvisitors(): array {
         $keys = [
-            'visitedpages'   => [ 'label' => t('simplestats.table.visitedpages',    'Visited Pages'),   'type' => 'text', 'sortable' => false,  'width' => '50%', 'search'=>true ],
-            'osfamily'       => [ 'label' => t('simplestats.table.osfamily',        'OS Family'),       'type' => 'text', 'sortable' => true,   'width' => '15%', 'search'=>true ],
-            'devicetype'     => [ 'label' => t('simplestats.table.devicetype',      'Device Type'),     'type' => 'text', 'sortable' => true,   'width' => '10%', 'search'=>true ],
-            'browserengine'  => [ 'label' => t('simplestats.table.browserengine',   'Browser Engine'),  'type' => 'text', 'sortable' => true,   'width' => '10%', 'search'=>true ],
-            'timeregistered' => [ 'label' => t('simplestats.table.timeregistered',  'Time Registered'), 'type' => 'date', 'sortable' => true,   'width' => '15%', 'search'=>false],//, 'dateInputFormat'=>'yyyy-MM-dd HH:mm', 'dateOutputFormat'=>'d MMMM yyyy HH:mm'],
+            'visitedpages'   => [ 'label' => t('simplestats.table.column.visitedpages'),   'type' => 'text', 'sortable' => false,  'width' => '50%', 'search'=>true ],
+            'osfamily'       => [ 'label' => t('simplestats.table.column.osfamily'),       'type' => 'text', 'sortable' => true,   'width' => '15%', 'search'=>true ],
+            'devicetype'     => [ 'label' => t('simplestats.table.column.devicetype'),     'type' => 'text', 'sortable' => true,   'width' => '10%', 'search'=>true ],
+            'browserengine'  => [ 'label' => t('simplestats.table.column.browserengine'),  'type' => 'text', 'sortable' => true,   'width' => '10%', 'search'=>true ],
+            'timeregistered' => [ 'label' => t('simplestats.table.column.timeregistered'), 'type' => 'date', 'sortable' => true,   'width' => '15%', 'search'=>false],//, 'dateInputFormat'=>'yyyy-MM-dd HH:mm', 'dateOutputFormat'=>'d MMMM yyyy HH:mm'],
         ];
         $rows = [];
         $result = self::database()->query('SELECT `visitedpages`, `osfamily`, `devicetype`, `browserengine`, `timeregistered` FROM `pagevisitors` LIMIT 0,'.SIMPLESTATS_DUMMY_DB_LIMIT);
@@ -187,7 +187,7 @@ class Stats extends SimpleStatsDb {
     }
 
     public static function deviceStats(?int $fromPeriod = null, ?int $toPeriod = null) {
-        
+
         //self::syncDayStats();
 
         // Format period
@@ -204,7 +204,7 @@ class Stats extends SimpleStatsDb {
 
         // Get devices
         $hideBotsQueryPart = '';
-        if( true === option('daandelange.simplestats.panel.hideBots', false) ) 
+        if( true === option('daandelange.simplestats.panel.hideBots', false) )
             $hideBotsQueryPart = ' AND `device` != "server"';
         $allDevices = [
             'label' => 'All Device Types',
@@ -288,7 +288,7 @@ class Stats extends SimpleStatsDb {
                         'data' => array_fill_keys(array_keys($selectedPeriods), 0),
                     ];
                 }
-                
+
                 // Increment values
                 if(array_key_exists($devicePeriod, $devicesOverTimeData[$name]['data'])) $devicesOverTimeData[$name]['data'][$devicePeriod] += intval($device->hits);
             }
@@ -311,6 +311,7 @@ class Stats extends SimpleStatsDb {
         ];
     }
 
+	// Instead of translating the legends, we should ucfirst them
     public static function translateNamespaced( string $namespace, string $key ) : string {
         if($translation = t($namespace.'.'.$key)){
             return $translation;
@@ -325,7 +326,7 @@ class Stats extends SimpleStatsDb {
     }
 
     public static function refererStats(?int $fromPeriod = null, ?int $toPeriod = null): ?array {
-        
+
         // Format period
         $timeSpan = static::constrainPeriodsToDbSpan($fromPeriod, $toPeriod);
 
@@ -362,7 +363,7 @@ class Stats extends SimpleStatsDb {
         else {
             Logger::LogWarning("refererStats(globalStats) : db error =".self::database()->lastError()->getMessage() );
         }
-        
+
 
         // Grab referrers by medium
         $referersByMediumLabels = [];
@@ -405,7 +406,7 @@ class Stats extends SimpleStatsDb {
                         'data' => array_fill_keys(array_keys($selectedPeriods), 0),
                     ];
                 }
-                
+
                 // Increment values
                 if(array_key_exists($mediumPeriod, $referersByMediumOverTimeData[$key]['data'])){
                     $referersByMediumOverTimeData[$key]['data'][$mediumPeriod] += intval($medium->hits);
@@ -436,12 +437,12 @@ class Stats extends SimpleStatsDb {
 
         // Set column names
         $referersTableLabels = [
-            'url'         => [ 'label'=>t('simplestats.table.url',          'URL'       ), 'type'=>'text',       'sortable'=>true,  'search'=>true,  'width'=>'30%' ],
-            'domain'      => [ 'label'=>t('simplestats.table.domain',       'Domain'    ), 'type'=>'text',       'sortable'=>true,  'search'=>true,  'width'=>'20%' ],
-            'medium'      => [ 'label'=>t('simplestats.table.medium',       'Medium'    ), 'type'=>'text',       'sortable'=>true,  'search'=>true,  'width'=>'10%' ],
-            'hits'        => [ 'label'=>t('simplestats.table.hits',         'Hits'      ), 'type'=>'number',     'sortable'=>true,  'search'=>false, 'width'=>'10%' ],
-            'hitspercent' => [ 'label'=>t('simplestats.table.popularity',   'Popularity'), 'type'=>'percentage', 'sortable'=>true,  'search'=>false, 'width'=>'15%' ],
-            'timefrom'    => [ 'label'=>t('simplestats.table.firstseen',    'First seen'), 'type'=>'date',       'sortable'=>true,  'search'=>false, 'width'=>'15%' ], //, 'dateInputFormat'=>'yyyy-MM-dd', 'dateOutputFormat'=>'MMM yyyy'], // todo: Date display should be customized to custom timespans
+            'url'         => [ 'label'=>t('simplestats.table.column.url'),        'type'=>'text',       'sortable'=>true, 'search'=>true,  'width'=>'30%' ],
+            'domain'      => [ 'label'=>t('simplestats.table.column.domain'),     'type'=>'text',       'sortable'=>true, 'search'=>true,  'width'=>'20%' ],
+            'medium'      => [ 'label'=>t('simplestats.table.column.medium'),     'type'=>'text',       'sortable'=>true, 'search'=>true,  'width'=>'10%' ],
+            'hits'        => [ 'label'=>t('simplestats.table.column.hits'),       'type'=>'number',     'sortable'=>true, 'search'=>false, 'width'=>'10%' ],
+            'hitspercent' => [ 'label'=>t('simplestats.table.column.popularity'), 'type'=>'percentage', 'sortable'=>true, 'search'=>false, 'width'=>'15%' ],
+            'timefrom'    => [ 'label'=>t('simplestats.table.column.firstseen'),  'type'=>'date',       'sortable'=>true, 'search'=>false, 'width'=>'15%' ], //, 'dateInputFormat'=>'yyyy-MM-dd', 'dateOutputFormat'=>'MMM yyyy'], // todo: Date display should be customized to custom timespans
         ];
         $referersTableData = [];
         $AllDomainStats = self::database()->query('SELECT `id`, `referer`, `domain`, `medium`, SUM(`hits`) AS `hits`, MIN(`monthyear`) AS `timefrom`, `totalHits` FROM `referers` JOIN ( SELECT SUM(`hits`) AS `totalHits` FROM `referers` '.$whereQuery.' ) '.$whereQuery.' GROUP BY `domain` ORDER BY `medium` ASC, `domain` ASC LIMIT 0,'.SIMPLESTATS_DUMMY_DB_LIMIT);
@@ -506,7 +507,7 @@ class Stats extends SimpleStatsDb {
     }
 
     public static function pageStats(?int $fromPeriod = null, ?int $toPeriod = null): ?array {
-        
+
         // Format period
         $timeSpan = static::constrainPeriodsToDbSpan($fromPeriod, $toPeriod);
 
@@ -518,7 +519,7 @@ class Stats extends SimpleStatsDb {
 
         // Global Where query part
         $whereQuery = ' WHERE `monthyear` BETWEEN '.$timeSpan['start'].' AND '.$timeSpan['end'].'';
-        
+
         // per-x-axis label of each entry
         $chartPeriodLabels = array_values($selectedPeriods);
 
@@ -540,19 +541,18 @@ class Stats extends SimpleStatsDb {
         // Data for the table
         $pageStatsData = [];
         $pageStatsLabels = [
-            //['label'=>'UID',            'field'=>'uid',             'type'=>'text',     'sort'=>true,  'search'=>true,    'class'=>'', 'width'=>'1fr'],
-            'flag'          => ['label'=>' ',                                                  'type'=>'flag',      'sortable'=>false, 'search'=>false,  'mobile' => false,  'width'=>'var(--table-row-height)'  ],
-            'icon'          => ['label'=>' ',                                                  'type'=>'image',     'sortable'=>false, 'search'=>false,  'mobile' => false,  'width'=>'var(--table-row-height)' ],
-            'url'           => ['label'=>'URL',                                                'type'=>'text',      'sortable'=>true,  'search'=>true,   'mobile' => false,  'width'=>'0%',  'hidden'=>'false'],
-            'uid'           => ['label'=>t('simplestats.table.uid','UID'),                     'type'=>'slug',      'sortable'=>true,  'search'=>true,   'mobile' => true,   'width'=>'25%', 'hidden'=>'true'], // todo : add 'tooltip'
-            'depth'         => ['label'=>'Depth',                                              'type'=>'number',    'sortable'=>false, 'search'=>false,  'mobile' => false,  'width'=>'0%',  'hidden'=>'true' ],
-            'title'         => ['label'=>t('simplestats.table.pagetitle', 'Title'),            'type'=>'url',       'sortable'=>true,  'search'=>true,   'mobile' => true,   'width'=>'20%'],
-            'average'       => ['label'=>t('simplestats.table.average','Average'),             'type'=>'number',    'sortable'=>true,  'search'=>false,  'mobile' => true,   'width'=>'5%'],
-            'hits'          => ['label'=>t('simplestats.table.hits','Hits'),                   'type'=>'number',    'sortable'=>true,  'search'=>false,  'mobile' => true,   'width'=>'5%'],
-            'hitspercent'   => ['label'=>t('simplestats.table.popularity','Popularity'),       'type'=>'percentage','sortable'=>true,  'search'=>false,  'mobile' => true,   'width'=>'10%', 'align'=>'left'],
-            'firstvisited'  => ['label'=>t('simplestats.table.firstvisited','First Visited'),  'type'=>'date',      'sortable'=>true,  'search'=>false,  'mobile' => false,  'width'=>'10%', 'dateInputFormat'=>'yyyy-MM-dd', 'dateOutputFormat'=>getPanelPeriodFormat()], // todo: Date display should be customized to custom timespans
-            'lastvisited'   => ['label'=>t('simplestats.table.lastvisited','Last Visited'),    'type'=>'date',      'sortable'=>true,  'search'=>false,  'mobile' => false,  'width'=>'10%', 'dateInputFormat'=>'yyyy-MM-dd', 'dateOutputFormat'=>getPanelPeriodFormat()],
-            
+            'flag'          => ['label'=>' ',                                        'type'=>'flag',       'sortable'=>false, 'search'=>false, 'mobile'=>false, 'width'=>'var(--table-row-height)'  ],
+            'icon'          => ['label'=>' ',                                        'type'=>'image',      'sortable'=>false, 'search'=>false, 'mobile'=>false, 'width'=>'var(--table-row-height)' ],
+            'url'           => ['label'=>t('simplestats.table.column.url'),          'type'=>'text',       'sortable'=>true,  'search'=>true,  'mobile'=>false, 'width'=>'0%',  'hidden'=>'false'],
+            'uid'           => ['label'=>t('simplestats.table.column.uid'),          'type'=>'slug',       'sortable'=>true,  'search'=>true,  'mobile'=>true,  'width'=>'25%', 'hidden'=>'true'], // todo : add 'tooltip'
+            'depth'         => ['label'=>t('simplestats.table.column.depth'),        'type'=>'number',     'sortable'=>false, 'search'=>false, 'mobile'=>false, 'width'=>'0%',  'hidden'=>'true' ],
+            'title'         => ['label'=>t('simplestats.table.column.pagetitle'),    'type'=>'url',        'sortable'=>true,  'search'=>true,  'mobile'=>true,  'width'=>'20%'],
+            'average'       => ['label'=>t('simplestats.table.column.average'),      'type'=>'number',     'sortable'=>true,  'search'=>false, 'mobile'=>true,  'width'=>'5%'],
+            'hits'          => ['label'=>t('simplestats.table.column.hits'),         'type'=>'number',     'sortable'=>true,  'search'=>false, 'mobile'=>true,  'width'=>'5%'],
+            'hitspercent'   => ['label'=>t('simplestats.table.column.popularity'),   'type'=>'percentage', 'sortable'=>true,  'search'=>false, 'mobile'=>true,  'width'=>'10%', 'align'=>'left'],
+            'firstvisited'  => ['label'=>t('simplestats.table.column.firstvisited'), 'type'=>'date',       'sortable'=>true,  'search'=>false, 'mobile'=>false, 'width'=>'10%', 'dateInputFormat'=>'yyyy-MM-dd', 'dateOutputFormat'=>getPanelPeriodFormat()], // todo: Date display should be customized to custom timespans
+            'lastvisited'   => ['label'=>t('simplestats.table.column.lastvisited'),  'type'=>'date',       'sortable'=>true,  'search'=>false, 'mobile'=>false, 'width'=>'10%', 'dateInputFormat'=>'yyyy-MM-dd', 'dateOutputFormat'=>getPanelPeriodFormat()],
+
         ];
         // Add language columns
         if( kirby()->multilang() && option('daandelange.simplestats.tracking.enableVisitLanguages') === true ){
@@ -1226,7 +1226,7 @@ class Stats extends SimpleStatsDb {
 
         // Array holding all possible periods
         $selectedPeriods = [];
-        
+
         // Global Where query part
         $whereQuery = '';
 
@@ -1237,7 +1237,7 @@ class Stats extends SimpleStatsDb {
             );
             $whereQuery = ' AND `monthyear` BETWEEN '.$timeSpan['start'].' AND '.$timeSpan['end'];
         }
-        
+
 
         // Query page visits over time, with languages
         {
@@ -1266,7 +1266,7 @@ class Stats extends SimpleStatsDb {
                 'label' => 'Page visits per language',
                 'data'  => array_fill_keys(array_keys($kirbyLangs), 0),
             ];
-            
+
 
             $pageVisitsOverTime = self::database()->query('SELECT `uid`, `monthyear`, `hits` '.$langQuery.' FROM `pagevisits` WHERE `uid` = "'.$page.'"'.$whereQuery.' ORDER BY `monthyear` ASC LIMIT 0,'.SIMPLESTATS_DUMMY_DB_LIMIT);
             if($pageVisitsOverTime){
@@ -1307,7 +1307,7 @@ class Stats extends SimpleStatsDb {
 
             // Rename keys to nums so that the charts accept the data
             $ret['languagesOverTime'] = array_values($ret['languagesOverTime']);
-            
+
             // Rm data (period) keys
             foreach( $ret['languagesOverTime'] as $l => $n ){
                 $ret['languagesOverTime'][$l]['data'] = array_values($ret['languagesOverTime'][$l]['data']);

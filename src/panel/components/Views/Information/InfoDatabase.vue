@@ -2,13 +2,13 @@
   <div class="k-fieldset">
     <k-grid variant="columns">
       <k-column width="1/1">
-        <k-headline-field :label="$t('simplestats.info.title')" />
+        <k-headline-field :label="$t('simplestats.info.db.title')" />
       </k-column>
 
       <!-- Database Info Table -->
       <k-column width="1/1">
         <k-simplestats-info-table
-          :label="$t('simplestats.info.db.title')"
+          :label="$t('simplestats.info.db.info')"
           :rows="dbInfoRows"
         />
       </k-column>
@@ -16,7 +16,7 @@
       <!-- Database Version History -->
       <k-column width="1/1">
         <k-simplestats-filter-table
-          :label="$t('simplestats.info.db.versionhistory')"
+          :label="$t('simplestats.info.db.version.title')"
           :rows="dbHistory"
           :columns="dbHistoryLabels"
         />
@@ -24,15 +24,15 @@
 
       <!-- Database Requirements -->
       <k-column width="1/1">
-        <k-section :label="$t('simplestats.info.dbreqs.title')">
+        <k-section :label="$t('simplestats.info.db.rqmts.title')">
           <k-box
             v-if="dbRequirementsPassed"
             theme="positive"
-            :text="$t('simplestats.info.dbreqs.positive')"
+            :text="$t('simplestats.info.db.rqmts.positive')"
           />
           <k-box v-else theme="negative">
             <k-text>
-              <p>{{ $t('simplestats.info.dbreqs.negative') }}</p>
+              <p>{{ $t('simplestats.info.db.rqmts.negative') }}</p>
               <k-code>{{ dbRequirements }}</k-code>
             </k-text>
           </k-box>
@@ -41,11 +41,11 @@
 
       <!-- Upgrade Section -->
       <k-column v-if="upgradeRequired" width="1/1">
-        <k-section v-if="!updateMessage" :label="$t('simplestats.info.dbupdate.required')">
-          <k-box :html="true" theme="negative" :text="$t('simplestats.info.dbupdate.requiredmsg')" />
+        <k-section v-if="!updateMessage" :label="$t('simplestats.info.db.update.required')">
+          <k-box :html="true" theme="negative" :text="$t('simplestats.info.db.update.required.msg')" />
           <br/>
           <k-checkbox-input
-            :label="$t('simplestats.info.dbupdate.isbackedup')"
+            :label="$t('simplestats.info.db.update.backedup')"
             :value="unlockUpgrade"
             @input="acceptUpgrade"
           />
@@ -55,29 +55,29 @@
             :icon="isUpdatingDb ? 'loader' : 'bolt'"
             @click="requestUpgrade"
           >
-            {{ $t('simplestats.info.dbupdate.go') }}
+            {{ $t('simplestats.info.db.update.go') }}
           </k-button>
         </k-section>
 
-        <k-section v-else :label="$t('simplestats.info.dbupdate.result')">
+        <k-section v-else :label="$t('simplestats.info.db.update.result')">
           <k-box :html="true" :theme="updateMessageTheme" :text="updateMessage" />
           <br />
           <k-button variant="filled" icon="refresh" @click="load">
-            {{ $t('simplestats.info.dbupdate.refresh') }}
+            {{ $t('simplestats.info.db.update.refresh') }}
           </k-button>
         </k-section>
       </k-column>
 
       <!-- Up-to-date Message -->
       <k-column v-else-if="updateMessage==null" width="1/1">
-        <k-section :label="$t('simplestats.info.dbupdate.title')">
-          <k-info-field theme="positive" :text="$t('simplestats.info.dbupdate.isuptodate')" />
+        <k-section :label="$t('simplestats.info.db.update.title')">
+          <k-info-field theme="positive" :text="$t('simplestats.info.db.update.uptodate')" />
         </k-section>
       </k-column>
 
       <!-- Load/Update Error Message -->
       <k-column v-else-if="updateMessage!==null" width="1/1">
-        <k-section :label="$t('simplestats.loaderror')">
+        <k-section :label="$t('simplestats.info.db.update.loaderror')">
           <k-info-field html="true" theme="negative" :text="updateMessage" />
         </k-section>
       </k-column>
@@ -126,35 +126,35 @@ export default {
     dbInfoRows() {
       return [
         {
-          label: 'simplestats.info.db.file',
+          label: 'simplestats.info.db.info.file',
           preview: 'k-files-field-preview',
           value: this.db.location
         },
         {
-          label: 'simplestats.info.db.size',
+          label: 'simplestats.info.db.info.size',
           value: this.db.size,
           format: this.niceSize
         },
         {
-          label: 'simplestats.info.db.dbversion',
+          label: 'simplestats.info.db.info.dbversion',
           value: this.db.version
         },
         {
-          label: 'simplestats.info.db.softwareversion',
+          label: 'simplestats.info.db.info.softwareversion',
           value: this.db.softwareVersion
         },
         {
-          label: 'simplestats.info.db.spanfromperiod',
+          label: 'simplestats.info.db.info.spanfromperiod',
           preview: 'k-date-field-preview',
           value: this.db.spanFrom
         },
         {
-          label: 'simplestats.info.db.spantoperiod',
+          label: 'simplestats.info.db.info.spantoperiod',
           preview: 'k-date-field-preview',
           value: this.db.spanTo
         },
         {
-          label: 'simplestats.info.db.spannumperiods',
+          label: 'simplestats.info.db.info.spannumperiods',
           value: this.db.timeframes
         },
       ];

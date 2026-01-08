@@ -178,7 +178,7 @@ return [
             'action'  => function () use ($kirby) {
                 if( $this->user()->hasSimpleStatsPanelAccess() ){
                     $str = @$kirby->request()->query()->data()['ua']??'';
-                    
+
                     $headers = [];//getallheaders();
                     //$headers['HTTP_USER_AGENT']=$str;
                     $headers['User-Agent']=$str;
@@ -259,7 +259,7 @@ return [
                             'kirby' => (
                                 ((int)$versionArray[0] === 3 && (int)$versionArray[1] >= 5) || // K3.5+
                                 ((int)$versionArray[0] === 5 && (int)$versionArray[1] >= 0) // K5.0+
-                            ), 
+                            ),
                             'sqlite3' => (class_exists('SQLite3') && in_array('pdo_sqlite', get_loaded_extensions()) && in_array('sqlite3', get_loaded_extensions())),
                         ];
                         // Check requirements
@@ -330,10 +330,10 @@ return [
 
                         'translations' => [ // Checkme: is this still needed in K5 ?
                             'tabs' => [
-                                'pagevisits'        => t('simplestats.tabs.pagevisits',     'Page Visits'),
-                                'visitordevices'    => t('simplestats.tabs.visitordevices', 'Visitor Devices'),
-                                'referers'          => t('simplestats.tabs.referers',       'Referers'),
-                                'information'       => t('simplestats.tabs.information',    'Information'),
+                                'pagevisits'     => t('simplestats.view.visits'),
+                                'visitordevices' => t('simplestats.view.devices'),
+                                'referers'       => t('simplestats.view.referrers'),
+                                'information'    => t('simplestats.view.information'),
                             ],
                         ],
                     ];

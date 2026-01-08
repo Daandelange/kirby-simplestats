@@ -13,19 +13,19 @@
             <table style="table-layout: auto">
               <tbody>
                 <tr>
-                  <th data-mobile="true">{{ $t('simplestats.info.tester.device.currentua') }}</th>
+                  <th data-mobile="true">{{ $t('simplestats.info.tester.device.current.ua') }}</th>
                   <td data-mobile="true" colspan="2" class="k-table-cell">
                     <k-text-field-preview :value="currentUserAgent" />
                   </td>
                 </tr>
                 <tr>
-                  <th data-mobile="true">{{ $t('simplestats.info.tester.device.currentdetected') }}</th>
+                  <th data-mobile="true">{{ $t('simplestats.info.tester.device.current.detected') }}</th>
                   <td data-mobile="true" colspan="2" class="k-table-cell">
                     <k-text-field-preview :value="formattedCurrentUA" />
                   </td>
                 </tr>
                 <tr>
-                  <th data-mobile="true">{{ $t('simplestats.info.tester.device.customua') }}</th>
+                  <th data-mobile="true">{{ $t('simplestats.info.tester.device.custom.ua') }}</th>
                   <td data-mobile="true" class="k-table-cell">
                     <k-text-input v-model="customUserAgent" class="k-text-field-preview" />
                   </td>
@@ -34,7 +34,7 @@
                   </td>
                 </tr>
                 <tr v-if="customDevice">
-                  <th data-mobile="true">{{ $t('simplestats.info.tester.device.customdetected') }}</th>
+                  <th data-mobile="true">{{ $t('simplestats.info.tester.device.custom.detected') }}</th>
                   <td data-mobile="true" colspan="2" class="k-table-cell">
                     <k-text-field-preview :value="formattedCustomUA" />
                   </td>

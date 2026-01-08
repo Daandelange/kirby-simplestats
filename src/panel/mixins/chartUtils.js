@@ -182,7 +182,7 @@ export default {
           },
           title: {
             display: false,
-            text: this.xTitle ?? this.$t('simplestats.charts.time')
+            text: this.xTitle ?? this.$t('simplestats.chart.time')
           }
         };
       }
@@ -194,7 +194,7 @@ export default {
           beginAtZero: true,
           title: {
             display: true,
-            text: this.yTitle ?? this.$t('simplestats.charts.visits')
+            text: this.yTitle ?? this.$t('simplestats.chart.visits')
           }
         };
       }
