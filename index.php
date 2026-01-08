@@ -12,7 +12,7 @@ App::plugin('daandelange/simplestats', [
     'options'      => require 'src/config/options.php',
     'api'          => require 'src/config/api.php',
     'hooks'        => require 'src/config/hooks.php',
-    'translations' => require 'src/config/translations.php',
+    'translations' => require 'src/config/i18n.php',
     'pageMethods'  => require 'src/config/pagemethods.php',
     'routes'       => require 'src/config/routes.php',
     'userMethods'  => require 'src/config/usermethods.php',
@@ -69,15 +69,15 @@ App::plugin('daandelange/simplestats', [
                         // props for the component and settings for the current view
                         // (like breadcrumb, title, active search type etc.)
 
-                        
+
                         $timeSpan = Stats::getDbTimeSpan();
                         $timeFrames = Stats::fillPeriod($timeSpan['start'], $timeSpan['end'], 'Y-m-d');
                         $timePeriod = getTimeFrameUtility()->getPeriodAdjective();
                         // $timeFrames = [];
                         // $tfu = getTimeFrameUtility();
                         // for($period=min($timeSpan[0]); $period <= getPeriodFromTime(); $period=incrementPeriod($period) ){
-                        //     $timeFrames[] = 
-                        // } 
+                        //     $timeFrames[] =
+                        // }
 
                         return [
                             // the Vue component can be defined in the
@@ -90,7 +90,7 @@ App::plugin('daandelange/simplestats', [
                             // the breadcrumb
                             'breadcrumb' => function () use($kirby, $tabs) {
                                 $tabID = $kirby->request()->get('tab') ?? 'pagevisits';
-                                
+
                                 return [[
                                 'label' => array_keys($tabs, $tabID) ? $tabs[$tabID]['label'] : t('simplestats.tabs.pagevisits'),
                                 //'link'  => '/simplestats?tab='.$tabID,
