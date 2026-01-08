@@ -23,7 +23,7 @@
 
       <k-column v-if="!isLoading && !saltIsSet" width="1/1">
         <k-section :label="$t('simplestats.info.config.tracking.unsalted')">
-          <k-box theme="negative" :text="$t('simplestats.info.config.tracking.unsaltedwarn')" />
+          <k-box theme="negative" :text="$t('simplestats.info.config.tracking.unsalted.warn')" />
         </k-section>
       </k-column>
     </k-grid>
@@ -62,13 +62,13 @@ export default {
     trackingRows() {
       return [
         {
-          label: 'simplestats.info.config.tracking.periodname',
+          label: 'simplestats.info.config.tracking.period.name',
           value: this.tracking.periodName
         },
         {
-          label: 'simplestats.info.config.tracking.periodsecs',
+          label: 'simplestats.info.config.tracking.period.secs',
           value: this.tracking.uniqueSeconds,
-          column: { after: this.$t('simplestats.charts.seconds') }
+          column: { after: this.$t('simplestats.chart.seconds') }
         },
         {
           label: 'simplestats.info.config.tracking.salted',

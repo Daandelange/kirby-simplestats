@@ -35,7 +35,7 @@
         :label="$t('simplestats.referers.referersovertime')"
         :chart-data="charts.byMediumOverTime.data"
         :chart-labels="charts.byMediumOverTime.labels"
-        :y-title="$t('simplestats.charts.hitspermedium')"
+        :y-title="$t('simplestats.chart.hitspermedium')"
         :stacked="true"
         :auto-colorize="true"
         :x-time-axis="true"

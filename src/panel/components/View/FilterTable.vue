@@ -5,8 +5,8 @@
       slot="options"
       icon="filter"
       size="xs"
-      text="Filter"
       variant="filled"
+      :text="$t('simplestats.table.filter')"
       @click="toggleSearch"
     />
 
@@ -17,7 +17,7 @@
       icon="search"
       type="text"
       class="k-models-section-search"
-      :placeholder="$t('simplestats.table.filter')"
+      :placeholder="$t('simplestats.table.filter.placeholder')"
     />
 
     <k-table
@@ -57,8 +57,8 @@ export default {
 
     emptyText() {
       return this.searchTerm
-        ? 'No search results...'
-        : this.$t('simplestats.nodatayet');
+        ? this.$t('simplestats.table.filter.noresults')
+        : this.$t('simplestats.table.empty');
     },
 
     searchableColumns() {

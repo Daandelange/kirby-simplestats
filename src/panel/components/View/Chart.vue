@@ -8,10 +8,10 @@
       slot="options"
     >
       <k-button
+        :text="$t('simplestats.chart.download')"
         :disabled="!base64image"
         icon="download"
         size="xs"
-        text="Download"
         variant="filled"
       />
     </a>
@@ -90,8 +90,8 @@ export default {
 
     emptyText() {
       return this.chartData.length === 0
-        ? this.$t('simplestats.nodatayet')
-        : this.$t('simplestats.nodatafortimerange');
+        ? this.$t('simplestats.chart.empty')
+        : this.$t('simplestats.chart.nodatatimeframe');
     },
 
     emptyHeight() {

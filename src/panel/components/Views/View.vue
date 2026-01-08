@@ -55,7 +55,7 @@
     <k-empty
       v-else
       layout="cards"
-      :text="$t('simplestats.taberror')"
+      :text="$t('simplestats.view.error')"
     />
 
     <!-- Invisible color getter util for CSS to JS style data transfer -->
