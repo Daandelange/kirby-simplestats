@@ -18,5 +18,5 @@ Kirby::plugin('daandelange/simplestats', [
     'userMethods'  => require 'src/config/user-methods.php',
     'routes'       => require 'src/config/routes.php',
     'sections'     => require 'src/config/sections.php',
-    'translations' => require 'src/config/i18n.php',
+    'translations' => require 'src/config/translations.php',
 ]);

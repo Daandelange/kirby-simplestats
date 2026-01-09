@@ -4,7 +4,7 @@ use Kirby\Filesystem\Dir;
 use Kirby\Filesystem\F;
 
 $translations = [];
-$root = dirname(__DIR__) . '/i18n';
+$root = dirname(__DIR__) . '/translations';
 
 foreach (Dir::files($root) as $file) {
 	$locale = basename($file, '.json');
