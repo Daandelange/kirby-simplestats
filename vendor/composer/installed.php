@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'daandelange/simplestats',
-        'pretty_version' => '0.7.5-beta',
-        'version' => '0.7.5.0-beta',
-        'reference' => null,
+        'pretty_version' => '1.0.0-alpha.7',
+        'version' => '1.0.0.0-alpha7',
+        'reference' => NULL,
         'type' => 'kirby-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,21 +11,23 @@
     ),
     'versions' => array(
         'daandelange/simplestats' => array(
-            'pretty_version' => '0.7.5-beta',
-            'version' => '0.7.5.0-beta',
-            'reference' => null,
+            'pretty_version' => '1.0.0-alpha.7',
+            'version' => '1.0.0.0-alpha7',
+            'reference' => NULL,
             'type' => 'kirby-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'freelancehunt/php-referer-parser' => array(
-            'pretty_version' => '1.1.0',
-            'version' => '1.1.0.0',
+            'pretty_version' => 'dev-develop',
+            'version' => 'dev-develop',
             'reference' => '801b1667f2a8b975f2ae25f10b5883eefc679b4a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../freelancehunt/php-referer-parser',
-            'aliases' => array(),
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
             'dev_requirement' => false,
         ),
         'getkirby/composer-installer' => array(

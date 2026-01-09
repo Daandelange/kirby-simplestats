@@ -12,7 +12,6 @@
 
 # Locks
 package-lock.json
-composer.lock
 index.dev.mjs
 
 # Ignore dev packages (only commit production files to github)
