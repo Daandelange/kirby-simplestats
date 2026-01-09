@@ -11,10 +11,14 @@ return [
     'routes' => function ($kirby): array {
 
         // Wrapper: normal panel access + logging
-        $wrapAction = function (callable $callback): callable {
-            return function () use ($callback): mixed {
-                if (!$this->user()?->hasSimpleStatsPanelAccess()) {
-                    throw new PermissionException('You are not authorised to view statistics.');
+        $wrapAction = function (callable $callback, bool $requireAdmin = false): callable {
+            return function () use ($callback, $requireAdmin): mixed {
+                if (!$this->user()->hasSimpleStatsPanelAccess($requireAdmin)) {
+                    throw new PermissionException(
+                        $requireAdmin
+                            ? 'You are not authorised to perform this action.'
+                            : 'You are not authorised to view statistics.'
+                    );
                 }
 
                 try {
@@ -42,7 +46,7 @@ return [
                 $year = (int) substr($value, 6, 4);
                 return mktime(0, 0, 0, $month, $day, $year);
             }
-            return (int)$value;
+            return (int) $value;
         };
 
         // API Routes
@@ -167,7 +171,7 @@ return [
 
                     $mode = $getQueryParam('mode', null);
                     return StatsGenerator::GenerateVisits($from, $to, $mode);
-                })
+                }, true), // admin only
             ],
 
             [
@@ -196,18 +200,13 @@ return [
             [
                 'pattern' => 'simplestats/dbupgrade',
                 'method'  => 'GET',
-                'action'  => function (): array {
-                    $user = kirby()->user();
-                    if (!$user || !$user->hasSimpleStatsPanelAccess(true)) {
-                        throw new PermissionException('You are not authorised to upgrade the db file.');
-                    }
-
+                'action'  => $wrapAction(function (): array {
                     $result = Stats::checkUpgradeDatabase(false);
                     return [
                         'status'  => $result,
                         'message' => ($result ? 'Success!' : 'Error!') . ' Check your logs file for more details.',
                     ];
-                }
+                }, true), // admin only
             ],
         ];
     }
