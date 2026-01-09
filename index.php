@@ -14,7 +14,7 @@ Kirby::plugin('daandelange/simplestats', [
     'areas'        => require 'src/config/areas.php',
     'hooks'        => require 'src/config/hooks.php',
     'options'      => require 'src/config/options.php',
-    'pageMethods'  => require 'src/config/pagemethods.php',
+    'pageMethods'  => require 'src/config/page-methods.php',
     'userMethods'  => require 'src/config/usermethods.php',
     'routes'       => require 'src/config/routes.php',
     'sections'     => require 'src/config/sections.php',
