@@ -11,6 +11,8 @@ This plugin provides a simple solution for **self-hosted**, **minimal** and **no
 - The collected data is stored in a **.sqlite database** (raw data) which you could query for custom purposes. The `Stats` class also exposes most collected data.
 - A panel area **visualises** the data in charts.
 
+> [!NOTE]
+> @bogdancondorachi is doing some awesome modernisations to the k4-and-k5-tested codebase, you can checkout the [v1 branch here](https://github.com/Daandelange/kirby-simplestats/tree/v1) (alpha).
 
 ### How it works
 
@@ -49,7 +51,7 @@ You may also have a look at the [open issues](https://github.com/Daandelange/kir
  - There's an automatic requirements checker in the `Information` tab of the plugin's panel view, feel free to use that for double-checking requirements.
 
 > [!NOTE]
- For Kirby 3, I recommend to use version `0.6.x-beta` as version `0.7.0-beta` introduces Kirby 5 compatibility. It might be Kirby 3 compatible but I'm not supporting it anymore. However, I'm happy to accept retro-compatibility PRs.
+> For Kirby 3, I recommend to use version `0.6.x-beta` as version `0.7.0-beta` introduces Kirby 5 compatibility. It might be Kirby 3 compatible but I'm not supporting it anymore. However, I'm happy to accept retro-compatibility PRs.
 
 ### Installation
 
