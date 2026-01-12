@@ -4,8 +4,10 @@ namespace daandelange\SimpleStats;
 
 return [
     'simplestats' => function ($kirby) {
-        if (!$kirby->user()->hasSimpleStatsPanelAccess()) {
-            return [];
+        $user = $kirby->user();
+
+        if (!$user || !$user->hasSimpleStatsPanelAccess()) {
+          return [];
         }
 
         $tabs = [
