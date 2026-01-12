@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2308c99cb339454b9e22d0ee3577b183",
+    "content-hash": "420beede383513c4f2b719467a345433",
     "packages": [
         {
             "name": "freelancehunt/php-referer-parser",
-            "version": "dev-develop",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/freelancehunt/php-referer-parser.git",
@@ -30,7 +30,6 @@
             "suggest": {
                 "symfony/yaml": "Support for YAML configuration file"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -215,9 +214,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "freelancehunt/php-referer-parser": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

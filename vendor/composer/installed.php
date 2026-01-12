@@ -1,8 +1,8 @@
 <?php return array(
     'root' => array(
         'name' => 'daandelange/simplestats',
-        'pretty_version' => '1.0.0-alpha.7',
-        'version' => '1.0.0.0-alpha7',
+        'pretty_version' => '1.0.0-alpha.8',
+        'version' => '1.0.0.0-alpha8',
         'reference' => NULL,
         'type' => 'kirby-plugin',
         'install_path' => __DIR__ . '/../../',
@@ -11,8 +11,8 @@
     ),
     'versions' => array(
         'daandelange/simplestats' => array(
-            'pretty_version' => '1.0.0-alpha.7',
-            'version' => '1.0.0.0-alpha7',
+            'pretty_version' => '1.0.0-alpha.8',
+            'version' => '1.0.0.0-alpha8',
             'reference' => NULL,
             'type' => 'kirby-plugin',
             'install_path' => __DIR__ . '/../../',
@@ -20,14 +20,12 @@
             'dev_requirement' => false,
         ),
         'freelancehunt/php-referer-parser' => array(
-            'pretty_version' => 'dev-develop',
-            'version' => 'dev-develop',
+            'pretty_version' => '1.1.0',
+            'version' => '1.1.0.0',
             'reference' => '801b1667f2a8b975f2ae25f10b5883eefc679b4a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../freelancehunt/php-referer-parser',
-            'aliases' => array(
-                0 => '9999999-dev',
-            ),
+            'aliases' => array(),
             'dev_requirement' => false,
         ),
         'getkirby/composer-installer' => array(
