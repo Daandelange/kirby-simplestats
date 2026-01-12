@@ -25,7 +25,7 @@
     "require": {
         "getkirby/composer-installer": "^1.1",
         "whichbrowser/parser": "^2.1",
-        "freelancehunt/php-referer-parser": "dev-develop"
+        "freelancehunt/php-referer-parser": "^1.1"
     },
     "repositories": [
         {
