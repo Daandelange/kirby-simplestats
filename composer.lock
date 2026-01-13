@@ -4,53 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "420beede383513c4f2b719467a345433",
+    "content-hash": "05509177a04f89bd1f429c206c395122",
     "packages": [
-        {
-            "name": "freelancehunt/php-referer-parser",
-            "version": "1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/freelancehunt/php-referer-parser.git",
-                "reference": "801b1667f2a8b975f2ae25f10b5883eefc679b4a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/freelancehunt/php-referer-parser/zipball/801b1667f2a8b975f2ae25f10b5883eefc679b4a",
-                "reference": "801b1667f2a8b975f2ae25f10b5883eefc679b4a",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.*",
-                "symfony/yaml": "*"
-            },
-            "suggest": {
-                "symfony/yaml": "Support for YAML configuration file"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Snowplow\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Lars Strojny",
-                    "email": "lars@strojny.net"
-                }
-            ],
-            "description": "Snowplow Refer(r)er parser for PHP",
-            "support": {
-                "source": "https://github.com/freelancehunt/php-referer-parser/tree/1.1.0"
-            },
-            "time": "2025-08-08T09:47:21+00:00"
-        },
         {
             "name": "getkirby/composer-installer",
             "version": "1.2.1",
@@ -148,6 +103,64 @@
             "time": "2021-02-03T23:26:27+00:00"
         },
         {
+            "name": "simplestats/referer-parser",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bogdancondorachi/php-referer-parser.git",
+                "reference": "0666bae2e7069299267cd7bac0d454a764c02959"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bogdancondorachi/php-referer-parser/zipball/0666bae2e7069299267cd7bac0d454a764c02959",
+                "reference": "0666bae2e7069299267cd7bac0d454a764c02959",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^11"
+            },
+            "suggest": {
+                "symfony/yaml": "Required for YamlConfigReader support"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snowplow\\RefererParser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lars Strojny",
+                    "role": "Creator"
+                },
+                {
+                    "name": "Bogdan Condorachi",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Snowplow Refer(r)er parser for PHP",
+            "keywords": [
+                "analytics",
+                "referer",
+                "referrer",
+                "search",
+                "snowplow",
+                "social",
+                "tracking"
+            ],
+            "support": {
+                "source": "https://github.com/bogdancondorachi/php-referer-parser/tree/v1.0.0"
+            },
+            "time": "2026-01-13T03:24:51+00:00"
+        },
+        {
             "name": "whichbrowser/parser",
             "version": "v2.1.8",
             "source": {
@@ -217,7 +230,9 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=8.2.0"
+    },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
 }
