@@ -15,24 +15,12 @@
             "role": "Maintainer"
         }
     ],
-    "keywords": [
-        "kirby4",
-        "kirby5",
-        "kirby-plugin",
-        "simplestats",
-        "analytics"
-    ],
     "require": {
-        "getkirby/composer-installer": "^1.1",
+        "php": ">=8.2.0",
         "whichbrowser/parser": "^2.1",
-        "freelancehunt/php-referer-parser": "^1.1"
+        "simplestats/referer-parser": "^1.0",
+        "getkirby/composer-installer": "^1.1"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/freelancehunt/php-referer-parser.git"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "daandelange\\SimpleStats\\": "src/models/"
@@ -40,10 +28,10 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "@php -r \"copy('https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yaml', 'vendor/freelancehunt/php-referer-parser/data/referers.yml'); copy('https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.json', 'vendor/freelancehunt/php-referer-parser/data/referers.json');\""
+            "@php -r \"copy('https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yaml', 'vendor/simplestats/referer-parser/data/referers.yml'); copy('https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.json', 'vendor/simplestats/referer-parser/data/referers.json');\""
         ],
         "post-update-cmd": [
-            "@php -r \"copy('https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yaml', 'vendor/freelancehunt/php-referer-parser/data/referers.yml'); copy('https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.json', 'vendor/freelancehunt/php-referer-parser/data/referers.json');\""
+            "@php -r \"copy('https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.yaml', 'vendor/simplestats/referer-parser/data/referers.yml'); copy('https://s3-eu-west-1.amazonaws.com/snowplow-hosted-assets/third-party/referer-parser/referers-latest.json', 'vendor/simplestats/referer-parser/data/referers.json');\""
         ]
     },
     "config": {

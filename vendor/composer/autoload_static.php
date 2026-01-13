@@ -15,6 +15,10 @@ class ComposerStaticInit1e6f64c5826801f5eb982f660f815d2a
         array (
             'WhichBrowser\\' => 13,
         ),
+        'S' => 
+        array (
+            'Snowplow\\RefererParser\\' => 23,
+        ),
         'P' => 
         array (
             'Psr\\Cache\\' => 10,
@@ -34,6 +38,10 @@ class ComposerStaticInit1e6f64c5826801f5eb982f660f815d2a
         array (
             0 => __DIR__ . '/..' . '/whichbrowser/parser/src',
         ),
+        'Snowplow\\RefererParser\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/simplestats/referer-parser/src',
+        ),
         'Psr\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
@@ -41,16 +49,6 @@ class ComposerStaticInit1e6f64c5826801f5eb982f660f815d2a
         'Kirby\\' => 
         array (
             0 => __DIR__ . '/..' . '/getkirby/composer-installer/src',
-        ),
-    );
-
-    public static $prefixesPsr0 = array (
-        'S' => 
-        array (
-            'Snowplow\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src',
-            ),
         ),
     );
 
@@ -64,14 +62,14 @@ class ComposerStaticInit1e6f64c5826801f5eb982f660f815d2a
         'Psr\\Cache\\CacheItemInterface' => __DIR__ . '/..' . '/psr/cache/src/CacheItemInterface.php',
         'Psr\\Cache\\CacheItemPoolInterface' => __DIR__ . '/..' . '/psr/cache/src/CacheItemPoolInterface.php',
         'Psr\\Cache\\InvalidArgumentException' => __DIR__ . '/..' . '/psr/cache/src/InvalidArgumentException.php',
-        'Snowplow\\RefererParser\\Config\\ConfigFileReaderTrait' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Config/ConfigFileReaderTrait.php',
-        'Snowplow\\RefererParser\\Config\\ConfigReaderInterface' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Config/ConfigReaderInterface.php',
-        'Snowplow\\RefererParser\\Config\\JsonConfigReader' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Config/JsonConfigReader.php',
-        'Snowplow\\RefererParser\\Config\\YamlConfigReader' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Config/YamlConfigReader.php',
-        'Snowplow\\RefererParser\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Exception/InvalidArgumentException.php',
-        'Snowplow\\RefererParser\\Medium' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Medium.php',
-        'Snowplow\\RefererParser\\Parser' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Parser.php',
-        'Snowplow\\RefererParser\\Referer' => __DIR__ . '/..' . '/freelancehunt/php-referer-parser/src/Snowplow/RefererParser/Referer.php',
+        'Snowplow\\RefererParser\\Config\\ConfigFileReaderTrait' => __DIR__ . '/..' . '/simplestats/referer-parser/src/Config/ConfigFileReaderTrait.php',
+        'Snowplow\\RefererParser\\Config\\ConfigReaderInterface' => __DIR__ . '/..' . '/simplestats/referer-parser/src/Config/ConfigReaderInterface.php',
+        'Snowplow\\RefererParser\\Config\\JsonConfigReader' => __DIR__ . '/..' . '/simplestats/referer-parser/src/Config/JsonConfigReader.php',
+        'Snowplow\\RefererParser\\Config\\YamlConfigReader' => __DIR__ . '/..' . '/simplestats/referer-parser/src/Config/YamlConfigReader.php',
+        'Snowplow\\RefererParser\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/simplestats/referer-parser/src/Exception/InvalidArgumentException.php',
+        'Snowplow\\RefererParser\\Medium' => __DIR__ . '/..' . '/simplestats/referer-parser/src/Medium.php',
+        'Snowplow\\RefererParser\\Parser' => __DIR__ . '/..' . '/simplestats/referer-parser/src/Parser.php',
+        'Snowplow\\RefererParser\\Referer' => __DIR__ . '/..' . '/simplestats/referer-parser/src/Referer.php',
         'WhichBrowser\\Analyser' => __DIR__ . '/..' . '/whichbrowser/parser/src/Analyser.php',
         'WhichBrowser\\Analyser\\Camouflage' => __DIR__ . '/..' . '/whichbrowser/parser/src/Analyser/Camouflage.php',
         'WhichBrowser\\Analyser\\Corrections' => __DIR__ . '/..' . '/whichbrowser/parser/src/Analyser/Corrections.php',
@@ -147,7 +145,6 @@ class ComposerStaticInit1e6f64c5826801f5eb982f660f815d2a
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit1e6f64c5826801f5eb982f660f815d2a::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit1e6f64c5826801f5eb982f660f815d2a::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit1e6f64c5826801f5eb982f660f815d2a::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit1e6f64c5826801f5eb982f660f815d2a::$classMap;
 
         }, null, ClassLoader::class);
