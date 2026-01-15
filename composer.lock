@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "05509177a04f89bd1f429c206c395122",
+    "content-hash": "b5fc4f13441b637000b8b368ecef769f",
     "packages": [
         {
             "name": "getkirby/composer-installer",
@@ -104,23 +104,28 @@
         },
         {
             "name": "simplestats/referer-parser",
-            "version": "v1.0.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bogdancondorachi/php-referer-parser.git",
-                "reference": "0666bae2e7069299267cd7bac0d454a764c02959"
+                "reference": "0a4f1c640ae08a405fbcd6be00e782047d555fd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bogdancondorachi/php-referer-parser/zipball/0666bae2e7069299267cd7bac0d454a764c02959",
-                "reference": "0666bae2e7069299267cd7bac0d454a764c02959",
+                "url": "https://api.github.com/repos/bogdancondorachi/php-referer-parser/zipball/0a4f1c640ae08a405fbcd6be00e782047d555fd2",
+                "reference": "0a4f1c640ae08a405fbcd6be00e782047d555fd2",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.2"
+                "php": ">=8.2"
+            },
+            "replace": {
+                "snowplow/referer-parser": "*"
             },
             "require-dev": {
-                "phpunit/phpunit": "^11"
+                "friendsofphp/php-cs-fixer": "^3",
+                "phpunit/phpunit": "^11",
+                "symfony/yaml": "^7"
             },
             "suggest": {
                 "symfony/yaml": "Required for YamlConfigReader support"
@@ -137,28 +142,20 @@
             ],
             "authors": [
                 {
-                    "name": "Lars Strojny",
-                    "role": "Creator"
+                    "name": "Bogdan Condorachi",
+                    "email": "bogdan.condorachi@gmail.com",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "Bogdan Condorachi",
-                    "role": "Maintainer"
+                    "name": "Lars Strojny",
+                    "role": "Creator"
                 }
             ],
             "description": "Snowplow Refer(r)er parser for PHP",
-            "keywords": [
-                "analytics",
-                "referer",
-                "referrer",
-                "search",
-                "snowplow",
-                "social",
-                "tracking"
-            ],
             "support": {
-                "source": "https://github.com/bogdancondorachi/php-referer-parser/tree/v1.0.0"
+                "source": "https://github.com/bogdancondorachi/php-referer-parser/tree/v1.1.1"
             },
-            "time": "2026-01-13T03:24:51+00:00"
+            "time": "2026-01-14T19:12:15+00:00"
         },
         {
             "name": "whichbrowser/parser",
