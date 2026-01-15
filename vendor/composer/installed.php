@@ -38,13 +38,19 @@
             'dev_requirement' => false,
         ),
         'simplestats/referer-parser' => array(
-            'pretty_version' => 'v1.0.0',
-            'version' => '1.0.0.0',
-            'reference' => '0666bae2e7069299267cd7bac0d454a764c02959',
+            'pretty_version' => 'v1.1.1',
+            'version' => '1.1.1.0',
+            'reference' => '0a4f1c640ae08a405fbcd6be00e782047d555fd2',
             'type' => 'library',
             'install_path' => __DIR__ . '/../simplestats/referer-parser',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'snowplow/referer-parser' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
         ),
         'whichbrowser/parser' => array(
             'pretty_version' => 'v2.1.8',
