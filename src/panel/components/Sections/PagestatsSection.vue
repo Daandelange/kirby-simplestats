@@ -3,13 +3,23 @@
     <!-- Total Visits -->
     <k-column v-if="showTotals" width="1/1">
       <k-section :label="label">
-        <k-stat
-          label="Visitors"
-          :value="totalHits"
-          :info="Math.round(averageHits) + ' per ' + timespanUnitName"
-          icon="users"
-          link="simplestats"
-        />
+        <div class="k-stats">
+          <k-stat
+            :label="$t('simplestats.visits.visitsovertime')"
+            :value="totalHits"
+            :info="Math.round(averageHits) + ' ' + $t('simplestats.visits.per') + ' ' + timespanUnitName"
+            icon="users"
+            link="simplestats"
+          />
+          <k-stat
+            v-if="showFullInfo"
+            label="Samples"
+            :value="trackingPeriods"
+            :info="$t('simplestats.visits.since') + ' ' + trackedSince"
+            icon="chart"
+            link="simplestats"
+          />
+        </k-stats>
       </k-section>
     </k-column>
 

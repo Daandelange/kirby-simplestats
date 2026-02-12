@@ -12,6 +12,9 @@
   "simplestats.visits.languagesovertime": "Visits by language",
   "simplestats.visits.globallanguages": "Language popularity",
   "simplestats.visits.visitedpages": "Visited pages",
+  "simplestats.visits.per": "per",
+  "simplestats.visits.since": "since",
+  "simplestats.visits.samples": "Samples",
 
 
   "simplestats.devices.visitordevices": "Visitor Devices",
