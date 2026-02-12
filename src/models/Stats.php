@@ -335,12 +335,12 @@ class Stats extends SimpleStatsDb {
 
     public static function translateNamespaced( string $namespace, string $key ) : string {
         // Prefer use a translation when available
-        if($translation = t(strtolower($namespace.'.'.$key)){
+        if( $translation = t( strtolower($namespace.'.'.$key)) ){
             return $translation;
         }
 
         // Make any (unknown) key human readable
-        return humanizeKey($key);
+        return static::humanizeKey($key);
     }
 
     public static function translateDeviceKey(string $key): string {
