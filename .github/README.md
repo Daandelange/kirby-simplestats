@@ -218,12 +218,12 @@ If you wish to display page stats in a section, you may add a `pagestats` panel 
 sections:
   pagestats:
     type: pagestats
-    label: TestHeadline
-    size: small
-    showTotals: true
-    showTimeline: true
-    showLanguages: true
-    showFullInfo: false
+    label: Analytics
+    size: small           # affects chart height
+    showTotals: true      # show total and average visits
+    showTimeline: true    # Show visits over time
+    showLanguages: true   # Show languages
+    showFullInfo: false   # Add extra verbose stats
 ````
 
 ****

@@ -18,6 +18,8 @@
       @input="onSelect('from', $event)"
     />
 
+    <k-icon type="expand-horizontal" alt="to" />
+
     <!-- To Picker -->
     <k-button
       :dropdown="true"
