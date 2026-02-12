@@ -123,7 +123,7 @@ return [
                 'method'  => 'GET',
                 'action'  => $wrapAction(function (): array {
                     $device = SimpleStats::detectSystemFromUA();
-                    if (isset($device['device'])) $device['device'] = Stats::humanizeKey($device['device']);
+                    if (isset($device['device'])) $device['device'] = Stats::translateDeviceKey($device['device']);
                     return [
                         'currentUserAgent'  => $_SERVER['HTTP_USER_AGENT'] ?? '',
                         'currentDeviceInfo' => $device,
@@ -148,7 +148,7 @@ return [
                 'action'  => $wrapAction(function () use ($getQueryParam): array {
                     $ua = (string) $getQueryParam('ua', '');
                     $uainfo = SimpleStats::detectSystemFromUA(['User-Agent' => $ua]);
-                    if ($uainfo && isset($uainfo['device'])) $uainfo['device'] = Stats::humanizeKey($uainfo['device']);
+                    if ($uainfo && isset($uainfo['device'])) $uainfo['device'] = Stats::translateDeviceKey($uainfo['device']);
                     return $uainfo ?? ['error' => 'Invalid referrer url!'];
                 })
             ],

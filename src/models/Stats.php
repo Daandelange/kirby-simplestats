@@ -219,7 +219,7 @@ class Stats extends SimpleStatsDb {
                 if(!array_key_exists($key, $allDevices['data'])){
                     $allDevices['data'][$key] = intval($device->hits, 10);
                 }
-                $allDevicesLabels[$key] = static::humanizeKey($key);
+                $allDevicesLabels[$key] = static::translateDeviceKey($key);
             }
             // Remove keys
             $allDevices['data'] = array_values($allDevices['data']);
@@ -284,7 +284,7 @@ class Stats extends SimpleStatsDb {
                 // Need to create the first entry ?
                 if(!array_key_exists($name, $devicesOverTimeData)){
                     $devicesOverTimeData[$name]=[
-                        'label' => self::humanizeKey($name),
+                        'label' => self::translateDeviceKey($name),
                         'data' => array_fill_keys(array_keys($selectedPeriods), 0),
                     ];
                 }
@@ -331,6 +331,24 @@ class Stats extends SimpleStatsDb {
         }, $words);
 
         return implode(' ', $words);
+    }
+
+    public static function translateNamespaced( string $namespace, string $key ) : string {
+        // Prefer use a translation when available
+        if($translation = t(strtolower($namespace.'.'.$key)){
+            return $translation;
+        }
+
+        // Make any (unknown) key human readable
+        return humanizeKey($key);
+    }
+
+    public static function translateDeviceKey(string $key): string {
+        return static::translateNamespaced('simplestats.devices.names', $key);
+    }
+
+    public static function translateMediumKey(string $key): string {
+        return static::translateNamespaced('simplestats.referers.mediums', $key);
     }
 
     public static function refererStats(?int $fromPeriod = null, ?int $toPeriod = null): ?array {
@@ -387,7 +405,7 @@ class Stats extends SimpleStatsDb {
                 if(!array_key_exists($key, $referersByMediumData['data'])){
                     $referersByMediumData['data'][$key] = intval($medium->hits,10);
                 }
-                $referersByMediumLabels[$key] = static::humanizeKey($medium->medium);
+                $referersByMediumLabels[$key] = static::translateMediumKey($medium->medium);
             }
             // Remove keys
             $referersByMediumData['data'] = array_values($referersByMediumData['data']);
@@ -410,7 +428,7 @@ class Stats extends SimpleStatsDb {
                 // Need to create the first entry ?
                 if(!array_key_exists($key, $referersByMediumOverTimeData)){
                     $referersByMediumOverTimeData[$key]=[
-                        'label' => static::humanizeKey($medium->medium),
+                        'label' => static::translateMediumKey($medium->medium),
                         'data' => array_fill_keys(array_keys($selectedPeriods), 0),
                     ];
                 }
