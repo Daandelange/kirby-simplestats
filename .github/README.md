@@ -219,7 +219,7 @@ sections:
   pagestats:
     type: pagestats
     label: Analytics
-    size: small           # affects chart height
+    size: small           # affects chart height : tiny, small, medium, large
     showTotals: true      # show total and average visits
     showTimeline: true    # Show visits over time
     showLanguages: true   # Show languages
