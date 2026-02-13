@@ -12,7 +12,7 @@ return [
 
         // Wrapper: normal panel access + logging
         $wrapAction = function (callable $callback, bool $requireAdmin = false): callable {
-            return function () use ($callback, $requireAdmin): mixed {
+            return function (...$args) use ($callback, $requireAdmin): mixed {
                 if (!$this->user()->hasSimpleStatsPanelAccess($requireAdmin)) {
                     throw new PermissionException(
                         $requireAdmin
@@ -22,7 +22,8 @@ return [
                 }
 
                 try {
-                    return $callback();
+                    return $callback(...$args);
+                    //return call_user_func_array($callback, $args); // php 7 alternative if needed ?
                 } catch (Throwable $e) {
                     Logger::logTracking('Error: ' . $e->getMessage() . ' (file: ' . $e->getFile() . '#L' . $e->getLine() . ')');
                     throw $e;
@@ -81,6 +82,29 @@ return [
                 'action'  => $wrapAction(function (): array {
                     [$from, $to] = Stats::getTimeSpanFromUrl();
                     return Stats::pageStats($from, $to);
+                })
+            ],
+
+            [
+                'pattern' => 'simplestats/onepagestats/(:all)',
+                'method'  => 'GET',
+                'action'  => $wrapAction(function ($any): array {
+                    [$from, $to] = Stats::getTimeSpanFromUrl();
+                    
+                    $page = page($any);
+                    if(!$page) throw new Exception("The page doesn't exist !");
+
+                    return [
+                        'statsdata' => Stats::onePageStats($any, $from, $to),
+
+                        // To replicate the section response, for compatibility
+                        'label'         => t('simplestats.info.config.tracking.visits', "Page visits"),
+                        'showFullInfo'  => true,
+                        'showTotals'    => true,
+                        'showTimeline'  => true,
+                        'showLanguages' => true,
+                        'size'          => 'huge',
+                    ];
                 })
             ],
 

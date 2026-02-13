@@ -8,6 +8,7 @@ import InfoConfig from "./components/Views/Information/InfoConfig.vue";
 import InfoDatabase from "./components/Views/Information/InfoDatabase.vue";
 import InfoTracking from "./components/Views/Information/InfoTracking.vue";
 import InfoVisitors from "./components/Views/Information/InfoVisitors.vue";
+import PagestatsDrawer from "./components/Drawers/PagestatsDrawer.vue";
 
 // Components
 import Chart from "./components/View/Chart.vue";
@@ -41,6 +42,7 @@ panel.plugin("daandelange/simplestats", {
     "k-simplestats-info-database": InfoDatabase,
     "k-simplestats-info-tracking": InfoTracking,
     "k-simplestats-info-visitors": InfoVisitors,
+    "k-simplestats-pagestats-drawer": PagestatsDrawer,
   },
 
   sections: {

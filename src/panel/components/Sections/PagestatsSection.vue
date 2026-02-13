@@ -94,6 +94,14 @@ export default {
 
   created() {
     this.load().then(response => {
+      // In rare cases when received data is incorrect : prevent crashing js
+      if(!response || !response.statsdata){
+        this.$panel.error({
+          message: 'Loading error',
+          details: 'While data was received, the tracking data was not sent correctly.'
+        });
+        return;
+      }
       const stats = response.statsdata;
       Object.assign(this, {
         label: response.label ?? response.headline,

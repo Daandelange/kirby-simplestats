@@ -15,6 +15,7 @@
   "simplestats.visits.per": "/",
   "simplestats.visits.since": "óta",
   "simplestats.visits.samples": "Samples", // todo !
+  "simplestats.visits.pagestats": "Page Stats", 
 
   "simplestats.devices.visitordevices": "Látogatók eszközei",
   "simplestats.devices.browserengines": "Böngészőmotorok",

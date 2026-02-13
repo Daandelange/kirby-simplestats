@@ -72,6 +72,7 @@
         :label="$t('simplestats.visits.visitedpages')"
         :rows="table.rows"
         :columns="table.columns"
+        @row="onRowClick"
       />
     </k-column>
   </k-grid>
@@ -79,6 +80,7 @@
 
 <script>
 import apiFetch from '../../mixins/apiFetch.js';
+import {usePanel} from 'kirbyuse';
 
 export default {
   mixins: [apiFetch],
@@ -138,7 +140,32 @@ export default {
       this.table.rows = response.pagestatsdata || [];
       this.table.columns = response.pagestatslabels || {};
       this.languagesAreEnabled = !!response.languagesAreEnabled;
+    },
+    onRowClick(eventData){
+      const panel = usePanel();
+
+      // Open the drawer if oo
+      if(eventData?.row?.uid){
+        panel.drawer.open({
+          component: 'k-simplestats-pagestats-drawer',
+          props: {
+            title: this.$t('simplestats.visits.pagestats')+': '+eventData.row.title?.text+' ('+eventData.row.uid+')',
+            size: 'huge',
+            name: 'pagestats',
+            parent: 'pages/'+eventData.row.uid,
+            uid: eventData.row.uid,
+            dateFrom: this.$props.dateFrom,
+            dateTo: this.$props.dateTo,
+          }
+        })
+      }
     }
   }
 };
 </script>
+
+<style>
+.k-simplestats-filter-table .k-table tbody tr:hover td {
+  cursor: pointer;
+}
+</style>
