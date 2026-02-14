@@ -44,9 +44,9 @@ final readonly class Referer
 	}
 
 	// Backward-compatible getters
-	public function getMedium(): Medium
+	public function getMedium(): string
 	{
-		return $this->medium;
+		return $this->medium->value;
 	}
 
 	public function getSource(): ?string
