@@ -1,7 +1,15 @@
 <template>
   <k-grid variant="columns">
+    <!-- Loading message -->
+    <k-column v-if="isLoading" width="1/1">
+      <k-empty>
+        <k-icon type="loader"/>
+        <span>Fetching data...</span>
+      </k-empty>
+    </k-column>
+
     <!-- Total Visits -->
-    <k-column v-if="showTotals" width="1/1">
+    <k-column v-if="showTotals && !isLoading" width="1/1">
       <k-section :label="label">
         <div class="k-stats">
           <k-stat
@@ -24,7 +32,7 @@
     </k-column>
 
     <!-- Visits Over Time -->
-    <k-column v-if="showTimeline" width="1/1">
+    <k-column v-if="showTimeline && !isLoading" width="1/1">
       <k-simplestats-chart
         type="Line"
         download="PageVisitsOverTime.png"
@@ -40,7 +48,7 @@
     </k-column>
 
     <!-- Visits Per Language -->
-    <k-column v-if="languagesAreEnabled && showLanguages" width="1/1">
+    <k-column v-if="languagesAreEnabled && showLanguages && !isLoading" width="1/1">
       <k-simplestats-chart
         type="Pie"
         :chart-data="languageTotalHits"
@@ -97,8 +105,8 @@ export default {
       // In rare cases when received data is incorrect : prevent crashing js
       if(!response || !response.statsdata){
         this.$panel.error({
-          message: 'Loading error',
-          details: 'While data was received, the tracking data was not sent correctly.'
+          message: 'Loading error : wrong data received',
+          details: 'While data was received, it was sent in an incorrect format.'
         });
         return;
       }

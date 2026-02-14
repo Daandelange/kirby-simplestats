@@ -140,7 +140,7 @@ export default {
     },
     onCellClick(row, rowIndex){
       this.$emit('row', row, rowIndex);
-    }
+    },
   }
 };
 </script>

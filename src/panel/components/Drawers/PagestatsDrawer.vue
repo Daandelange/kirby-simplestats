@@ -12,24 +12,65 @@ export default {
     'k-drawer', // Needed to inherit drawer properties
   ], 
 
+  emits: [
+    "close",
+    "next",
+    "prev",
+    "submit",
+  ],
+
   props: {
-    uid: '',
+    uid: {
+      type: String,
+      required: true,
+    },
+    next: {
+      type: Object
+    },
+    prev: {
+      type: Object
+    },
   },
 
   // Custom render function that wraps a `k-drawer` around our original section template
   render(createElement) {
     const closeFn = () => { this.$emit('close') };
-    const drawerProps = { attrs: { ...this.$attrs}, on: { submit: closeFn }};
+    const defaultSlot = () => {
+      return [KPagestatsSection.render.call(this, createElement)];
+    };
+
+    const drawerProps = {
+        attrs: {
+          ...this.$attrs,
+          ...this.$props,
+          options: [
+            this.$props.prev ? {
+              title: "Previous",
+              icon: 'angle-left',
+              click: () => { this.$emit('prev'); if(this.$props.prev instanceof Function) this.$props.prev(); },
+            } : {},
+            this.$props.next ? {
+              title: 'Next',
+              icon: 'angle-right',
+              click: () => { this.$emit('next'); if(this.$props.next instanceof Function) this.$props.next(); },
+            } : {},
+          ],
+        },
+        on: {
+          submit: closeFn,
+
+        },
+        scopedSlots: {
+          default: defaultSlot,
+        }
+    };
 
     // Simply return a drawer to which we bind 
     // We put the original KPagestatsSection renderFn as childs
     return createElement(
       'k-drawer', // Element to create
-      drawerProps, // Element Props
-      [ // Childs (they go in the default template)
-        KPagestatsSection.render.call(this, createElement),
-      ],
-    )
+      drawerProps//, // Element Props
+    );
   },
 
   methods: {

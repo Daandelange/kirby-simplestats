@@ -85,6 +85,13 @@ import {usePanel} from 'kirbyuse';
 export default {
   mixins: [apiFetch],
 
+  props: {
+    currentItem: {
+      default: -1,
+      type: Number,
+    },
+  },
+
   data() {
     return {
       charts: {
@@ -141,25 +148,47 @@ export default {
       this.table.columns = response.pagestatslabels || {};
       this.languagesAreEnabled = !!response.languagesAreEnabled;
     },
-    onRowClick(eventData){
+    openDrawer(current){
       const panel = usePanel();
+      const curr = this.table.rows[current]??null;
+      const prev = this.table.rows[current+1]??null;
+      const next = this.table.rows[current-1]??null;
+      const drawerProps = {
+        title: this.$t('simplestats.visits.pagestats')+': '+curr.title?.text+' ('+curr.uid+')',
+        size: 'huge',
+        uid: curr.uid,
+        dateFrom: this.$props.dateFrom,
+        dateTo: this.$props.dateTo,
+        next: this.onNext,
+        prev: this.onPrev,
+      };
 
-      // Open the drawer if oo
-      if(eventData?.row?.uid){
+      if(curr){
+        if(panel.drawer.isOpen){
+          panel.drawer.history.clear();
+          // panel.drawer.refresh(drawerProps);
+          // panel.drawer.reload(drawerProps);
+        }
         panel.drawer.open({
           component: 'k-simplestats-pagestats-drawer',
-          props: {
-            title: this.$t('simplestats.visits.pagestats')+': '+eventData.row.title?.text+' ('+eventData.row.uid+')',
-            size: 'huge',
-            name: 'pagestats',
-            parent: 'pages/'+eventData.row.uid,
-            uid: eventData.row.uid,
-            dateFrom: this.$props.dateFrom,
-            dateTo: this.$props.dateTo,
-          }
-        })
+          props: drawerProps,
+        });
+        this.currentItem = current;
       }
-    }
+      //else window.console.log("Issue!!!");
+    },
+    onRowClick(eventData){
+      // Open the drawer if oo
+      if(eventData?.row?.uid){
+        this.openDrawer(eventData.rowIndex);
+      }
+    },
+    onNext(){
+      this.openDrawer(this.currentItem+1);
+    },
+    onPrev(){
+      this.openDrawer(this.currentItem-1);
+    },
   }
 };
 </script>
