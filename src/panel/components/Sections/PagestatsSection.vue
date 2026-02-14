@@ -27,7 +27,7 @@
             icon="chart"
             link="simplestats"
           />
-        </k-stats>
+        </div>
       </k-section>
     </k-column>
 

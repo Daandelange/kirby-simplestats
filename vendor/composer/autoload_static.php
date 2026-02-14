@@ -7,46 +7,46 @@ namespace Composer\Autoload;
 class ComposerStaticInit1e6f64c5826801f5eb982f660f815d2a
 {
     public static $prefixLengthsPsr4 = array (
-        'd' =>
+        'd' => 
         array (
             'daandelange\\SimpleStats\\' => 24,
         ),
-        'W' =>
+        'W' => 
         array (
             'WhichBrowser\\' => 13,
         ),
-        'S' =>
+        'S' => 
         array (
             'Snowplow\\RefererParser\\' => 23,
         ),
-        'P' =>
+        'P' => 
         array (
             'Psr\\Cache\\' => 10,
         ),
-        'K' =>
+        'K' => 
         array (
             'Kirby\\' => 6,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'daandelange\\SimpleStats\\' =>
+        'daandelange\\SimpleStats\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/models',
         ),
-        'WhichBrowser\\' =>
+        'WhichBrowser\\' => 
         array (
             0 => __DIR__ . '/..' . '/whichbrowser/parser/src',
         ),
-        'Snowplow\\RefererParser\\' =>
+        'Snowplow\\RefererParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/simplestats/referer-parser/src',
         ),
-        'Psr\\Cache\\' =>
+        'Psr\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
-        'Kirby\\' =>
+        'Kirby\\' => 
         array (
             0 => __DIR__ . '/..' . '/getkirby/composer-installer/src',
         ),

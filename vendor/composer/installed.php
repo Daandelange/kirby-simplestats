@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'daandelange/simplestats',
-        'pretty_version' => '1.0.0-alpha.8',
-        'version' => '1.0.0.0-alpha8',
-        'reference' => null,
+        'pretty_version' => '1.0.0-alpha.10',
+        'version' => '1.0.0.0-alpha10',
+        'reference' => NULL,
         'type' => 'kirby-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'daandelange/simplestats' => array(
-            'pretty_version' => '1.0.0-alpha.8',
-            'version' => '1.0.0.0-alpha8',
-            'reference' => null,
+            'pretty_version' => '1.0.0-alpha.10',
+            'version' => '1.0.0.0-alpha10',
+            'reference' => NULL,
             'type' => 'kirby-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -38,9 +38,9 @@
             'dev_requirement' => false,
         ),
         'simplestats/referer-parser' => array(
-            'pretty_version' => 'v1.1.2',
-            'version' => '1.1.2.0',
-            'reference' => '6e659843c45cffe7a5c1c09b0b3582d8816cb922',
+            'pretty_version' => 'v1.1.3',
+            'version' => '1.1.3.0',
+            'reference' => '4891a4ebf2458743bab22da3bd57ea94c0c3b709',
             'type' => 'library',
             'install_path' => __DIR__ . '/../simplestats/referer-parser',
             'aliases' => array(),

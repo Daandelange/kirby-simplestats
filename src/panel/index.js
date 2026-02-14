@@ -6,7 +6,7 @@ import ReferrersView from "./components/Views/ReferrersView.vue";
 import InfoView from "./components/Views/Information/InfoView.vue";
 import InfoConfig from "./components/Views/Information/InfoConfig.vue";
 import InfoDatabase from "./components/Views/Information/InfoDatabase.vue";
-import InfoTracking from "./components/Views/Information/InfoTracking.vue";
+import InfoTesters from "./components/Views/Information/InfoTesters.vue";
 import InfoVisitors from "./components/Views/Information/InfoVisitors.vue";
 import PagestatsDrawer from "./components/Drawers/PagestatsDrawer.vue";
 
@@ -40,7 +40,7 @@ panel.plugin("daandelange/simplestats", {
     "k-simplestats-info-view": InfoView,
     "k-simplestats-info-config": InfoConfig,
     "k-simplestats-info-database": InfoDatabase,
-    "k-simplestats-info-tracking": InfoTracking,
+    "k-simplestats-info-testers": InfoTesters,
     "k-simplestats-info-visitors": InfoVisitors,
     "k-simplestats-pagestats-drawer": PagestatsDrawer,
   },
