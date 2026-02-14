@@ -1,20 +1,38 @@
 <template>
   <k-grid variant="columns">
+    <!-- Loading message -->
+    <k-column v-if="isLoading" width="1/1">
+      <k-empty>
+        <k-icon type="loader"/>
+        <span>Fetching data...</span>
+      </k-empty>
+    </k-column>
+
     <!-- Total Visits -->
-    <k-column v-if="showTotals" width="1/1">
+    <k-column v-if="showTotals && !isLoading" width="1/1">
       <k-section :label="label">
-        <k-stat
-          label="Visitors"
-          :value="totalHits"
-          :info="Math.round(averageHits) + ' per ' + timespanUnitName"
-          icon="users"
-          link="simplestats"
-        />
+        <div class="k-stats">
+          <k-stat
+            :label="$t('simplestats.visits.visitsovertime')"
+            :value="totalHits"
+            :info="Math.round(averageHits) + ' ' + $t('simplestats.visits.per') + ' ' + timespanUnitName"
+            icon="users"
+            link="simplestats"
+          />
+          <k-stat
+            v-if="showFullInfo"
+            label="Samples"
+            :value="trackingPeriods"
+            :info="$t('simplestats.visits.since') + ' ' + trackedSince"
+            icon="chart"
+            link="simplestats"
+          />
+        </k-stats>
       </k-section>
     </k-column>
 
     <!-- Visits Over Time -->
-    <k-column v-if="showTimeline" width="1/1">
+    <k-column v-if="showTimeline && !isLoading" width="1/1">
       <k-simplestats-chart
         type="Line"
         download="PageVisitsOverTime.png"
@@ -30,7 +48,7 @@
     </k-column>
 
     <!-- Visits Per Language -->
-    <k-column v-if="languagesAreEnabled && showLanguages" width="1/1">
+    <k-column v-if="languagesAreEnabled && showLanguages && !isLoading" width="1/1">
       <k-simplestats-chart
         type="Pie"
         :chart-data="languageTotalHits"
@@ -84,6 +102,14 @@ export default {
 
   created() {
     this.load().then(response => {
+      // In rare cases when received data is incorrect : prevent crashing js
+      if(!response || !response.statsdata){
+        this.$panel.error({
+          message: 'Loading error : wrong data received',
+          details: 'While data was received, it was sent in an incorrect format.'
+        });
+        return;
+      }
       const stats = response.statsdata;
       Object.assign(this, {
         label: response.label ?? response.headline,

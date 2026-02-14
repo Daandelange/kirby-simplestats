@@ -26,6 +26,7 @@
       :rows="sortedFilteredRows"
       :empty="emptyText"
       @header="onHeaderClick"
+      @cell="onCellClick"
     />
   </k-section>
 </template>
@@ -136,7 +137,10 @@ export default {
       };
 
       this.sortAsc = !this.sortAsc;
-    }
+    },
+    onCellClick(row, rowIndex){
+      this.$emit('row', row, rowIndex);
+    },
   }
 };
 </script>

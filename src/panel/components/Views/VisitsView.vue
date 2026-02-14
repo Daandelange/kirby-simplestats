@@ -72,6 +72,7 @@
         :label="$t('simplestats.visits.visitedpages')"
         :rows="table.rows"
         :columns="table.columns"
+        @row="onRowClick"
       />
     </k-column>
   </k-grid>
@@ -79,9 +80,17 @@
 
 <script>
 import apiFetch from '../../mixins/apiFetch.js';
+import {usePanel} from 'kirbyuse';
 
 export default {
   mixins: [apiFetch],
+
+  props: {
+    currentItem: {
+      default: -1,
+      type: Number,
+    },
+  },
 
   data() {
     return {
@@ -138,7 +147,54 @@ export default {
       this.table.rows = response.pagestatsdata || [];
       this.table.columns = response.pagestatslabels || {};
       this.languagesAreEnabled = !!response.languagesAreEnabled;
-    }
+    },
+    openDrawer(current){
+      const panel = usePanel();
+      const curr = this.table.rows[current]??null;
+      const prev = this.table.rows[current+1]??null;
+      const next = this.table.rows[current-1]??null;
+      const drawerProps = {
+        title: this.$t('simplestats.visits.pagestats')+': '+curr.title?.text+' ('+curr.uid+')',
+        size: 'huge',
+        uid: curr.uid,
+        dateFrom: this.$props.dateFrom,
+        dateTo: this.$props.dateTo,
+        next: this.onNext,
+        prev: this.onPrev,
+      };
+
+      if(curr){
+        if(panel.drawer.isOpen){
+          panel.drawer.history.clear();
+          // panel.drawer.refresh(drawerProps);
+          // panel.drawer.reload(drawerProps);
+        }
+        panel.drawer.open({
+          component: 'k-simplestats-pagestats-drawer',
+          props: drawerProps,
+        });
+        this.currentItem = current;
+      }
+      //else window.console.log("Issue!!!");
+    },
+    onRowClick(eventData){
+      // Open the drawer if oo
+      if(eventData?.row?.uid){
+        this.openDrawer(eventData.rowIndex);
+      }
+    },
+    onNext(){
+      this.openDrawer(this.currentItem+1);
+    },
+    onPrev(){
+      this.openDrawer(this.currentItem-1);
+    },
   }
 };
 </script>
+
+<style>
+.k-simplestats-filter-table .k-table tbody tr:hover td {
+  cursor: pointer;
+}
+</style>

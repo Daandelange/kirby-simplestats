@@ -12,7 +12,7 @@ return [
 
         // Wrapper: normal panel access + logging
         $wrapAction = function (callable $callback, bool $requireAdmin = false): callable {
-            return function () use ($callback, $requireAdmin): mixed {
+            return function (...$args) use ($callback, $requireAdmin): mixed {
                 if (!$this->user()->hasSimpleStatsPanelAccess($requireAdmin)) {
                     throw new PermissionException(
                         $requireAdmin
@@ -22,7 +22,8 @@ return [
                 }
 
                 try {
-                    return $callback();
+                    return $callback(...$args);
+                    //return call_user_func_array($callback, $args); // php 7 alternative if needed ?
                 } catch (Throwable $e) {
                     Logger::logTracking('Error: ' . $e->getMessage() . ' (file: ' . $e->getFile() . '#L' . $e->getLine() . ')');
                     throw $e;
@@ -85,6 +86,29 @@ return [
             ],
 
             [
+                'pattern' => 'simplestats/onepagestats/(:all)',
+                'method'  => 'GET',
+                'action'  => $wrapAction(function ($any): array {
+                    [$from, $to] = Stats::getTimeSpanFromUrl();
+                    
+                    $page = page($any);
+                    if(!$page) throw new Exception("The page doesn't exist !");
+
+                    return [
+                        'statsdata' => Stats::onePageStats($any, $from, $to),
+
+                        // To replicate the section response, for compatibility
+                        'label'         => t('simplestats.info.config.tracking.visits', "Page visits"),
+                        'showFullInfo'  => true,
+                        'showTotals'    => true,
+                        'showTimeline'  => true,
+                        'showLanguages' => true,
+                        'size'          => 'huge',
+                    ];
+                })
+            ],
+
+            [
                 'pattern' => 'simplestats/listdbinfo',
                 'method'  => 'GET',
                 'action'  => $wrapAction(fn(): array => Stats::listDbInfo())
@@ -123,7 +147,7 @@ return [
                 'method'  => 'GET',
                 'action'  => $wrapAction(function (): array {
                     $device = SimpleStats::detectSystemFromUA();
-                    if (isset($device['device'])) $device['device'] = Stats::humanizeKey($device['device']);
+                    if (isset($device['device'])) $device['device'] = Stats::translateDeviceKey($device['device']);
                     return [
                         'currentUserAgent'  => $_SERVER['HTTP_USER_AGENT'] ?? '',
                         'currentDeviceInfo' => $device,
@@ -148,7 +172,7 @@ return [
                 'action'  => $wrapAction(function () use ($getQueryParam): array {
                     $ua = (string) $getQueryParam('ua', '');
                     $uainfo = SimpleStats::detectSystemFromUA(['User-Agent' => $ua]);
-                    if ($uainfo && isset($uainfo['device'])) $uainfo['device'] = Stats::humanizeKey($uainfo['device']);
+                    if ($uainfo && isset($uainfo['device'])) $uainfo['device'] = Stats::translateDeviceKey($uainfo['device']);
                     return $uainfo ?? ['error' => 'Invalid referrer url!'];
                 })
             ],

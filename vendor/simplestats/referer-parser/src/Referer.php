@@ -6,15 +6,11 @@ namespace Snowplow\RefererParser;
 
 final readonly class Referer
 {
-	public Medium $medium;
-	public ?string $source;
-	public ?string $searchTerm;
-
-	protected function __construct(Medium $medium, ?string $source = null, ?string $searchTerm = null)
-	{
-		$this->medium = $medium;
-		$this->source = $source;
-		$this->searchTerm = $searchTerm;
+	protected function __construct(
+		public readonly Medium $medium,
+		public readonly ?string $source = null,
+		public readonly ?string $searchTerm = null,
+	) {
 	}
 
 	public static function createKnown(Medium $medium, string $source, ?string $searchTerm = null): self

@@ -98,6 +98,6 @@ final class Parser
 
 	protected static function createDefaultConfigReader(): ConfigReaderInterface
 	{
-		return new JsonConfigReader(dirname(__DIR__) . '/data/referers.json');
+		return new JsonConfigReader(__DIR__ . '/../data/referers.json');
 	}
 }
