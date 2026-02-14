@@ -169,7 +169,7 @@ class SimpleStats extends SimpleStatsDb {
             $visitedpages = '';
 
             // Get device info
-            $info = SimpleStats::detectSystemFromUA($httpHeaders);
+            $info = SimpleStats::getDeviceInfo($httpHeaders);
             $userIsBot = ($info['system'] == 'bot');
 
             // Ignore bots globally ?
@@ -369,7 +369,7 @@ implode($isIpv6?':':'.', $maskMax);
     }
 
     // Returns an array with detected user hardware setup
-    public static function detectSystemFromUA( ?array $customHeaders = null ): array {
+    public static function getDeviceInfo( ?array $customHeaders = null ): array {
 
         $data = [
             'engine' => 'undefined',

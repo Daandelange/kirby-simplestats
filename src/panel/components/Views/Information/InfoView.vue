@@ -10,16 +10,16 @@
       <k-simplestats-info-database />
     </k-column>
 
-    <!-- Tracking Tester Section -->
+    <!-- Tracking Testers Section -->
     <k-column width="1/1">
-      <k-line-field />
-      <k-simplestats-info-tracking />
+      <k-line-field /><br />
+      <k-simplestats-info-testers />
     </k-column>
 
     <!-- Visitors Info Section -->
     <k-column width="1/1">
-      <k-line-field />
-      <k-simplestats-info-visitors path="listvisitors" />
+      <k-line-field /><br />
+      <k-simplestats-info-visitors path="visitors" />
     </k-column>
   </k-grid>
 </template>

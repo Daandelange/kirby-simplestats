@@ -1,30 +1,31 @@
 <template>
   <div class="k-fieldset">
     <k-grid variant="columns">
+      <!-- Headline -->
       <k-column width="1/1">
-        <k-headline-field :label="$t('simplestats.info.config.title')" />
+        <k-headline-field :label="$t('simplestats.info.config.headline')" />
       </k-column>
 
-      <!-- Tracking Info Table -->
+      <!-- Tracking Table -->
       <k-column width="1/1">
         <k-simplestats-info-table
-          :label="$t('simplestats.info.config.tracking')"
+          :label="$t('simplestats.info.config.tracking.label')"
           :rows="trackingRows"
         />
+
+        <!-- Unsalted Warning -->
+        <template v-if="!isLoading && !tracking.salted">
+          <br />
+          <k-box theme="negative" :text="$t('simplestats.info.config.tracking.unsalted.note')" />
+        </template>
       </k-column>
 
-      <!-- Logging Info Table -->
+      <!-- Logging Table -->
       <k-column width="1/1">
         <k-simplestats-info-table
-          :label="$t('simplestats.info.config.log.title')"
+          :label="$t('simplestats.info.config.logging.label')"
           :rows="loggingRows"
         />
-      </k-column>
-
-      <k-column v-if="!isLoading && !saltIsSet" width="1/1">
-        <k-section :label="$t('simplestats.info.config.tracking.unsalted')">
-          <k-box theme="negative" :text="$t('simplestats.info.config.tracking.unsalted.warn')" />
-        </k-section>
       </k-column>
     </k-grid>
   </div>
@@ -38,23 +39,28 @@ export default {
 
   data() {
     return {
+      isLoading: true,
+
       tracking: {
-        periodName: '',
+        period: '',
         since: '',
-        uniqueSeconds: '',
-        enableReferers: false,
-        enableDevices: false,
-        enableVisits: false,
-        enableVisitLanguages: false,
+        unique: '',
+        salted: false,
+        referers: false,
+        devices: false,
+        visits: false,
+        languages: false,
         ignoredRoles: [],
         ignoredPages: [],
         ignoredTemplates: []
       },
+
       logging: {
         file: '',
-        levels: []
-      },
-      saltIsSet: false
+        tracking: false,
+        warnings: false,
+        verbose: false
+      }
     };
   },
 
@@ -62,18 +68,17 @@ export default {
     trackingRows() {
       return [
         {
-          label: 'simplestats.info.config.tracking.period.name',
-          value: this.tracking.periodName
+          label: 'simplestats.info.config.tracking.period',
+          value: this.tracking.period
         },
         {
-          label: 'simplestats.info.config.tracking.period.secs',
-          value: this.tracking.uniqueSeconds,
-          column: { after: this.$t('simplestats.chart.seconds') }
+          label: 'simplestats.info.config.tracking.unique',
+          value: this.uniqueFormatted,
         },
         {
           label: 'simplestats.info.config.tracking.salted',
           preview: 'k-toggle-field-preview',
-          value: this.saltIsSet
+          value: this.tracking.salted
         },
         {
           label: 'simplestats.info.config.tracking.features',
@@ -86,7 +91,7 @@ export default {
           value: this.tracking.ignoredRoles
         },
         {
-          label: 'simplestats.info.config.tracking.ignore.ids',
+          label: 'simplestats.info.config.tracking.ignore.pages',
           preview: 'k-tags-field-preview',
           value: this.tracking.ignoredPages
         },
@@ -101,52 +106,76 @@ export default {
     loggingRows() {
       return [
         {
-          label: 'simplestats.info.config.log.file',
+          label: 'simplestats.info.config.logging.file',
           preview: 'k-files-field-preview',
           value: this.logging.file
         },
         {
-          label: 'simplestats.info.config.log.level',
+          label: 'simplestats.info.config.logging.levels',
           preview: 'k-tags-field-preview',
-          value: this.logging.levels
+          value: this.loggingLevels
         }
       ];
     },
 
     trackingFeatures() {
-      const featuresMap = [
-        ['enableReferers', 'simplestats.info.config.tracking.referers'],
-        ['enableDevices', 'simplestats.info.config.tracking.devices'],
-        ['enableVisits', 'simplestats.info.config.tracking.visits'],
-        ['enableVisitLanguages', 'simplestats.info.config.tracking.languages']
-      ];
-
-      return featuresMap
+      return [
+        ['referers', 'simplestats.info.config.tracking.feature.referers'],
+        ['devices', 'simplestats.info.config.tracking.feature.devices'],
+        ['visits', 'simplestats.info.config.tracking.feature.visits'],
+        ['languages', 'simplestats.info.config.tracking.feature.languages']
+      ]
         .filter(([key]) => this.tracking[key])
         .map(([_, label]) => this.$t(label));
+    },
+
+    loggingLevels() {
+      return [
+        ['tracking', 'simplestats.info.config.logging.level.tracking'],
+        ['warnings', 'simplestats.info.config.logging.level.warnings'],
+        ['verbose', 'simplestats.info.config.logging.level.verbose']
+      ]
+        .filter(([key]) => this.logging[key])
+        .map(([_, label]) => this.$t(label));
+    },
+
+    uniqueFormatted() {
+      const seconds = this.tracking.unique;
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const hours   = Math.floor(seconds / 3600);
+
+      return (
+        [
+          hours && `${hours}h`,
+          minutes && `${minutes}m`
+        ]
+          .filter(Boolean)
+          .join(' ')
+      ) || '-';
     }
   },
 
   methods: {
     loadData(response) {
-      this.saltIsSet = response.saltIsSet;
-
       Object.assign(this.tracking, {
-        periodName: response.trackingPeriodName,
-        since: response.trackingSince,
-        uniqueSeconds: response.uniqueSeconds,
-        enableReferers: response.enableReferers,
-        enableDevices: response.enableDevices,
-        enableVisits: response.enableVisits,
-        enableVisitLanguages: response.enableVisitLanguages,
-        ignoredRoles: response.ignoredRoles,
-        ignoredPages: response.ignoredPages,
-        ignoredTemplates: response.ignoredTemplates
+        period: response.period,
+        since: response.since,
+        unique: response.unique,
+        salted: response.salted,
+        referers: response.features.referers,
+        devices: response.features.devices,
+        visits: response.features.visits,
+        languages: response.features.languages,
+        ignoredRoles: response.ignored.roles,
+        ignoredPages: response.ignored.pages,
+        ignoredTemplates: response.ignored.templates
       });
 
       Object.assign(this.logging, {
         file: response.logFile,
-        levels: response.logLevels
+        tracking: response.logLevels.tracking,
+        warnings: response.logLevels.warnings,
+        verbose: response.logLevels.verbose
       });
     }
   }

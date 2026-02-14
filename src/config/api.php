@@ -53,9 +53,12 @@ return [
         // API Routes
         return [
             [
-                'pattern' => 'simplestats/listvisitors',
+                'pattern' => 'simplestats/pagestats',
                 'method'  => 'GET',
-                'action'  => $wrapAction(fn(): array => Stats::listvisitors())
+                'action'  => $wrapAction(function (): array {
+                    [$from, $to] = Stats::getTimeSpanFromUrl();
+                    return Stats::pageStats($from, $to);
+                })
             ],
 
             [
@@ -77,12 +80,9 @@ return [
             ],
 
             [
-                'pattern' => 'simplestats/pagestats',
+                'pattern' => 'simplestats/visitors',
                 'method'  => 'GET',
-                'action'  => $wrapAction(function (): array {
-                    [$from, $to] = Stats::getTimeSpanFromUrl();
-                    return Stats::pageStats($from, $to);
-                })
+                'action'  => $wrapAction(fn(): array => Stats::getVisitors())
             ],
 
             [
@@ -90,7 +90,7 @@ return [
                 'method'  => 'GET',
                 'action'  => $wrapAction(function ($any): array {
                     [$from, $to] = Stats::getTimeSpanFromUrl();
-                    
+
                     $page = page($any);
                     if(!$page) throw new Exception("The page doesn't exist !");
 
@@ -109,103 +109,19 @@ return [
             ],
 
             [
-                'pattern' => 'simplestats/listdbinfo',
+                'pattern' => 'simplestats/database/info',
                 'method'  => 'GET',
-                'action'  => $wrapAction(fn(): array => Stats::listDbInfo())
+                'action'  => $wrapAction(fn(): array => Stats::getDatabaseInfo())
             ],
 
             [
-                'pattern' => 'simplestats/configinfo',
-                'method'  => 'GET',
-                'action'  => $wrapAction(function (): array {
-                    $salt = option('daandelange.simplestats.tracking.salt', '');
-                    $logLevels = [];
-                    if (option('daandelange.simplestats.log.tracking', false)) $logLevels[] = I18n::translate('simplestats.info.config.log.level.tracking');
-                    if (option('daandelange.simplestats.log.warnings', false)) $logLevels[] = I18n::translate('simplestats.info.config.log.level.warnings');
-                    if (option('daandelange.simplestats.log.verbose', false)) $logLevels[] = I18n::translate('simplestats.info.config.log.level.verbose');
-
-                    return [
-                        'saltIsSet'             => is_string($salt) && !empty($salt) && $salt !== 'CHANGEME',
-                        'trackingPeriodName'    => getTimeFrameUtility()->getPeriodAdjective(),
-                        'uniqueSeconds'         => option('daandelange.simplestats.tracking.uniqueSeconds', -1),
-                        'enableReferers'        => option('daandelange.simplestats.tracking.enableReferers', false),
-                        'enableDevices'         => option('daandelange.simplestats.tracking.enableDevices', false),
-                        'enableVisits'          => option('daandelange.simplestats.tracking.enableVisits', false),
-                        'enableVisitLanguages'  => kirby()->multilang() && option('daandelange.simplestats.tracking.enableVisitLanguages', false),
-                        'ignoredRoles'          => option('daandelange.simplestats.tracking.ignore.roles', []),
-                        'ignoredPages'          => option('daandelange.simplestats.tracking.ignore.pages', []),
-                        'ignoredTemplates'      => option('daandelange.simplestats.tracking.ignore.templates', []),
-                        'logFile'               => str_replace(realpath(kirby()->root('config') . DIRECTORY_SEPARATOR . '..'), '.', option('daandelange.simplestats.log.file', [])),
-                        'logLevels'             => $logLevels,
-                        'trackingSince'         => 'todo', // todo
-                    ];
-                })
-            ],
-
-            [
-                'pattern' => 'simplestats/trackingtester',
-                'method'  => 'GET',
-                'action'  => $wrapAction(function (): array {
-                    $device = SimpleStats::detectSystemFromUA();
-                    if (isset($device['device'])) $device['device'] = Stats::translateDeviceKey($device['device']);
-                    return [
-                        'currentUserAgent'  => $_SERVER['HTTP_USER_AGENT'] ?? '',
-                        'currentDeviceInfo' => $device,
-                    ];
-                })
-            ],
-
-            [
-                'pattern' => 'simplestats/trackingtester/referrer',
-                'method'  => 'GET',
-                'action'  => $wrapAction(function () use ($getQueryParam): array {
-                    $referrer = (string) $getQueryParam('referrer', $_SERVER['HTTP_REFERER'] ?? '');
-                    return [
-                        'referrerInfo' => SimpleStats::getRefererInfo(['Referer' => $referrer]) ?? 'Invalid referrer!',
-                    ];
-                })
-            ],
-
-            [
-                'pattern' => 'simplestats/trackingtester/ua',
-                'method'  => 'GET',
-                'action'  => $wrapAction(function () use ($getQueryParam): array {
-                    $ua = (string) $getQueryParam('ua', '');
-                    $uainfo = SimpleStats::detectSystemFromUA(['User-Agent' => $ua]);
-                    if ($uainfo && isset($uainfo['device'])) $uainfo['device'] = Stats::translateDeviceKey($uainfo['device']);
-                    return $uainfo ?? ['error' => 'Invalid referrer url!'];
-                })
-            ],
-
-            [
-                'pattern' => 'simplestats/trackingtester/generatestats',
-                'method'  => 'GET',
-                'action'  => $wrapAction(function () use ($getQueryParam, $parseDateRange): array {
-                    $from = $parseDateRange($getQueryParam('from'));
-                    $to   = $parseDateRange($getQueryParam('to'));
-
-                    if (!$from || !$to) return ['status' => false, 'error' => 'No range!'];
-
-                    if ((string) $getQueryParam('proceed', '') !== 'yes') {
-                        return [
-                            'status' => false,
-                            'error'  => 'Please confirm that the date ranges from ' . date('d-m-Y', $from) . ' to ' . date('d-m-Y', $to)
-                        ];
-                    }
-
-                    $mode = $getQueryParam('mode', null);
-                    return StatsGenerator::GenerateVisits($from, $to, $mode);
-                }, true), // admin only
-            ],
-
-            [
-                'pattern' => 'simplestats/checkrequirements',
+                'pattern' => 'simplestats/database/requirements',
                 'method'  => 'GET',
                 'action'  => $wrapAction(function (): array {
                     $versionArray = explode('.', kirby()->version());
                     $reqs = [
                         'php'    => kirby()->system()->php(),
-                        'kirby'  => ((int)$versionArray[0] === 3 && (int)$versionArray[1] >= 5) || ((int)$versionArray[0] === 5 && (int)$versionArray[1] >= 0),
+                        'kirby' => ((int)$versionArray[0] === 4) || ((int)$versionArray[0] === 5),
                         'sqlite3'=> class_exists('SQLite3') && in_array('pdo_sqlite', get_loaded_extensions()) && in_array('sqlite3', get_loaded_extensions()),
                     ];
 
@@ -222,15 +138,104 @@ return [
             ],
 
             [
-                'pattern' => 'simplestats/dbupgrade',
+                'pattern' => 'simplestats/database/upgrade',
                 'method'  => 'GET',
                 'action'  => $wrapAction(function (): array {
                     $result = Stats::checkUpgradeDatabase(false);
                     return [
                         'status'  => $result,
-                        'message' => ($result ? 'Success!' : 'Error!') . ' Check your logs file for more details.',
+                        'message' => ($result ? 'Success! ' : 'Error! ') . I18n::translate('simplestats.info.database.upgrade.result'),
                     ];
                 }, true), // admin only
+            ],
+
+            [
+                'pattern' => 'simplestats/configinfo',
+                'method'  => 'GET',
+                'action'  => $wrapAction(function (): array {
+                    $salt = option('daandelange.simplestats.tracking.salt', '');
+
+                    return [
+                        'period' => getTimeFrameUtility()->getPeriodAdjective(),
+                        'since'  => 'todo', // todo
+                        'unique' => option('daandelange.simplestats.tracking.uniqueSeconds', -1),
+                        'salted' => is_string($salt) && !empty($salt) && $salt !== 'CHANGEME',
+
+                        'features' => [
+                            'referers'  => option('daandelange.simplestats.tracking.enableReferers', false),
+                            'devices'   => option('daandelange.simplestats.tracking.enableDevices', false),
+                            'visits'    => option('daandelange.simplestats.tracking.enableVisits', false),
+                            'languages' => kirby()->multilang() && option('daandelange.simplestats.tracking.enableVisitLanguages', false),
+                        ],
+
+                        'ignored' => [
+                            'roles'     => option('daandelange.simplestats.tracking.ignore.roles', []),
+                            'pages'     => option('daandelange.simplestats.tracking.ignore.pages', []),
+                            'templates' => option('daandelange.simplestats.tracking.ignore.templates', []),
+                        ],
+
+                        'logFile' => option('daandelange.simplestats.log.file', []),
+                        'logLevels' => [
+                            'tracking' => option('daandelange.simplestats.log.tracking', false),
+                            'warnings' => option('daandelange.simplestats.log.warnings', false),
+                            'verbose'  => option('daandelange.simplestats.log.verbose', false),
+                        ]
+                    ];
+                })
+            ],
+
+            [
+                'pattern' => 'simplestats/testers/user-agent',
+                'method'  => 'GET',
+                'action'  => $wrapAction(function () use ($getQueryParam): array {
+                    $userAgent  = $getQueryParam('ua', $_SERVER['HTTP_USER_AGENT']);
+                    $deviceInfo = SimpleStats::getDeviceInfo(['User-Agent' => $userAgent]);
+
+                    if ($deviceInfo) {
+                        $deviceKeys = ['engine', 'device', 'system'];
+                        foreach ($deviceKeys as $key) {
+                            if (isset($deviceInfo[$key])) {
+                                $deviceInfo[$key] = Stats::translateDeviceKey($deviceInfo[$key]);
+                            }
+                        }
+                    }
+
+                    return ['userAgent'  => $userAgent, 'deviceInfo' => $deviceInfo];
+                })
+            ],
+
+            [
+                'pattern' => 'simplestats/testers/referer',
+                'method'  => 'GET',
+                'action'  => $wrapAction(function () use ($getQueryParam): array {
+                    $referer     = $getQueryParam('url', $_SERVER['HTTP_REFERER']);
+                    $refererInfo = SimpleStats::getRefererInfo(['Referer' => $referer]);
+
+                    if (!$refererInfo) {
+                        return ['error' => I18n::translate('simplestats.info.testers.referer.error')];
+                    }
+
+                    return $refererInfo;
+                })
+            ],
+
+            [
+                'pattern' => 'simplestats/testers/generatestats',
+                'method'  => 'GET',
+                'action'  => $wrapAction(function () use ($getQueryParam, $parseDateRange): array {
+                    $mode = $getQueryParam('mode');
+                    $from = $parseDateRange($getQueryParam('from'));
+                    $to   = $parseDateRange($getQueryParam('to'));
+
+                    if (!$mode) {
+                        return ['error' => I18n::translate('simplestats.info.testers.generator.mode.error')];
+                    }
+                    if (!$from || !$to) {
+                        return ['error' => I18n::translate('simplestats.info.testers.generator.date.error')];
+                    }
+
+                    return StatsGenerator::GenerateVisits($from, $to, $mode);
+                }, true) // admin only
             ],
         ];
     }
