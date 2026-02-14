@@ -104,16 +104,16 @@
         },
         {
             "name": "simplestats/referer-parser",
-            "version": "v1.1.1",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bogdancondorachi/php-referer-parser.git",
-                "reference": "0a4f1c640ae08a405fbcd6be00e782047d555fd2"
+                "reference": "6e659843c45cffe7a5c1c09b0b3582d8816cb922"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bogdancondorachi/php-referer-parser/zipball/0a4f1c640ae08a405fbcd6be00e782047d555fd2",
-                "reference": "0a4f1c640ae08a405fbcd6be00e782047d555fd2",
+                "url": "https://api.github.com/repos/bogdancondorachi/php-referer-parser/zipball/6e659843c45cffe7a5c1c09b0b3582d8816cb922",
+                "reference": "6e659843c45cffe7a5c1c09b0b3582d8816cb922",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             ],
             "description": "Snowplow Refer(r)er parser for PHP",
             "support": {
-                "source": "https://github.com/bogdancondorachi/php-referer-parser/tree/v1.1.1"
+                "source": "https://github.com/bogdancondorachi/php-referer-parser/tree/v1.1.2"
             },
-            "time": "2026-01-14T19:12:15+00:00"
+            "time": "2026-01-19T07:56:03+00:00"
         },
         {
             "name": "whichbrowser/parser",
@@ -224,12 +224,12 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.2.0"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
 }
