@@ -28,7 +28,7 @@ class Stats extends SimpleStatsDb {
     }
 
     // Lists database version, history and upgrade status
-    public static function listDbInfo(): array {
+    public static function getDatabaseInfo(): array {
         $dbVersion = '';
         $dbArray = [];
         $dbvQ = self::database()->query('SELECT `version`, `migrationdate` FROM `simplestats` ORDER BY `migrationdate` DESC LIMIT 0,'.SIMPLESTATS_DUMMY_DB_LIMIT);
@@ -44,17 +44,17 @@ class Stats extends SimpleStatsDb {
             }
             // No version but table exists = weird !
             else {
-                $dbVersion = t('simplestats.info.db.version.none');
+                $dbVersion = t('simplestats.info.database.history.none');
             }
         }
         else {
             $error = self::database()->lastError()->getMessage();
             // v1 didn't have the simplestats table (only way to detect)
             if( stripos($error, 'no such table: simplestats') !== false ){
-                $dbVersion = '1 ('.t('simplestats.info.db.version.less').')';
+                $dbVersion = '1 ('.t('simplestats.info.database.history.less').')';
             }
             else {
-                $dbVersion = t('simplestats.info.db.version.error');//.$error;
+                $dbVersion = t('simplestats.info.database.history.error');//.$error;
             }
         }
 
@@ -82,8 +82,8 @@ class Stats extends SimpleStatsDb {
             'softwareDbVersion' => self::engineDbVersion,
             'dbVersion'         => $dbVersion,
             'dbHistoryLabels'   => [
-                'version'  => ['label'=>t('simplestats.info.db.version.column.dbversion'), 'type'=>'number',   'sortable'=>true, 'search'=>false,  'width'=>'34%'],
-                'date'     => ['label'=>t('simplestats.info.db.version.column.usedsince'), 'type'=>'date',     'sortable'=>true, 'search'=>false,  'width'=>'66%'],
+                'version' => ['label'=>t('simplestats.info.database.history.column.version'), 'type'=>'number'],
+                'date'    => ['label'=>t('simplestats.info.database.history.column.since'), 'type'=>'date'],
             ],
             'dbHistory'         => $dbArray,
             'upgradeRequired'   => self::engineDbVersion != $dbVersion,
@@ -160,7 +160,7 @@ class Stats extends SimpleStatsDb {
         return $periods;
     }
 
-    public static function listvisitors(): array {
+    public static function getVisitors(): array {
         $keys = [
             'visitedpages'   => [ 'label' => t('simplestats.table.column.visitedpages'),   'type' => 'text', 'sortable' => false,  'width' => '50%', 'search'=>true ],
             'osfamily'       => [ 'label' => t('simplestats.table.column.osfamily'),       'type' => 'text', 'sortable' => true,   'width' => '15%', 'search'=>true ],

@@ -1,84 +1,73 @@
 <template>
   <div class="k-fieldset">
     <k-grid variant="columns">
+      <!-- Headline -->
       <k-column width="1/1">
-        <k-headline-field :label="$t('simplestats.info.db.title')" />
+        <k-headline-field :label="$t('simplestats.info.database.headline')" />
       </k-column>
 
       <!-- Database Info Table -->
       <k-column width="1/1">
         <k-simplestats-info-table
-          :label="$t('simplestats.info.db.info')"
+          :label="$t('simplestats.info.database.info.label')"
           :rows="dbInfoRows"
         />
       </k-column>
 
       <!-- Database Version History -->
       <k-column width="1/1">
-        <k-simplestats-filter-table
-          :label="$t('simplestats.info.db.version.title')"
-          :rows="dbHistory"
-          :columns="dbHistoryLabels"
+        <k-table
+          :label="$t('simplestats.info.database.history.label')"
+          :index="false"
+          :rows="database.history"
+          :columns="dbHistory"
         />
       </k-column>
 
       <!-- Database Requirements -->
       <k-column width="1/1">
-        <k-section :label="$t('simplestats.info.db.rqmts.title')">
+        <k-section :label="$t('simplestats.info.database.rqmts.label')">
           <k-box
-            v-if="dbRequirementsPassed"
-            theme="positive"
-            :text="$t('simplestats.info.db.rqmts.positive')"
+            v-if="requirements.passed"
+            theme="info"
+            :text="$t('simplestats.info.database.rqmts.note.positive')"
           />
+
           <k-box v-else theme="negative">
             <k-text>
-              <p>{{ $t('simplestats.info.db.rqmts.negative') }}</p>
-              <k-code>{{ dbRequirements }}</k-code>
+              <p>{{ $t('simplestats.info.database.rqmts.note.negative') }}</p>
+              <k-code>{{ requirements.message }}</k-code>
             </k-text>
           </k-box>
         </k-section>
       </k-column>
 
-      <!-- Upgrade Section -->
-      <k-column v-if="upgradeRequired" width="1/1">
-        <k-section v-if="!updateMessage" :label="$t('simplestats.info.db.update.required')">
-          <k-box :html="true" theme="negative" :text="$t('simplestats.info.db.update.required.msg')" />
-          <br/>
-          <k-checkbox-input
-            :label="$t('simplestats.info.db.update.backedup')"
-            :value="unlockUpgrade"
-            @input="acceptUpgrade"
-          />
-          <br/>
-          <k-button
-            variant="filled"
-            :icon="isUpdatingDb ? 'loader' : 'bolt'"
-            @click="requestUpgrade"
-          >
-            {{ $t('simplestats.info.db.update.go') }}
-          </k-button>
-        </k-section>
+      <!-- Database Upgrade -->
+      <k-column width="1/1">
+        <k-section :label="$t('simplestats.info.database.upgrade.label')">
+          <template v-if="upgrade.required">
+            <template v-if="!upgrade.resultMessage">
+              <k-box :html="true" theme="negative" :text="$t('simplestats.info.database.upgrade.note.negative')" />
+              <br/>
+              <k-bar>
+                <k-checkbox-input
+                  v-model="upgrade.consent"
+                  :label="$t('simplestats.info.database.upgrade.consent')"
+                />
+                <k-button
+                  variant="filled"
+                  :disabled="!upgrade.consent"
+                  :icon="upgrade.isUpgrading ? 'loader' : null"
+                  :text="$t('simplestats.info.database.upgrade.button')"
+                  @click="requestUpgrade"
+                />
+              </k-bar>
+            </template>
 
-        <k-section v-else :label="$t('simplestats.info.db.update.result')">
-          <k-box :html="true" :theme="updateMessageTheme" :text="updateMessage" />
-          <br />
-          <k-button variant="filled" icon="refresh" @click="load">
-            {{ $t('simplestats.info.db.update.refresh') }}
-          </k-button>
-        </k-section>
-      </k-column>
+            <k-box v-else :html="true" :theme="upgrade.resultTheme" :text="upgrade.resultMessage" />
+          </template>
 
-      <!-- Up-to-date Message -->
-      <k-column v-else-if="updateMessage==null" width="1/1">
-        <k-section :label="$t('simplestats.info.db.update.title')">
-          <k-info-field theme="positive" :text="$t('simplestats.info.db.update.uptodate')" />
-        </k-section>
-      </k-column>
-
-      <!-- Load/Update Error Message -->
-      <k-column v-else-if="updateMessage!==null" width="1/1">
-        <k-section :label="$t('simplestats.info.db.update.loaderror')">
-          <k-info-field html="true" theme="negative" :text="updateMessage" />
+          <k-box v-else theme="info" :text="$t('simplestats.info.database.upgrade.note.positive')" />
         </k-section>
       </k-column>
     </k-grid>
@@ -86,12 +75,10 @@
 </template>
 
 <script>
-import { usePanel } from 'kirbyuse';
-
 export default {
   data() {
     return {
-      db: {
+      database: {
         history: [],
         historyLabels: {},
         version: 'undefined',
@@ -110,8 +97,8 @@ export default {
 
       upgrade: {
         required: false,
-        unlocked: false,
-        isUpdating: false,
+        consent: false,
+        isUpgrading: false,
         resultMessage: null,
         resultTheme: ''
       }
@@ -119,161 +106,88 @@ export default {
   },
 
   created() {
-    this.load();
+    this.loadDbInfo();
+    this.loadRequirements();
   },
 
   computed: {
     dbInfoRows() {
       return [
         {
-          label: 'simplestats.info.db.info.file',
+          label: 'simplestats.info.database.info.file',
           preview: 'k-files-field-preview',
-          value: this.db.location
+          value: this.database.location
         },
         {
-          label: 'simplestats.info.db.info.size',
-          value: this.db.size,
+          label: 'simplestats.info.database.info.size',
+          value: this.database.size,
           format: this.niceSize
         },
         {
-          label: 'simplestats.info.db.info.dbversion',
-          value: this.db.version
+          label: 'simplestats.info.database.info.version.db',
+          value: this.database.version
         },
         {
-          label: 'simplestats.info.db.info.softwareversion',
-          value: this.db.softwareVersion
+          label: 'simplestats.info.database.info.version.sw',
+          value: this.database.softwareVersion
         },
         {
-          label: 'simplestats.info.db.info.spanfromperiod',
+          label: 'simplestats.info.database.info.span.from',
           preview: 'k-date-field-preview',
-          value: this.db.spanFrom
+          value: this.database.spanFrom
         },
         {
-          label: 'simplestats.info.db.info.spantoperiod',
+          label: 'simplestats.info.database.info.span.to',
           preview: 'k-date-field-preview',
-          value: this.db.spanTo
+          value: this.database.spanTo
         },
         {
-          label: 'simplestats.info.db.info.spannumperiods',
-          value: this.db.timeframes
+          label: 'simplestats.info.database.info.span.periods',
+          value: this.database.timeframes
         },
       ];
     },
 
     dbHistory() {
-      return this.db.history;
-    },
-
-    dbHistoryLabels() {
       return Object.fromEntries(
-        Object.entries(this.db.historyLabels).map(([key, column]) => [key, { ...column, mobile: true }])
+        Object.entries(this.database.historyLabels).map(([key, column]) => [key, { ...column, mobile: true }])
       );
-    },
-
-    upgradeRequired() {
-      return this.upgrade.required;
-    },
-
-    dbRequirementsPassed() {
-      return this.requirements.passed;
-    },
-
-    dbRequirements() {
-      return this.requirements.message;
-    },
-
-    unlockUpgrade() {
-      return this.upgrade.unlocked;
-    },
-
-    isUpdatingDb() {
-      return this.upgrade.isUpdating;
-    },
-
-    updateMessage() {
-      return this.upgrade.resultMessage;
-    },
-
-    updateMessageTheme() {
-      return this.upgrade.resultTheme;
-    },
+    }
   },
 
   methods: {
-    async load() {
-      this.upgrade.resultMessage = null;
-      await Promise.all([this.loadDbInfo(), this.loadRequirements()]);
-    },
-
     async loadDbInfo() {
-      try {
-        const response = await this.$api.get('simplestats/listdbinfo');
-        Object.assign(this.db, {
-          history: response.dbHistory,
-          historyLabels: response.dbHistoryLabels,
-          version: response.dbVersion,
-          softwareVersion: response.softwareDbVersion,
-          location: response.databaseLocation,
-          size: response.databaseSize,
-          spanFrom: response.databaseSpanFrom,
-          spanTo: response.databaseSpanTo,
-          timeframes: response.databaseTimeframes
-        });
-        this.upgrade.required = response.upgradeRequired;
-      } catch (error) {
-        this.handleError(error);
-        this.upgrade.resultMessage = error.message;
-      }
+      const response = await this.$api.get('simplestats/database/info');
+      Object.assign(this.database, {
+        history: response.dbHistory,
+        historyLabels: response.dbHistoryLabels,
+        version: response.dbVersion,
+        softwareVersion: response.softwareDbVersion,
+        location: response.databaseLocation,
+        size: response.databaseSize,
+        spanFrom: response.databaseSpanFrom,
+        spanTo: response.databaseSpanTo,
+        timeframes: response.databaseTimeframes
+      });
+      this.upgrade.required = response.upgradeRequired;
     },
 
     async loadRequirements() {
-      try {
-        const response = await this.$api.get('simplestats/checkrequirements');
-        this.requirements.message = response.dbRequirements;
-        this.requirements.passed = response.dbRequirementsPassed;
-      } catch (error) {
-        this.requirements.message = error.message;
-        this.handleError(error);
-      }
+      const response = await this.$api.get('simplestats/database/requirements');
+      this.requirements.message = response.dbRequirements;
+      this.requirements.passed = response.dbRequirementsPassed;
     },
 
-    acceptUpgrade(value) {
-      this.upgrade.unlocked = value;
-    },
-
-    async requestUpgrade(event) {
-      event.stopPropagation();
-      if (!this.upgrade.unlocked) {
-        this.notifyError('Before hitting that button, please ensure to backup your database file!');
-        return;
-      }
-
-      this.upgrade.isUpdating = true;
-      this.upgrade.resultMessage = null;
+    async requestUpgrade() {
+      this.upgrade.isUpgrading = true;
 
       try {
-        const response = await this.$api.get('simplestats/dbupgrade');
+        const response = await this.$api.get('simplestats/database/upgrade');
+        this.upgrade.resultTheme = response.status ? 'positive' : 'negative';
         this.upgrade.resultMessage = response.message;
-        this.upgrade.resultTheme = response.status ? 'positive' : 'passive';
-      } catch (error) {
-        this.handleError(error);
       } finally {
-        this.upgrade.isUpdating = false;
+        this.upgrade.isUpgrading = false;
       }
-    },
-
-    handleError(error) {
-      const message = error?.message || 'Unknown error';
-      if (this.$store?.dispatch) {
-        this.$store.dispatch('notification/open', { type: 'error', message, timeout: 5000 });
-      } else {
-        const panel = usePanel();
-        panel.error(message, true);
-      }
-    },
-
-    notifyError(message) {
-      this.handleError({ message });
     },
 
     niceSize(num) {
