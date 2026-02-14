@@ -27,7 +27,7 @@
         <k-section :label="$t('simplestats.info.db.rqmts.title')">
           <k-box
             v-if="dbRequirementsPassed"
-            theme="positive"
+            theme="neutral"
             :text="$t('simplestats.info.db.rqmts.positive')"
           />
           <k-box v-else theme="negative">
@@ -71,7 +71,7 @@
       <!-- Up-to-date Message -->
       <k-column v-else-if="updateMessage==null" width="1/1">
         <k-section :label="$t('simplestats.info.db.update.title')">
-          <k-info-field theme="positive" :text="$t('simplestats.info.db.update.uptodate')" />
+          <k-info-field theme="neutral" :text="$t('simplestats.info.db.update.uptodate')" />
         </k-section>
       </k-column>
 

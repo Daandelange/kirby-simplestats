@@ -65,7 +65,7 @@ export default {
         }
     };
 
-    // Simply return a drawer to which we bind 
+    // Simply return a drawer to which we bind the parenting render fn
     // We put the original KPagestatsSection renderFn as childs
     return createElement(
       'k-drawer', // Element to create
