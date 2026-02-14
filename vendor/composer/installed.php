@@ -3,7 +3,7 @@
         'name' => 'daandelange/simplestats',
         'pretty_version' => '1.0.0-alpha.10',
         'version' => '1.0.0.0-alpha10',
-        'reference' => NULL,
+        'reference' => null,
         'type' => 'kirby-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'daandelange/simplestats' => array(
             'pretty_version' => '1.0.0-alpha.10',
             'version' => '1.0.0.0-alpha10',
-            'reference' => NULL,
+            'reference' => null,
             'type' => 'kirby-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
