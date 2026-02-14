@@ -612,7 +612,7 @@ class Stats extends SimpleStatsDb {
                     'firstvisited'  => getDateFromPeriod(intval($page->firstvisited, 10), SIMPLESTATS_TABLE_DATE_FORMAT),
                     'lastvisited'   => getDateFromPeriod(intval($page->lastvisited, 10), SIMPLESTATS_TABLE_DATE_FORMAT),
                     'depth'         => -1,
-                    'icon'          => ['icon'=>'page', 'color'=>'gray-700','back'=>'gray-200','ratio'=>'1/1'],
+                    'icon'          => ['icon'=>'page', 'color'=>'var(--color-text)','back'=>'var(--table-color-back)','ratio'=>'1/1'],
                     'flag'        => ['disabled'=>true,'status'=>'disabled'],
                 ];
 
@@ -623,7 +623,7 @@ class Stats extends SimpleStatsDb {
                         'url'           => $kirbyPage->url(),
                         'title'         => ['href'=>$kirbyPage->panel()->url(), 'text'=>$kirbyPage->title()->value()],
                         'depth'         => $kirbyPage->depth()-1,
-                        'icon'          => ['icon'=>$kirbyPage->blueprint()->icon()??'page', 'color'=>'gray-700','back'=>'gray-200','ratio'=>'1/1'],
+                        'icon'          => ['icon'=>$kirbyPage->blueprint()->icon()??'page', 'coolor'=>'var(--color-text)','back'=>'var(--table-color-back)','ratio'=>'1/1'],
                         // 'icon'    => $kirbyPage->panel()->image(
                         //     ['icon'=>'page', 'color'=>'gray-500','back'=>'black','ratio'=>'1/1'],
                         //     'table'
