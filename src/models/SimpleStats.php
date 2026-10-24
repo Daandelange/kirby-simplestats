@@ -69,9 +69,9 @@ class SimpleStats extends SimpleStatsDb {
                 }
             }
             // Unknown kirby page  or nothing to track, return 404
-            return new \Kirby\Exception\ErrorPageException(['httpCode'=>410]); // Gone / Removed (with error page)
+            return new \Kirby\Exception\ErrorPageException(httpCode: 410); // Gone / Removed (with error page)
         }
-        return new \Kirby\Exception\ErrorPageException(['httpCode'=>404]); // Not found (with error page)
+        return new \Kirby\Exception\ErrorPageException(httpCode: 404); // Not found (with error page)
         //return new Response(null, null, 410); // Gone / Removed (no page is served)
         //return false; // generates error page
     }

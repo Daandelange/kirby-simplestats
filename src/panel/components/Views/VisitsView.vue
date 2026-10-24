@@ -85,15 +85,9 @@ import {usePanel} from 'kirbyuse';
 export default {
   mixins: [apiFetch],
 
-  props: {
-    currentItem: {
-      default: -1,
-      type: Number,
-    },
-  },
-
   data() {
     return {
+      currentItem: -1,
       charts: {
         visitsOverTime: {
           data: [],

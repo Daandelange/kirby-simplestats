@@ -134,7 +134,7 @@ export default {
     },
 
     generateDownloadLink(chartRef) {
-      const chart = chartRef?._data?._chart;
+      const chart = chartRef?.chart;
       if (!chart?.canvas) return;
 
       this.base64image = chart.toBase64Image('image/png');

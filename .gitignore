@@ -13,6 +13,7 @@
 # Locks
 package-lock.json
 index.dev.mjs
+index.dev.js
 
 # Ignore dev packages (only commit production files to github)
 /vendor/cweagans/*

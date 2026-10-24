@@ -6,7 +6,7 @@
           <tr v-for="(row, i) in previewData" :key="i">
             <th data-mobile="true">{{ $t(row.label) }}</th>
             <td data-mobile="true" class="k-table-cell">
-              <preview
+              <component
                 :is="row.preview"
                 :value="row.value"
                 v-bind="row.props"

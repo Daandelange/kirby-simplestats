@@ -51,8 +51,9 @@
               <br/>
               <k-bar>
                 <k-checkbox-input
-                  v-model="upgrade.consent"
+                  :checked="upgrade.consent"
                   :label="$t('simplestats.info.database.upgrade.consent')"
+                  @input="upgrade.consent = $event"
                 />
                 <k-button
                   variant="filled"

@@ -30,7 +30,7 @@
                 <tr>
                   <th data-mobile="true">{{ $t('simplestats.info.testers.device.custom.useragent') }}</th>
                   <td data-mobile="true" class="k-table-cell">
-                    <k-text-input v-model="customUserAgent" class="k-text-field-preview" />
+                    <k-text-input :value="customUserAgent" class="k-text-field-preview" @input="customUserAgent = $event" />
                   </td>
                   <td data-mobile="true" class="k-table-button">
                     <k-button
@@ -67,7 +67,7 @@
                 <tr>
                   <th data-mobile="true">{{ $t('simplestats.info.testers.referer.field') }}</th>
                   <td data-mobile="true" class="k-table-cell">
-                    <k-url-input v-model="refererUrl" class="k-text-field-preview" />
+                    <k-url-input :value="refererUrl" class="k-text-field-preview" @input="refererUrl = $event" />
                   </td>
                   <td data-mobile="true" class="k-table-button">
                     <k-button
@@ -107,21 +107,21 @@
                 <tr>
                   <th data-mobile="true">{{ $t('simplestats.info.testers.generator.mode') }}</th>
                   <td data-mobile="true" class="k-table-cell">
-                    <k-select-input v-model="generatorMode" :options="generatorModes"/>
+                    <k-select-input :value="generatorMode" :options="generatorModes" @input="generatorMode = $event"/>
                   </td>
                 </tr>
 
                 <tr>
                   <th data-mobile="true">{{ $t('simplestats.info.testers.generator.date.from') }}</th>
                   <td data-mobile="true" class="k-table-cell">
-                    <k-date-input v-model="generatorFrom" />
+                    <k-date-input :value="generatorFrom" @input="generatorFrom = $event" />
                   </td>
                 </tr>
 
                 <tr>
                   <th data-mobile="true">{{ $t('simplestats.info.testers.generator.date.to') }}</th>
                   <td data-mobile="true" class="k-table-cell">
-                    <k-date-input v-model="generatorTo" />
+                    <k-date-input :value="generatorTo" @input="generatorTo = $event" />
                   </td>
                 </tr>
               </tbody>
@@ -131,8 +131,9 @@
           <br />
           <k-bar>
             <k-choice-input
-              v-model="generatorConsent"
+              :checked="generatorConsent"
               :label="$t('simplestats.info.testers.generator.consent')"
+              @input="generatorConsent = $event"
             />
             <k-button
               variant="filled"
@@ -157,13 +158,13 @@
                 <tr>
                   <th data-mobile="true">{{ $t('simplestats.info.testers.generator.date.from') }}</th>
                   <td data-mobile="true" class="k-table-cell">
-                    <k-date-input v-model="tfutilityFrom" />
+                    <k-date-input :value="tfutilityFrom" @input="tfutilityFrom = $event" />
                   </td>
                 </tr>
                 <tr>
                   <th data-mobile="true">{{ $t('simplestats.info.testers.generator.date.to') }}</th>
                   <td data-mobile="true" class="k-table-cell">
-                    <k-date-input v-model="tfutilityTo" />
+                    <k-date-input :value="tfutilityTo" @input="tfutilityTo = $event" />
                   </td>
                 </tr>
               </tbody>
@@ -214,14 +215,14 @@ export default {
 
       isGenerating: false,
       generatorMode: 'randommulti',
-      generatorFrom: from.toISOString(),
-      generatorTo: to.toISOString(),
+      generatorFrom: this.$library.dayjs(from).toISO('date'),
+      generatorTo: this.$library.dayjs(to).toISO('date'),
       generatorConsent: false,
       generatorResponse: null,
 
       isTesting: false,
-      tfutilityFrom: tfFrom.toISOString(),
-      tfutilityTo: tfTo.toISOString(),
+      tfutilityFrom: this.$library.dayjs(tfFrom).toISO('date'),
+      tfutilityTo: this.$library.dayjs(tfTo).toISO('date'),
       tfutilityResponse: null
     };
   },

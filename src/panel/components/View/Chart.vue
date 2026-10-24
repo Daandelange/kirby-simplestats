@@ -1,23 +1,23 @@
 <template>
   <k-section :class="chartClass" :label="label">
     <!-- Download Button -->
-    <a
-      v-if="download !== false"
-      :download="downloadFileName"
-      :href="base64image"
-      slot="options"
-    >
-      <k-button
-        :text="$t('simplestats.chart.download')"
-        :disabled="!base64image"
-        icon="download"
-        size="xs"
-        variant="filled"
-      />
-    </a>
+    <template v-if="download !== false" #options>
+      <a
+        :download="downloadFileName"
+        :href="base64image"
+      >
+        <k-button
+          :text="$t('simplestats.chart.download')"
+          :disabled="!base64image"
+          icon="download"
+          size="xs"
+          variant="filled"
+        />
+      </a>
+    </template>
 
     <!-- Chart -->
-    <Chart
+    <component
       v-if="hasData"
       :is="type + 'Chart'"
       :chart-data="fullChartData"
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import {Line as LineChart, Bar as BarChart, Pie as PieChart } from 'vue-chartjs/legacy';
+import {Line as LineChart, Bar as BarChart, Pie as PieChart } from 'vue-chartjs';
 import chartUtils from '../../mixins/chartUtils.js';
 
 export default {

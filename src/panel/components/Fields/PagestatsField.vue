@@ -67,28 +67,70 @@
 
 <script>
 export default {
-  data() {
-    return {
-      showTotals: true,
-      showTimeline: false,
-      showLanguages: false,
-      size: 'medium',
-      statsdata: null,
-      languagesOverTime: [],
-      chartPeriodLabels: [],
-      chartLanguagesLabels: [],
-      languageTotalHits: [],
-      trackedSince: '[unknown]',
-      lastVisited: '[unknown]',
-      totalHits: 0,
-      averageHits: 0,
-      timespanUnitName: '[unknown]',
-      trackingPeriods: 0,
-      uid: null,
-    };
+  inheritAttrs: false,
+
+  props: {
+    label: String,
+    showFullInfo: Boolean,
+    showTotals: {
+      type: Boolean,
+      default: true
+    },
+    showTimeline: Boolean,
+    showLanguages: Boolean,
+    size: {
+      type: String,
+      default: 'medium'
+    },
+    statsdata: Object,
+    uid: String,
   },
 
   computed: {
+    isLoading() {
+      return !this.statsdata;
+    },
+
+    languagesOverTime() {
+      return this.statsdata?.languagesOverTime ?? [];
+    },
+
+    chartPeriodLabels() {
+      return this.statsdata?.chartperiodlabels ?? [];
+    },
+
+    chartLanguagesLabels() {
+      return this.statsdata?.chartlanguageslabels ?? [];
+    },
+
+    languageTotalHits() {
+      return this.statsdata?.languageTotalHits ?? [];
+    },
+
+    trackedSince() {
+      return this.statsdata?.firstVisited ?? '[unknown]';
+    },
+
+    lastVisited() {
+      return this.statsdata?.lastVisited ?? '[unknown]';
+    },
+
+    totalHits() {
+      return this.statsdata?.totalHits ?? 0;
+    },
+
+    averageHits() {
+      return this.statsdata?.averageHits ?? 0;
+    },
+
+    timespanUnitName() {
+      return this.statsdata?.timespanUnitName ?? '[unknown]';
+    },
+
+    trackingPeriods() {
+      return this.statsdata?.trackingPeriods ?? 0;
+    },
+
     normalizedSize() {
       if (['small', 'compact'].includes(this.size)) return 'small';
       if (['large', 'huge'].includes(this.size)) return 'large';
@@ -99,41 +141,6 @@ export default {
     languagesAreEnabled() {
       return this.chartLanguagesLabels.length > 1;
     }
-  },
-
-  created() {
-    this.load().then(response => {
-      // In rare cases when received data is incorrect : prevent crashing js
-      if(!response || !response.statsdata){
-        this.$panel.error({
-          message: 'Loading error : wrong data received',
-          details: 'While data was received, it was sent in an incorrect format.'
-        });
-        return;
-      }
-      const stats = response.statsdata;
-      Object.assign(this, {
-        label: response.label ?? response.headline,
-        showFullInfo: response.showFullInfo,
-        showTotals: response.showTotals,
-        showTimeline: response.showTimeline,
-        showLanguages: response.showLanguages,
-        size: response.size,
-        uid: response.uid,
-
-        statsdata: stats,
-        languagesOverTime: stats.languagesOverTime,
-        chartPeriodLabels: stats.chartperiodlabels,
-        chartLanguagesLabels: stats.chartlanguageslabels,
-        languageTotalHits: stats.languageTotalHits,
-        trackedSince: stats.firstVisited,
-        lastVisited: stats.lastVisited,
-        averageHits: stats.averageHits,
-        totalHits: stats.totalHits,
-        timespanUnitName: stats.timespanUnitName,
-        trackingPeriods: stats.trackingPeriods,
-      });
-    });
   },
 
   methods: {

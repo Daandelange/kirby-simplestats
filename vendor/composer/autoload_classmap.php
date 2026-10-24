@@ -85,6 +85,7 @@ return array(
     'WhichBrowser\\Model\\Version' => $vendorDir . '/whichbrowser/parser/src/Model/Version.php',
     'WhichBrowser\\Parser' => $vendorDir . '/whichbrowser/parser/src/Parser.php',
     'daandelange\\SimpleStats\\Logger' => $baseDir . '/src/models/Logger.php',
+    'daandelange\\SimpleStats\\PagestatsField' => $baseDir . '/src/models/PagestatsField.php',
     'daandelange\\SimpleStats\\SimpleStats' => $baseDir . '/src/models/SimpleStats.php',
     'daandelange\\SimpleStats\\SimpleStatsDb' => $baseDir . '/src/models/SimpleStatsDb.php',
     'daandelange\\SimpleStats\\SimpleStatsTimeFrameUtility' => $baseDir . '/src/models/SimpleStatsTimeFrameUtility.php',

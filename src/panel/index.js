@@ -20,8 +20,8 @@ import Timespan from "./components/View/Timespan.vue";
 // Table Previews
 import PercentageFieldPreview from "./components/Previews/PercentageFieldPreview.vue";
 
-// Sections
-import PagestatsSection from "./components/Sections/PagestatsSection.vue";
+// Fields
+import PagestatsField from "./components/Fields/PagestatsField.vue";
 
 panel.plugin("daandelange/simplestats", {
   components: {
@@ -45,7 +45,7 @@ panel.plugin("daandelange/simplestats", {
     "k-simplestats-pagestats-drawer": PagestatsDrawer,
   },
 
-  sections: {
-    "pagestats": PagestatsSection,
+  fields: {
+    "pagestats": PagestatsField,
   },
 });

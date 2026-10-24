@@ -1,19 +1,20 @@
 <template>
   <k-section :label="label" class="k-simplestats-filter-table">
-    <k-button
-      v-if="isSearchable"
-      slot="options"
-      icon="filter"
-      size="xs"
-      variant="filled"
-      :text="$t('simplestats.table.filter')"
-      @click="toggleSearch"
-    />
+    <template v-if="isSearchable" #options>
+      <k-button
+        icon="filter"
+        size="xs"
+        variant="filled"
+        :text="$t('simplestats.table.filter')"
+        @click="toggleSearch"
+      />
+    </template>
 
     <k-input
       v-if="isSearchable && showSearch"
       ref="searchInput"
-      v-model="searchTerm"
+      :value="searchTerm"
+      @input="searchTerm = $event"
       icon="search"
       type="text"
       class="k-models-section-search"

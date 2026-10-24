@@ -121,8 +121,8 @@ return [
                 'action'  => $wrapAction(function (): array {
                     $versionArray = explode('.', kirby()->version());
                     $reqs = [
-                        'php'    => kirby()->system()->php(),
-                        'kirby' => ((int)$versionArray[0] === 4) || ((int)$versionArray[0] === 5),
+                        'php'    => true, // Kirby 6 refuses to boot on unsupported PHP versions
+                        'kirby' => (int)$versionArray[0] === 6,
                         'sqlite3'=> class_exists('SQLite3') && in_array('pdo_sqlite', get_loaded_extensions()) && in_array('sqlite3', get_loaded_extensions()),
                     ];
 

@@ -34,6 +34,9 @@
         }
     },
     "extra": {
-        "installer-name": "simplestats"
+        "installer-name": "simplestats",
+        "kirby": {
+            "compatible": "~6.0"
+        }
     }
 }

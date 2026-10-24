@@ -6,14 +6,15 @@ Here are some instructions for getting started with SimpleStats.
 
 ## Requirements
 
- - Kirby 5.0.0+. _(Kirby 4 is known to work but unsupported)._
+ - Kirby 6.0.0+.
  - PHP 8.2+ with support for SQLite3.
  - There's an automatic requirements checker in the `Information` tab of the plugin's panel view, feel free to use that for double-checking requirements.
 
 > [!NOTE]
 > **Retro-compatibility :**
 > - Kirby 3 : Use [0.6.6-beta](https://github.com/Daandelange/kirby-simplestats/tree/0.6.6-beta).
-> - Kirby 4 : Use latest version (*unsupported*) or [0.7.7-beta](https://github.com/Daandelange/kirby-simplestats/tree/0.7.7-beta).
+> - Kirby 4 : Use [1.0.0](https://github.com/Daandelange/kirby-simplestats/tree/1.0.0) (*unsupported*) or [0.7.7-beta](https://github.com/Daandelange/kirby-simplestats/tree/0.7.7-beta).
+> - Kirby 5 : Use [1.0.0](https://github.com/Daandelange/kirby-simplestats/tree/1.0.0).
 
 
 ****
@@ -267,10 +268,10 @@ return [
 
 ### Page blueprints
 
-If you wish to display individual page stats in the panel, you may add a `pagestats` section to your page's blueprint.
+If you wish to display individual page stats in the panel, you may add a `pagestats` field to your page's blueprint.
 
 ````yml
-sections:
+fields:
   pagestats:
     type: pagestats
     label: Analytics
